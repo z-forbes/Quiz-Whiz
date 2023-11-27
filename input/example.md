@@ -29,3 +29,11 @@ Optional Description
 - First pair A///First pair B
 - Second pair A///Second pair B
 - Third pair A///Third pair B
+
+
+
+# Numeric example
+
+- 1
+- **2**
+- 3

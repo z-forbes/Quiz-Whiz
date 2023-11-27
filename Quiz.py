@@ -4,3 +4,5 @@ class Quiz:
 
     def add_q(self, q):
         self.questions.append(q)
+
+    

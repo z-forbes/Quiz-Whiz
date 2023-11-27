@@ -1,5 +1,7 @@
 from Quiz import Quiz
 from utils import *
+import Question
+
 
 def parse_input(fpath):
     output = Quiz()
@@ -14,36 +16,37 @@ def parse_input(fpath):
                 
         q_current.append(line.strip())
 
+    output.add_q(parse_question(q_current))
+    
+    return output
+
 
 def parse_question(q_lines):
-    tmp = remove_blanks(split_on_blank(q_lines))
-    q_desc = tmp[0]
-    answers = tmp[0]
+    tmp = split_on_blank(q_lines)
+    pre_answers = remove_blanks(tmp[0])
+    answers = remove_blanks(tmp[1])
 
-    output = parse_answers(answers) # returns a Question
-    output.question = q_desc[0]
-    if len(q_desc)==2:
-        output.description = q_desc[1]
+    q_class = find_q_class(answers)
+    parsed_answers = q_class.parse_answers(answers)
+
+    # output = q_class().set_answers(parsed_answers).set_question(get_line_content(pre_answers[0]))
+    output = q_class(answers=parsed_answers, question=get_line_content(pre_answers[0]))
+    if len(pre_answers)==2:
+        output.set_description(pre_answers[1])
 
     return output
     
-def parse_answers(answers):
-    if answers==None:
-        return None
-    
-    # check for cloze
+def find_q_class(answers): 
     for a in answers:
         if not type(force_type(a[0]))==int:
             break
-        parse_cloze_answers(answers)
-    
+        # only reached if no break
+        return Question.Cloze
+
     for a in answers:
         if not "///" in a:
             break
-        parse_match_answers(answers)
+        # only reached if no break
+        return Question.Match
 
-    parse_basic_answers(answers)
-
-
-
-parse_input("input/example.md")
+    return Question.Basic

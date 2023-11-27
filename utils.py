@@ -4,8 +4,7 @@ def error(msg):
     raise Exception(msg)
 
 def is_blank(s):
-    s = s.strip()
-    return s==None or s=="" or re.search("  *", s)==None
+    return s==None or s.strip()==""
 
 # input: array
 # output: array with null/blank/whitespace-only elements removed
@@ -51,3 +50,16 @@ def force_type(s):
         return float(s)
     except:
         return s
+    
+
+# removes a bullet/number from a string
+def get_line_content(s):
+    if not " " in s:
+        print("utils.remove_bullet called with no space in string")
+        return s
+    content = s.split(" ")
+    output = ""
+    for x in content[1:]:
+        output += x + " "
+    output = output[:-1] # remove extra space at the
+    return output

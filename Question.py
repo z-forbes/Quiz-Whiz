@@ -1,6 +1,7 @@
 from enum import Enum
 from utils import *
 from abc import ABC, abstractmethod
+from Answer import Answer
 
 class QType(Enum):
     MC = 1
@@ -12,29 +13,64 @@ class QType(Enum):
 
 # abstract superclass
 class Question(ABC):
-    def __init__(self):
-        self.question = None
-        self.desc     = None
-        self.type     = None
+    def __str__(self):
+        t = self.type
+        if t:
+            t = str(t).split(".")[1]
+        s = "Question type: {}".format(t)
+        s += "\nQ: {}\nD: {}".format(self.question, self.description)
+
+        if self.answers:
+            a_len = len(self.answers)
+        else:
+            a_len = None
+
+        a_term = "answers"
+        if self.type == QType.CLOZE:
+            a_term = "blanks"
+        elif self.type == QType.MATCH:
+            a_term = "pairs"
+        return s + "\nNumber of {}: {}\n".format(a_term, a_len)
+
+    def __init__(self, question=None, description=None, answers=None, type=None):
+        self.question    = question
+        self.description = description
+        self.answers     = answers
+        self.type        = type
 
     def set_question(self, s):
         self.question = s
+        return self
     
-    def set_desc(self, s):
-        self.desc = s
+    def set_description(self, s):
+        self.description = s
+        return self
+    
+    def set_answers(self, a):
+        self.answers = a
+        return self
 
-    # parses answers/pairs/blanks
+    def set_type(self, t):
+        self.type = t
+        return self
+
+    # parses answers
     @abstractmethod
-    def parse_answer(lines):
+    def parse_answers(lines):
         pass
 
 class Basic(Question):
-    def __init__(self):
-        super().__init__()
-        self.answers = None
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        if "type" in kwargs.keys():
+            error("why was type passed into Question.Basic?")
+
+        if "answers" in kwargs.keys():
+            self.type = self.get_type()
+        
 
     def set_answers(self, answers):
-        self.answers = answers
+        super().set_answers(answers)
         self.type = self.get_type()
 
     def get_type(self):
@@ -42,50 +78,52 @@ class Basic(Question):
         if not self.answers:
             return QType.ESSAY
         
+        bodies = [a.body for a in self.answers]
+        
         # check if type is TF
-        if self.answers==[True, False] or self.answers==[False, True]:
+        if bodies==[True, False] or bodies==[False, True]:
             return QType.TF
         
         # type is either MC or NUM
-        if False in [type(x)==int or type(x)==float for x in self.answers]:
+        if False in [type(x)==int or type(x)==float for x in bodies]:
             return QType.MC
         
         return QType.NUM
 
     # static method
-    def parse_answer(lines):
-        lines = remove_blanks(lines)
+    def parse_answers(lines):
+        def parse_answer(raw_answer):
+            raw_answer = get_line_content(raw_answer)
+
+            props_pattern = "<<(.*?)>>"
+            props = re.findall(props_pattern, raw_answer)
+            if len(props)==0:
+                props = None
+            else:
+                props = remove_blanks(props[-1].split(" "))
+
+            raw_answer = re.sub(props_pattern, "", raw_answer).strip()
+            varname = re.findall("\*\*(.*)\*\*", raw_answer) # TODO what to call this var lol
+            if len(varname)==0:
+                correct = False
+                body = raw_answer
+            else:
+                correct = True
+                body = varname[0]
+
+            return Answer(force_type(body), correct, props)
+
         if len(lines)==0:
             return None
         
-        lines = [force_type(l[2:]) for l in lines]
-        is_num = True
-        for l in lines:
-            if type(l)!=int or type(l)!=float:
-                is_num=False
-                break
-        
-        if is_num:
-            return lines
-        
-        if lines == [True, False] or lines == [False, True]:
-            return lines
-        
-        return [str(l) for l in lines]
+        return [parse_answer(l) for l in lines]
 
 
 
-
-        
-
-class Cloze:
-    def __init__(self):
-        super.__init__()
+class Cloze(Question):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.type   = QType.CLOZE
-        self.blanks = None
-
-    def set_blanks(self, blanks):
-        self.blanks = blanks
 
     def verify(self):
         if not self.blanks or not self.question:
@@ -95,37 +133,25 @@ class Cloze:
             error("Cloze poorly formatted")
 
     # static method
-    def parse_answer(lines):
-        lines = remove_blanks(lines)
-        splitter = "///"
-        pairs = []
-        for l in lines:
-            current = l.split(splitter)
-            if len(current)!=2:
-                error("cloze answers poorly formatted")
-            pairs.append(current)
-        return pairs
+    def parse_answers(lines):
+        return [get_line_content(l) for l in lines]
 
+class Match(Question):
+    SPLITTER = "///"
 
-class Match:
-    def __init__(self):
-        super.__init__()
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.type = QType.MATCH
-        self.pairs = None
-
-    def set_pairs(self, pairs):
-        self.pairs = pairs
 
     # static method
-    def parse_answer(lines):
-        lines = remove_blanks(lines)
-        splitter = "///"
+    def parse_answers(lines):
+        lines = [get_line_content(l) for l in lines]
+        
         pairs = []
         for l in lines:
-            current = l.split(splitter)
+            current = l.split(Match.SPLITTER)
             if len(current)!=2:
                 error("match answers poorly formatted")
             pairs.append(current)
+        
         return pairs
-
-
