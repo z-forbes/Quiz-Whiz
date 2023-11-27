@@ -1,5 +1,5 @@
 from enum import Enum
-from utils import error
+from utils import *
 from abc import ABC, abstractmethod
 
 class QType(Enum):
@@ -38,31 +38,45 @@ class Basic(Question):
         self.type = self.get_type()
 
     def get_type(self):
-        if not self.answers:
-            error("Basic.get_type() called while Basic.answers==None")
-
         # check if type is ESSAY
         if not self.answers:
             return QType.ESSAY
         
         # check if type is TF
-        is_TF = True
-        for x in self.answers:
-            if type(x)!=bool:
-                is_TF=False
-                break
-        if is_TF:
+        if self.answers==[True, False] or self.answers==[False, True]:
             return QType.TF
         
         # type is either MC or NUM
         if False in [type(x)==int or type(x)==float for x in self.answers]:
             return QType.MC
-        else:
-            return QType.NUM
+        
+        return QType.NUM
 
     # static method
     def parse_answer(lines):
-        print("here")
+        lines = remove_blanks(lines)
+        if len(lines)==0:
+            return None
+        
+        lines = [force_type(l[2:]) for l in lines]
+        is_num = True
+        for l in lines:
+            if type(l)!=int or type(l)!=float:
+                is_num=False
+                break
+        
+        if is_num:
+            return lines
+        
+        if lines == [True, False] or lines == [False, True]:
+            return lines
+        
+        return [str(l) for l in lines]
+
+
+
+
+        
 
 class Cloze:
     def __init__(self):
@@ -80,6 +94,19 @@ class Cloze:
         if len(self.blanks) != len(self.question.count("[]")):
             error("Cloze poorly formatted")
 
+    # static method
+    def parse_answer(lines):
+        lines = remove_blanks(lines)
+        splitter = "///"
+        pairs = []
+        for l in lines:
+            current = l.split(splitter)
+            if len(current)!=2:
+                error("cloze answers poorly formatted")
+            pairs.append(current)
+        return pairs
+
+
 class Match:
     def __init__(self):
         super.__init__()
@@ -88,4 +115,17 @@ class Match:
 
     def set_pairs(self, pairs):
         self.pairs = pairs
+
+    # static method
+    def parse_answer(lines):
+        lines = remove_blanks(lines)
+        splitter = "///"
+        pairs = []
+        for l in lines:
+            current = l.split(splitter)
+            if len(current)!=2:
+                error("match answers poorly formatted")
+            pairs.append(current)
+        return pairs
+
 
