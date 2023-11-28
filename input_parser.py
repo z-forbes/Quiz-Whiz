@@ -29,7 +29,6 @@ def parse_question(q_lines):
     q_class = find_q_class(answers)
     parsed_answers = q_class.parse_answers(answers)
 
-    # output = q_class().set_answers(parsed_answers).set_question(get_line_content(pre_answers[0]))
     output = q_class(answers=parsed_answers, question=get_line_content(pre_answers[0]))
     if len(pre_answers)==2:
         output.set_description(pre_answers[1])

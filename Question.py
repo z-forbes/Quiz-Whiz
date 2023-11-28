@@ -2,6 +2,7 @@ from enum import Enum
 from utils import *
 from abc import ABC, abstractmethod
 from Answer import Answer
+import re
 
 class QType(Enum):
     MC = 1
@@ -90,6 +91,9 @@ class Basic(Question):
         
         return QType.NUM
 
+    def get_correct_as(self):
+        return [a for a in self.answers if a.correct]
+
     # static method
     def parse_answers(lines):
         def parse_answer(raw_answer):
@@ -121,20 +125,26 @@ class Basic(Question):
 
 
 class Cloze(Question):
+    BLANK_MARKER = "[]"
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.type   = QType.CLOZE
+        if "question" in kwargs.keys():
+            self.question = re.sub("\[.*?\]", Cloze.BLANK_MARKER, self.question) # standardises all blanks
 
     def verify(self):
-        if not self.blanks or not self.question:
-            error("Cloze.verify() called before Close.blanks and/or Cloze.question set") 
+        if not self.answers or not self.question:
+            error("Cloze.verify() called before Close.answers and/or Cloze.question set") 
 
-        if len(self.blanks) != len(self.question.count("[]")):
+        if len(self.answers) != self.question.count(Cloze.BLANK_MARKER):
+            print(self.question)
             error("Cloze poorly formatted")
 
     # static method
     def parse_answers(lines):
-        return [get_line_content(l) for l in lines]
+        return [(get_line_content(l)) for l in lines]
+    
 
 class Match(Question):
     SPLITTER = "///"

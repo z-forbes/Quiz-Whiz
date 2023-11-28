@@ -1,5 +1,3 @@
-import re
-
 def error(msg):
     raise Exception(msg)
 
@@ -63,3 +61,10 @@ def get_line_content(s):
         output += x + " "
     output = output[:-1] # remove extra space at the
     return output
+
+
+def file_str(x):
+    if x:
+        return str(x)
+    else:
+        return ""
