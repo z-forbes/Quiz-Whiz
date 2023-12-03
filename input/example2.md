@@ -10,7 +10,7 @@ Optional description
 Optional description 
 
 - Option 1
-- **Option 2**
+- !Option 
 - Option 3
 - Option 4
 
@@ -20,6 +20,12 @@ Optional description
 - True
 - **False**
 
+hi
+- hi
+- ```
+hello():
+    a = 2
+```
 
 # Q4
 

@@ -1,4 +1,4 @@
-# Multiple choice/multiple answer/numerical
+# Multiple choice/multiple answer/numerical ![example image](https://t2.gstatic.com/licensed-image?q=tbn:ANd9GcQDl2aWNnTIWfUi3mP6otoZW0G7VHMtU7EsUfH-Y42wJDTKwozN4WGykazQh-PjM1Ix
 Optional description 
 
 - **Option 1** <<single="true" correctfeedback="example">>

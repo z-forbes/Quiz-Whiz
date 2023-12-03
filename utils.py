@@ -1,3 +1,10 @@
+from markdown import markdown
+import re
+import base64
+import pypandoc
+import os
+from shutil import rmtree
+
 def error(msg):
     raise Exception(msg)
 
@@ -64,7 +71,55 @@ def get_line_content(s):
 
 
 def file_str(x):
-    if x:
+    if x!=None:
         return str(x)
     else:
         return ""
+    
+def md_to_html(md_str):
+    def md_to_html_pandoc(md_str):
+        # write tmp_md file
+        dname = "tmp_files_for_pandoc_convert" 
+        if not os.path.exists(dname):
+            os.mkdir(dname)
+        md_fpath = dname+"/tmp.md"
+        f = open(md_fpath, "w")
+        f.write(md_str)
+        f.close()
+
+        # use pandoc to create tmp html file
+        html_fpath = dname+"/tmp.html"
+        pypandoc.convert_file(md_fpath, 'html', format='md', outputfile=html_fpath)
+
+        # read html file contents
+        f = open(html_fpath, "r")
+        html = f.read()
+        f.close()
+
+        # delete tmp directory
+        rmtree(dname)
+
+        return html
+
+    def img_to_b64(fpath):
+        with open(fpath, "rb") as f:
+            data = str(base64.b64encode(f.read()))
+            return "data:image/;base64, {}".format(data.replace("'", "")[1:])
+        
+    # html = md_to_html_pandoc(md_str).replace("\n", "<br>")
+    # html = markdown(md_str).replace("\n", "<br>")
+    html = md_to_html_pandoc(md_str).replace("\n", "<br>") 
+
+    srcs = re.findall("src=\".*?\"", html)
+    for src in srcs:
+        if len(re.findall("https*?://", src))==0:
+            # images are local
+            im_path = re.findall("\".*\"", src)[0].replace("\"", "")
+            html = html.replace(src, "src=\"{}\"".format(img_to_b64(im_path)))
+    return html
+
+
+CLEANR = re.compile('<.*?>') 
+def remove_tags(raw_html):
+  cleantext = re.sub(CLEANR, '', raw_html)
+  return cleantext

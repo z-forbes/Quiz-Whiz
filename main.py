@@ -10,4 +10,4 @@ def moodle_test():
     quiz = parse_input("input/match_only.md")
     moodle_exporter.export(quiz, "delete.xml")
 
-moodle_test()
+learn_test()

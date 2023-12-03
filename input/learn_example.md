@@ -1,19 +1,19 @@
 # Which ocean is the warmest?
 
-- **Atlantic**
-- Pacific
-- Artic
+- ^Atlantic
+- **Pacific**
+- Arctic
 
 # Choose all of the examples or types of carbohydrates
 
-- **Galactose**
-- **Fructose**
+- ^Galactose
+- ^Fructose
 - Melanin
-- **Sucrose**
+- ^Sucrose
 
 # Blaise Pascal was a 20th century sociologist who argued for the importance of identifying scientific laws that govern human behavior. 
 
-- **False**
+- ^False
 - True
 
 # Give a few examples where you can help preserve marine ecosystems. 
@@ -29,7 +29,7 @@
 
 1. Quartz
 
-# Four [] and [] years ago is the beginning of the [] delivered by [].
+# "Four [] and [] years ago" is the beginning of the [] delivered by [].
 
 1. score
 2. seven
@@ -40,3 +40,30 @@
 
 - 10000
 - 1000
+
+
+# What is the output of the following function, for $a=2$ and $b=3$
+```python
+def f(a, b):
+    return "answer"+str(a)+str(b)
+```
+
+- ^answer23
+- answer 2 3 
+- answer 23
+
+# What animal is this? 
+![](images/snail.png)
+
+- Giraffe
+- ^Snail
+- Toad
+- Butterfly
+
+# Which flat is the odd one out?
+
+- ^![](https://www.worldometers.info/img/flags/be-flag.gif)
+- ![](https://www.worldometers.info/img/flags/bl-flag.gif)
+- ![](https://www.worldometers.info/img/flags/br-flag.gif)
+- ![](https://www.worldometers.info/img/flags/gy-flag.gif)
+

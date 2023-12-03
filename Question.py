@@ -107,13 +107,19 @@ class Basic(Question):
                 props = remove_blanks(props[-1].split(" "))
 
             raw_answer = re.sub(props_pattern, "", raw_answer).strip()
-            varname = re.findall("\*\*(.*)\*\*", raw_answer) # TODO what to call this var lol
-            if len(varname)==0:
+            # varname = re.findall("\*\*(.*)\*\*", raw_answer) # TODO what to call this var lol
+            # if len(varname)==0:
+            #     correct = False
+            #     body = raw_answer
+            # else:
+            #     correct = True
+            #     body = varname[0]
+            if raw_answer[0]=="^":
+                correct = True
+                body = raw_answer[1:]
+            else:
                 correct = False
                 body = raw_answer
-            else:
-                correct = True
-                body = varname[0]
 
             return Answer(force_type(body), correct, props)
 
@@ -153,7 +159,7 @@ class Match(Question):
         super().__init__(**kwargs)
         self.type = QType.MATCH
 
-    # static method
+    # static method!
     def parse_answers(lines):
         lines = [get_line_content(l) for l in lines]
         
