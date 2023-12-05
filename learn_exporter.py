@@ -56,9 +56,6 @@ def TF_exporter(q):
 
 
 def NUM_exporter(q): # TODO why is there no 'correct' in export file??
-    if q.get_correct_as()!=[]:
-        return MC_exporter(q)
-    
     return arr_to_line(["NUM", mk_qtext(q)] + [a.body for a in q.answers])
 
 def ESSAY_exporter(q):

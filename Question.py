@@ -68,11 +68,28 @@ class Basic(Question):
 
         if "answers" in kwargs.keys():
             self.type = self.get_type()
+            self.fix_answers()
         
 
     def set_answers(self, answers):
         super().set_answers(answers)
         self.type = self.get_type()
+        self.fix_answers()
+
+    def fix_answers(self):
+        assert self.type # need type to fix answers
+        if self.type == QType.TF:
+            assert len(self.answers)==1
+            self.answers[0].correct = True
+            self.answers.append(Answer(not self.answers[0].body, False, None))
+
+        if self.type == QType.NUM:
+            assert len(self.answers)==1
+
+            line_split = self.answers[0].split(" ")
+            self.answers = [force_type(line_split[0]), force_type(line_split[1].replace("(", "").replace(")", ""))]
+            assert not False in [type(x)==int or type(x)==float for x in self.answers]                               
+
 
     def get_type(self):
         # check if type is ESSAY
@@ -82,14 +99,13 @@ class Basic(Question):
         bodies = [a.body for a in self.answers]
         
         # check if type is TF
-        if bodies==[True, False] or bodies==[False, True]:
+        if (bodies==[True] or bodies==[False]):
             return QType.TF
         
-        # type is either MC or NUM
-        if False in [type(x)==int or type(x)==float for x in bodies]:
-            return QType.MC
-        
-        return QType.NUM
+        if len(self.answers)==1 and re.match("[0-9]+ \[[0-9]+\]", self.answers[0].body):
+            return QType.NUM
+
+        return QType.MC
 
     def get_correct_as(self):
         return [a for a in self.answers if a.correct]
@@ -159,7 +175,7 @@ class Match(Question):
         super().__init__(**kwargs)
         self.type = QType.MATCH
 
-    # static method!
+    # static method
     def parse_answers(lines):
         lines = [get_line_content(l) for l in lines]
         

@@ -11,10 +11,9 @@
 - Melanin
 - ^Sucrose
 
-# Blaise Pascal was a 20th century sociologist who argued for the importance of identifying scientific laws that govern human behavior. 
+# Blaise Pascal was a 20th century sociologist who argued for the importance of identifying scientific laws that govern human behavior.
 
-- ^False
-- True
+- False
 
 # Give a few examples where you can help preserve marine ecosystems. 
 [Placeholder essay text]
@@ -38,8 +37,7 @@
 
 # Approximately, how many species of birds are there?
 
-- 10000
-- 1000
+- 10000 (1000)
 
 
 # What is the output of the following function, for $a=2$ and $b=3$
