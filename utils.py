@@ -92,7 +92,7 @@ def md_to_html(md_str):
         pypandoc.convert_file(md_fpath, 'html', format='md', outputfile=html_fpath)
 
         # read html file contents
-        f = open(html_fpath, "r")
+        f = open(html_fpath, "r", encoding="utf-8")
         html = f.read()
         f.close()
 
@@ -106,16 +106,21 @@ def md_to_html(md_str):
             data = str(base64.b64encode(f.read()))
             return "data:image/;base64, {}".format(data.replace("'", "")[1:])
         
-    # html = md_to_html_pandoc(md_str).replace("\n", "<br>")
-    # html = markdown(md_str).replace("\n", "<br>")
-    html = md_to_html_pandoc(md_str).replace("\n", "<br>") 
+    # convert to HTML. pandoc deals with newlines weirdly.
+    html = ""
+    for line in md_str.split("\n"):
+        html += md_to_html_pandoc(line)
 
+    html = html.replace("\n", " ") # learn automatically includes newlines beacuse of seperate <p> tags
+
+    # deal with images
     srcs = re.findall("src=\".*?\"", html)
     for src in srcs:
         if len(re.findall("https*?://", src))==0:
             # images are local
             im_path = re.findall("\".*\"", src)[0].replace("\"", "")
             html = html.replace(src, "src=\"{}\"".format(img_to_b64(im_path)))
+    html = re.sub("<figcaption.*?<\/figcaption>", " ", html) # remove figcaption tag
     return html
 
 

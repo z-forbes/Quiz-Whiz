@@ -1,0 +1,51 @@
+<quiz>
+	<question type="matching">
+		<name>
+			<text>match question 1</text>
+		</name>
+		<questiontext>
+			<text>description of match question 1</text>
+		</questiontext>
+		<subquestion>
+			<text>1First pair A</text>
+			<answer>
+				<text>First pair B</text>
+			</answer>
+		</subquestion>
+		<subquestion>
+			<text>1Second pair A</text>
+			<answer>
+				<text>Second pair B</text>
+			</answer>
+		</subquestion>
+		<subquestion>
+			<text>1Third pair A</text>
+			<answer>
+				<text>Third pair B</text>
+			</answer>
+		</subquestion>
+	</question>
+	<question type="matching">
+		<name>
+			<text>match question 2</text>
+		</name>
+		<subquestion>
+			<text>2First pair A</text>
+			<answer>
+				<text>First pair B</text>
+			</answer>
+		</subquestion>
+		<subquestion>
+			<text>2Second pair A</text>
+			<answer>
+				<text>Second pair B</text>
+			</answer>
+		</subquestion>
+		<subquestion>
+			<text>2Third pair A</text>
+			<answer>
+				<text>Third pair B</text>
+			</answer>
+		</subquestion>
+	</question>
+</quiz>

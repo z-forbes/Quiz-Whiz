@@ -4,6 +4,8 @@ from abc import ABC, abstractmethod
 from Answer import Answer
 import re
 
+# TODO make NUM it's own subclass PLEASE
+
 class QType(Enum):
     MC = 1
     TF = 2
@@ -77,18 +79,26 @@ class Basic(Question):
         self.fix_answers()
 
     def fix_answers(self):
-        assert self.type # need type to fix answers
+        assert self.type in [QType.TF, QType.NUM, QType.MC, QType.ESSAY]
+
         if self.type == QType.TF:
             assert len(self.answers)==1
             self.answers[0].correct = True
             self.answers.append(Answer(not self.answers[0].body, False, None))
+            return
 
         if self.type == QType.NUM:
             assert len(self.answers)==1
 
-            line_split = self.answers[0].split(" ")
-            self.answers = [force_type(line_split[0]), force_type(line_split[1].replace("(", "").replace(")", ""))]
-            assert not False in [type(x)==int or type(x)==float for x in self.answers]                               
+            line_split = self.answers[0].body.split(" ")
+            self.answers = [force_type(line_split[0]), force_type(line_split[1].replace("[", "").replace("]", ""))]
+            assert not False in [type(x)==int or type(x)==float for x in self.answers]
+            return
+
+        if self.type == QType.MC:
+            for a in self.answers:
+                a.body = str(a.body)
+            return                               
 
 
     def get_type(self):
@@ -102,6 +112,7 @@ class Basic(Question):
         if (bodies==[True] or bodies==[False]):
             return QType.TF
         
+
         if len(self.answers)==1 and re.match("[0-9]+ \[[0-9]+\]", self.answers[0].body):
             return QType.NUM
 

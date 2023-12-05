@@ -1,6 +1,7 @@
 import Question
 from utils import *
 # should make a copy of quiz and convert everything to html
+# TODO can't import MC/MA questions with only one answer
 
 def arr_to_line(arr, s="\t"):
     output  = ""
@@ -18,7 +19,7 @@ def export(quiz, fpath):
         export_f = get_exporter(question.type)
         output += export_f(question)+"\n"
     
-    f = open(fpath, "w")
+    f = open(fpath, "w", encoding="utf-8")
     f.write(output)
     f.close()
 
@@ -55,11 +56,16 @@ def TF_exporter(q):
     return arr_to_line(["TF", mk_qtext(q), str(correct[0].body).lower()])
 
 
-def NUM_exporter(q): # TODO why is there no 'correct' in export file??
-    return arr_to_line(["NUM", mk_qtext(q)] + [a.body for a in q.answers])
+def NUM_exporter(q):
+    return arr_to_line(["NUM", mk_qtext(q)] + q.answers)
 
 def ESSAY_exporter(q):
-    return arr_to_line(["ESS", mk_qtext(q), md_to_html(q.description)]) # TODO placeholder=q.description?
+    if q.description:
+        placeholder = [md_to_html(q.description)]
+    else:
+        placeholder = []
+
+    return arr_to_line(["ESS", md_to_html(q.question)] + placeholder)
 
 def MATCH_exporter(q):
     line = [mk_qtext(q)]
