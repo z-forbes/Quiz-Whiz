@@ -56,6 +56,27 @@ class Question(ABC):
     def set_type(self, t):
         self.type = t
         return self
+    
+    def get_answers_bodies(self):
+        if len(self.answers)!=0 and type(self.answers[0]==Answer):
+            return [a.body for a in self.answers]
+        
+        return self.answers
+    
+    def set_answers_bodies(self, bodies):
+        assert len(bodies)==len(self.answers)
+        
+        if len(self.answers)!=0 and type(self.answers[0]==Answer):
+            for i in range(len(bodies)):
+                self.answers[i].body = bodies[i]
+        else:
+            for i in range(len(bodies)):
+                self.answers[i] = bodies[i]
+        
+            
+
+
+
 
     # parses answers
     @abstractmethod

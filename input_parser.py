@@ -60,6 +60,12 @@ def parse_question(q_lines):
             desc+=l+"\n"
         output.set_description(desc[:-1])
 
+    # duplicate newlines in answer/question text because of markdown
+    # L = "\n\n"
+    # output.question = output.question.replace("\n", L)
+    # output.description = output.description.replace("\n", L) 
+    # output.set_answers_bodies([a.replace("\n", L) for a in output.get_answers_bodies()])
+
     return output
     
 def find_q_class(answers): 

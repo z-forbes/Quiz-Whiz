@@ -38,8 +38,8 @@ def MC_exporter(q):
         line.append("MC")
     else:
         line.append("MA") # TODO MA if 0 are correct??
-
-    line.append(mk_qtext(q)) 
+    
+    line.append(mk_qtext(q))
     for a in q.answers:
         line.append(md_to_html(a.body))
         if a.correct:
