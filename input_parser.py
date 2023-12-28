@@ -2,7 +2,9 @@ from Quiz import Quiz
 from utils import *
 import Question
 
-
+# parses a file of the correct format
+# returns Quiz object
+# fpath: filepath of input file 
 def parse_input(fpath):
     output = Quiz()
 
@@ -20,31 +22,12 @@ def parse_input(fpath):
         q_current.append(to_add)
 
     output.add_q(parse_question(q_current))
-    
     return output
 
 
-# deals with multiline answers
-# example input: answers=["- hello", "world", "-learn", "ultra"]
-# example output: ["-hello\nworld", "-learn\nultra"]
-def fix_answers(answers):
-    if answers == None or len(answers)==0:
-        return answers
-    output = []
-    current = ""
-    for a in answers:
-        if a[0]=="-" or type(force_type(a[0]))==int: # a starts with - or int
-            if current != "":
-                current = current[:-1]
-                output.append(current)
-                current = ""
-        current += a + "\n"
-
-    current = current[:-1]
-    output.append(current)
-    return output
-
-
+# parses a raw question from an input file
+# q_lines: the raw lines relating to one question
+# returns Question object
 def parse_question(q_lines):
     tmp = split_on_blank(q_lines)
     pre_answers = remove_blanks(tmp[0])
@@ -65,9 +48,33 @@ def parse_question(q_lines):
     # output.question = output.question.replace("\n", L)
     # output.description = output.description.replace("\n", L) 
     # output.set_answers_bodies([a.replace("\n", L) for a in output.get_answers_bodies()])
-
     return output
-    
+
+
+# fixes multiline answers
+# example input: ["- hello", "world", "-learn", "ultra"]
+# example output: ["-hello\nworld", "-learn\nultra"]
+def fix_answers(answers):
+    if answers == None or len(answers)==0:
+        return answers
+    output = []
+    current = ""
+    for a in answers:
+        if a[0]=="-" or type(force_type(a[0]))==int: # a starts with - or int
+            if current != "":
+                current = current[:-1]
+                output.append(current)
+                current = ""
+        current += a + "\n"
+
+    current = current[:-1]
+    output.append(current)
+    return output
+
+
+
+# returns the Question subclass of given raw answers
+# answers: array of answers for a question
 def find_q_class(answers): 
     for a in answers:
         if not type(force_type(a[0]))==int:

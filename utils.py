@@ -5,11 +5,13 @@ import pypandoc
 import os
 from shutil import rmtree
 
+# (allows for future flexibility)
 def error(msg):
     raise Exception(msg)
 
+# returns True iff input is None, empty, or whitespace only
 def is_blank(s):
-    return s==None or s.strip()==""
+    return s==None or s.strip()=="" 
 
 # input: array
 # output: array with null/blank/whitespace-only elements removed
@@ -20,9 +22,9 @@ def remove_blanks(arr):
             output.append(x)
     return output
 
-# input: array
-# output: [array, array]
-# explaination: splits on the first blank element in arr. if no blank found, returns None
+# splits on the first blank (see utils.is_blank()) element in array. if no blank found, error.
+# example input: ["a", "b", "", "c", "", "d"]
+# example output: [["a", "b"], ["c", "", "d"]]
 def split_on_blank(arr):
     fst = []
     snd = []
@@ -36,45 +38,46 @@ def split_on_blank(arr):
             snd.append(x)
         else:
             fst.append(x)
+    if not blank_found:
+        error("no blank found in array provided")
     return [fst, snd]
 
 # input: string
 # output: Bool/int/string where appropriate
 def force_type(s):
+    # boolean
     if s.lower() == "true":    
         return True
     if s.lower() == "false":
         return False
     
+    # int
     try:
         return int(s)
     except:
         pass
 
+    # float
     try:
         return float(s)
     except:
+        # string
         return s
     
 
-# removes a bullet/number from a string
+# keeps everything afer after first space in line
 def get_line_content(s):
-    if not " " in s:
-        print("utils.remove_bullet called with no space in string")
-        return s
-    content = s.split(" ")
-    output = ""
-    for x in content[1:]:
-        output += x + " "
-    output = output[:-1] # remove extra space at the
-    return output
+    try:
+        return s[s.index(" ")+1:]
+    except:
+        error("utils.get_line_contents with invalit input: " + str(s))
 
-
+# str() for writing to files
 def file_str(x):
-    if x!=None:
+    if x:
         return str(x)
     else:
-        return ""
+        return "" # x==None
     
 def md_to_html(md_str):
     # duplicate all newlines *not* within a code block
