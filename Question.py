@@ -4,17 +4,18 @@ from abc import ABC, abstractmethod
 from Answer import Answer
 import re
 
-# TODO make NUM it's own subclass PLEASE
-
+# Question Types #
 class QType(Enum):
-    MC = 1
-    TF = 2
-    NUM = 3
-    ESSAY = 4
-    CLOZE = 5
-    MATCH = 6
+    MC = 1     # Basic()
+    TF = 2     # Basic()
+    ESSAY = 3  # Basic()
+    CLOZE = 4  # Cloze()
+    MATCH = 5  # Match()
+    NUM = 6    # Num()
 
-# abstract superclass
+#######################
+# ABSTRACT SUPERCLASS #
+#######################
 class Question(ABC):
     def __str__(self):
         t = self.type
@@ -56,69 +57,46 @@ class Question(ABC):
     def set_type(self, t):
         self.type = t
         return self
-    
-    def get_answers_bodies(self):
-        if len(self.answers)!=0 and type(self.answers[0]==Answer):
-            return [a.body for a in self.answers]
-        
-        return self.answers
-    
-    def set_answers_bodies(self, bodies):
-        assert len(bodies)==len(self.answers)
-        
-        if len(self.answers)!=0 and type(self.answers[0]==Answer):
-            for i in range(len(bodies)):
-                self.answers[i].body = bodies[i]
-        else:
-            for i in range(len(bodies)):
-                self.answers[i] = bodies[i]
-        
-            
-
-
-
 
     # parses answers
     @abstractmethod
     def parse_answers(lines):
         pass
 
+
+#######################
+# CONCRETE SUBCLASSES #
+#######################
 class Basic(Question):
+    CORRECT = "^"
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         if "type" in kwargs.keys():
-            error("why was type passed into Question.Basic?")
+            error("type passed into Question.Basic")
 
         if "answers" in kwargs.keys():
             self.type = self.get_type()
             self.fix_answers()
         
-
+    # overriding to determing QType etc
     def set_answers(self, answers):
         super().set_answers(answers)
         self.type = self.get_type()
         self.fix_answers()
 
+    # once QType is decided, fix self.answers
     def fix_answers(self):
-        assert self.type in [QType.TF, QType.NUM, QType.MC, QType.ESSAY]
+        assert self.type in [QType.TF, QType.MC, QType.ESSAY]
 
         if self.type == QType.TF:
             assert len(self.answers)==1
-            self.answers[0].correct = True
-            self.answers.append(Answer(not self.answers[0].body, False, None))
-            return
-
-        if self.type == QType.NUM:
-            assert len(self.answers)==1
-
-            line_split = self.answers[0].body.split(" ")
-            self.answers = [force_type(line_split[0]), force_type(line_split[1].replace("[", "").replace("]", ""))]
-            assert not False in [type(x)==int or type(x)==float for x in self.answers]
+            self.answers[0].correct = True # mark current (only) answer as correct
+            self.answers.append(Answer(not self.answers[0].body, False, None)) # add other Boolean to self.answers, mark it incorrect # TODO properties
             return
 
         if self.type == QType.MC:
             for a in self.answers:
-                a.body = str(a.body)
+                a.body = str(a.body) # convert all answers to string
             return                               
 
 
@@ -128,21 +106,18 @@ class Basic(Question):
             return QType.ESSAY
         
         bodies = [a.body for a in self.answers]
-        
         # check if type is TF
         if (bodies==[True] or bodies==[False]):
             return QType.TF
-        
-
-        if len(self.answers)==1 and re.match("[0-9]+ \[[0-9]+\]", self.answers[0].body):
-            return QType.NUM
 
         return QType.MC
 
+    # TODO is this used
     def get_correct_as(self):
         return [a for a in self.answers if a.correct]
 
     # static method
+    # returns general [Answer], MC, TF etc not decided here 
     def parse_answers(lines):
         def parse_answer(raw_answer):
             raw_answer = get_line_content(raw_answer)
@@ -154,17 +129,10 @@ class Basic(Question):
             else:
                 props = remove_blanks(props[-1].split(" "))
 
-            raw_answer = re.sub(props_pattern, "", raw_answer).strip()
-            # varname = re.findall("\*\*(.*)\*\*", raw_answer) # TODO what to call this var lol
-            # if len(varname)==0:
-            #     correct = False
-            #     body = raw_answer
-            # else:
-            #     correct = True
-            #     body = varname[0]
-            if raw_answer[0]=="^":
+            raw_answer = re.sub(props_pattern, "", raw_answer).strip() # answer without bullet or properties
+            if raw_answer[0]==Basic.CORRECT:
                 correct = True
-                body = raw_answer[1:]
+                body = raw_answer[len(Basic.CORRECT):] # removes correct marker 
             else:
                 correct = False
                 body = raw_answer
@@ -175,8 +143,6 @@ class Basic(Question):
             return None
         
         return [parse_answer(l) for l in lines]
-
-
 
 class Cloze(Question):
     BLANK_MARKER = "[]"
@@ -199,7 +165,6 @@ class Cloze(Question):
     def parse_answers(lines):
         return [(get_line_content(l)) for l in lines]
     
-
 class Match(Question):
     SPLITTER = "///"
 
@@ -219,3 +184,40 @@ class Match(Question):
             pairs.append(current)
         
         return pairs
+
+class Num(Question):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.type = QType.NUM
+
+    # self.answers is of form ["x [y]"]. returns int y
+    def get_tolerance(self):
+        if not self.answers:
+            return None
+        try:
+            return force_type(re.findall("\[[0-9]+\]", self.answers[0])[0][1:-1])
+        except:
+            error("Num answers poorly formatted")
+
+    # self.answers is of form ["x [y]"]. returns int x
+    def get_answer(self):
+        if not self.answers:
+            return None
+        try:
+            return force_type(self.answers[0].split(" ")[0])
+        except:
+            error("Num answers poorly formatted")
+
+    # static method
+    def parse_answers(lines):
+        if not Num.is_num(lines):
+            error("Num answers poorly formatted")
+
+        return lines
+    
+    # static method
+    def is_num(ans_lines):
+        if len(ans_lines)!=1:
+            return False
+        
+        return re.match("[0-9]+ \[[0-9]+\]", get_line_content(ans_lines[0])) # ans line of form "x [y]" or "- x [y]"

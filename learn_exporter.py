@@ -3,16 +3,12 @@ from utils import *
 # should make a copy of quiz and convert everything to html
 # TODO can't import MC/MA questions with only one answer
 
-def arr_to_line(arr, s="\t"):
-    output  = ""
-    for e in arr:
-        output += file_str(e)+s
-    return output[:-len(s)]
 
-
-def get_exporter(qtype):
-    return eval(str(qtype).split(".")[1]+"_exporter")
-
+########
+# MAIN #
+########
+# quiz: Quiz object
+# fpath: output filepath
 def export(quiz, fpath):
     output = ""
     for question in quiz.questions:
@@ -23,11 +19,12 @@ def export(quiz, fpath):
     f.write(output)
     f.close()
 
-def mk_qtext(q):
-    output = q.question
-    if q.description:
-        output += "\n"+q.description
-    return md_to_html(output)
+
+
+############### 
+## EXPORTERS ## 
+############### 
+# each exporter exports 1 Question q
 
 def MC_exporter(q):
     CORRECT = "correct"
@@ -38,8 +35,8 @@ def MC_exporter(q):
         line.append("MC")
     else:
         line.append("MA") # TODO MA if 0 are correct??
-    
-    line.append(mk_qtext(q))
+
+    line.append(mk_qtext(q)) 
     for a in q.answers:
         line.append(md_to_html(a.body))
         if a.correct:
@@ -55,9 +52,8 @@ def TF_exporter(q):
         error("not 1 correct answer in TF question")
     return arr_to_line(["TF", mk_qtext(q), str(correct[0].body).lower()])
 
-
 def NUM_exporter(q):
-    return arr_to_line(["NUM", mk_qtext(q)] + q.answers)
+    return arr_to_line(["NUM", mk_qtext(q)] + [q.get_answer(), q.get_tolerance()])
 
 def ESSAY_exporter(q):
     if q.description:
@@ -79,13 +75,12 @@ def CLOZE_exporter(q):
         return mk_FIB(q)
     else:
         return mk_FIB_PLUS(q)
-    
 
-def mk_FIB(q):
+def mk_FIB(q): # used for one blank   
     content = [q.question.replace(Question.Cloze.BLANK_MARKER, "___"), q.answers[0]]
     return arr_to_line(["FIB"]+[remove_tags(md_to_html(e)) for e in content])
 
-def mk_FIB_PLUS(q):
+def mk_FIB_PLUS(q): # used for mutiple blanks
     if len(q.answers)>26:
         error("too many answers in fill in blanks question") # TODO can you get more than 26?
 
@@ -101,3 +96,28 @@ def mk_FIB_PLUS(q):
         answers += [ALPH[i], remove_tags(md_to_html(q.answers[i])), None]
     
     return arr_to_line(["FIB_PLUS", new_q] + answers)
+
+
+
+###########
+## UTILS ##
+###########
+# example input: arr=["a", 2, "c"], s="*"
+# example output: "a*2*c"
+def arr_to_line(arr, s="\t"):
+    output  = ""
+    for e in arr:
+        output += file_str(e)+s # file_str(None)->""
+    return output[:-len(s)] # removes trailing s
+
+# returns method in this file to use to export question
+def get_exporter(qtype):
+    return eval(str(qtype).split(".")[1]+"_exporter")
+
+# combines question title and description and returns
+# q: Question
+def mk_qtext(q):
+    output = q.question
+    if q.description:
+        output += "\n"+q.description
+    return md_to_html(output)
