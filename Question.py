@@ -213,7 +213,7 @@ class Num(Question):
         if not Num.is_num(lines):
             error("Num answers poorly formatted")
 
-        return lines
+        return [get_line_content(lines[0])] # len(lines)=1
     
     # static method
     def is_num(ans_lines):

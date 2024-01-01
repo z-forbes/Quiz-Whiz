@@ -5,57 +5,18 @@ import pypandoc
 import os
 from shutil import rmtree
 
-def error(msg):
-    raise Exception(msg)
+#############
+## STRINGS ##
+#############
 
+# input: string
+# output: True iff input is None/blank/whitespace-only
 def is_blank(s):
     return s==None or s.strip()==""
 
-# input: array
-# output: array with null/blank/whitespace-only elements removed
-def remove_blanks(arr):
-    output = []
-    for x in arr:
-        if not is_blank(x):
-            output.append(x)
-    return output
-
-# input: array
-# output: [array, array]
-# explaination: splits on the first blank element in arr. if no blank found, returns None
-def split_on_blank(arr):
-    fst = []
-    snd = []
-    blank_found = False
-    for x in arr:
-        if is_blank(x) and not blank_found:
-            blank_found = True
-            continue # do not add first blank to any output
-        
-        if blank_found:
-            snd.append(x)
-        else:
-            fst.append(x)
-    return [fst, snd]
-
-# input: string
-# output: Bool/int/string where appropriate
-def force_type(s):
-    if s.lower() == "true":    
-        return True
-    if s.lower() == "false":
-        return False
-    
-    try:
-        return int(s)
-    except:
-        pass
-
-    try:
-        return float(s)
-    except:
-        return s
-    
+# removes HTML tags 
+def remove_tags(raw_html):
+  return re.sub("<.*?>", "", raw_html)
 
 # removes first 'word' from string
 # generally removes - / x. / #
@@ -67,16 +28,36 @@ def get_line_content(s):
     output = ""
     for x in content[1:]:
         output += x + " "
-    output = output[:-1] # remove extra space at the
+    output = output[:-1] # remove extra space at the end
     return output
 
-
+# input: string
+# output: output ready to be written to file
 def file_str(x):
-    if x!=None:
+    if x:
         return str(x)
     else:
         return ""
     
+# input: string
+# output: Bool/int/string where appropriate
+def force_type(s):
+    if s.lower() == "true":    
+        return True
+    if s.lower() == "false":
+        return False
+
+    try:
+        return int(s)
+    except:
+        pass
+
+    try:
+        return float(s)
+    except:
+        return s # returns string
+    
+# converts a markdown string to an HTML string
 def md_to_html(md_str):
     def md_to_html_pandoc(md_str):
         # write tmp_md file
@@ -125,7 +106,42 @@ def md_to_html(md_str):
     return html
 
 
-CLEANR = re.compile('<.*?>') 
-def remove_tags(raw_html):
-  cleantext = re.sub(CLEANR, '', raw_html)
-  return cleantext
+############
+## ARRAYS ##
+############
+
+# input: array
+# output: array with blank elements removed
+def remove_blanks(arr):
+    output = []
+    for x in arr:
+        if not is_blank(x):
+            output.append(x)
+    return output
+
+# input: array
+# output: [array, array]
+# explaination: splits on the first blank element in arr. if no blank found, returns None
+def split_on_blank(arr):
+    fst = []
+    snd = []
+    blank_found = False
+    for x in arr:
+        if is_blank(x) and not blank_found:
+            blank_found = True
+            continue # do not add first blank to any output
+        
+        if blank_found:
+            snd.append(x)
+        else:
+            fst.append(x)
+    return [fst, snd]
+
+
+############
+## ERRORS ##
+############
+
+# throws an error (used for future flexibility)
+def error(msg):
+    raise Exception(msg)

@@ -4,9 +4,9 @@ from utils import *
 # TODO can't import MC/MA questions with only one answer
 
 
-########
-# MAIN #
-########
+##########
+## MAIN ##
+##########
 # quiz: Quiz object
 # fpath: output filepath
 def export(quiz, fpath):
@@ -18,7 +18,6 @@ def export(quiz, fpath):
     f = open(fpath, "w", encoding="utf-8")
     f.write(output)
     f.close()
-
 
 
 ############### 
@@ -76,11 +75,14 @@ def CLOZE_exporter(q):
     else:
         return mk_FIB_PLUS(q)
 
-def mk_FIB(q): # used for one blank   
+# Cloze Helpers #
+# used for questions with one blank
+def mk_FIB(q):
     content = [q.question.replace(Question.Cloze.BLANK_MARKER, "___"), q.answers[0]]
     return arr_to_line(["FIB"]+[remove_tags(md_to_html(e)) for e in content])
 
-def mk_FIB_PLUS(q): # used for mutiple blanks
+# used for questions with multiple blanks
+def mk_FIB_PLUS(q):
     if len(q.answers)>26:
         error("too many answers in fill in blanks question") # TODO can you get more than 26?
 
@@ -114,7 +116,7 @@ def arr_to_line(arr, s="\t"):
 def get_exporter(qtype):
     return eval(str(qtype).split(".")[1]+"_exporter")
 
-# combines question title and description and returns
+# combines question title and description to be exported
 # q: Question
 def mk_qtext(q):
     output = q.question

@@ -58,7 +58,7 @@ def f(a, b):
 - Toad
 - Butterfly
 
-# Which flat is the odd one out?
+# Which flag is the odd one out?
 
 - ^![](https://www.worldometers.info/img/flags/be-flag.gif)
 - ![](https://www.worldometers.info/img/flags/bl-flag.gif)
