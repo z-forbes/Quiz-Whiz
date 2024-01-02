@@ -18,6 +18,7 @@ def export(quiz, fpath):
     f = open(fpath, "w", encoding="utf-8")
     f.write(output)
     f.close()
+    del_tmp_dir()
 
 
 ############### 
@@ -123,3 +124,4 @@ def mk_qtext(q):
     if q.description:
         output += "\n"+q.description
     return md_to_html(output)
+    
