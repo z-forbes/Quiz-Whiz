@@ -81,7 +81,7 @@ optional question placeholder
 ```
 
 ## Images
-Images can be included in most questions, although Learn will reject images places in some locations. 
+Images can be included in most questions, although Learn will reject images placed in certain locations. 
 They can be either local or from the web. If local, images will be encoded in base 64 to be uploaded.
 
 They are included as follows `![alt text](path_to_image)`
