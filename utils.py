@@ -135,11 +135,12 @@ def md_to_html(md_str):
     return html
 
 # replaces provided range in old_str with sub
-def sub_range(old_str, sub, start, end):
-    # TODO error checking
+def sub_range(old_str, sub_str, start, end):
+    if end<start or start<0 or end>len(old_str):
+        error("utils.sub_range() not being used as intended.") 
     start_str = old_str[0:start]
     end_str = old_str[end:]
-    return start_str + sub + end_str
+    return start_str + sub_str + end_str
 
 
 ############
