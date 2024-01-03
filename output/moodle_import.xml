@@ -1,13 +1,21 @@
 <quiz>
-	<question type="truefalse">
+	<question type="essay">
 		<name>
-			<text>question 1</text>
+			<text>essay example</text>
 		</name>
-		<answer fraction="100">
-			<text>false</text>
-		</answer>
 		<answer fraction="0">
-			<text>true</text>
+			<text> </text>
+		</answer>
+	</question>
+	<question type="essay">
+		<name>
+			<text>essay example 2</text>
+		</name>
+		<questiontext>
+			<text>description for 2</text>
+		</questiontext>
+		<answer fraction="0">
+			<text> </text>
 		</answer>
 	</question>
 </quiz>

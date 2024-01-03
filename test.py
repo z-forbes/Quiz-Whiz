@@ -31,11 +31,16 @@ def format_not_code(md_str):
 
 
 
-f = open("output/learn_import.txt")
-md = f.read()
-f.close()
+# f = open("output/learn_import.txt")
+# md = f.read()
+# f.close()
 
-mk_tmp_dir()
-f = open(TMP_DIR()+"md.txt", "w")
-f.write(format_not_code(md))
-f.close()
+# mk_tmp_dir()
+# f = open(TMP_DIR()+"md.txt", "w")
+# f.write(format_not_code(md))
+# f.close()
+
+
+a = 100
+print(a*False)
+print(a*True)

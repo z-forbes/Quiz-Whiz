@@ -112,7 +112,7 @@ class Basic(Question):
 
         return QType.MC
 
-    # TODO is this used
+    
     def get_correct_as(self):
         return [a for a in self.answers if a.correct]
 

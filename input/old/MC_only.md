@@ -1,8 +1,8 @@
 # Q1
 Optional description 
 
-- **Option 1** <<single="true" correctfeedback="example">>
-- **Option 2**
+- ^Option 1 <<single="true" correctfeedback="example">>
+- ^Option 2
 - Option 3
 - Option 4
 
@@ -10,6 +10,6 @@ Optional description
 Optional description 
 
 - Option 1
-- **Option 2**
+- ^Option 2
 - Option 3
 - Option 4
