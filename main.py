@@ -20,12 +20,18 @@ def learn_test(man_file="2nd_marker_example.md"):
     learn_exporter.export(quiz, "output/learn_import.txt")
     return quiz
     
+def moodle_test(man_file="match_only.md"):
+    # choose file
+    dpath = "input/"
+    fpath = get_single_file(dpath)
+    if not fpath:
+        fpath = dpath+man_file
 
-def moodle_test():
-    quiz = parse_input("input/match_only.md")
+    # main
+    quiz = parse_input(fpath)
     moodle_exporter.export(quiz, "output/moodle_import.xml")
+    return quiz
 
-q = learn_test()
-# moodle_test()
+moodle_test()
 
 print("finished")
