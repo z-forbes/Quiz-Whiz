@@ -158,7 +158,6 @@ class Cloze(Question):
             error("Cloze.verify() called before Close.answers and/or Cloze.question set") 
 
         if len(self.answers) != self.question.count(Cloze.BLANK_MARKER):
-            print(self.question)
             error("Cloze poorly formatted")
 
     # static method

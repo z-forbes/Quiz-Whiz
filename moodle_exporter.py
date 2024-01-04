@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
-import main # TODO comment out
+import Question
+
 # TODO images
 # TODO <text><![CDATA[ md_to_html(content) ]]><text>
 
@@ -18,7 +19,7 @@ def export(quiz, fpath):
         root.append(question_root)
 
     tree = ET.ElementTree(root)
-    ET.indent(tree, space="\t", level=0) # TODO what does this do
+    ET.indent(tree, space="\t", level=0) # makes file readable
     tree.write(fpath, encoding="utf-8")
 
 ###############
@@ -65,9 +66,37 @@ def MATCH_exporter(q):
         q_root.append(sub_q)
     return q_root
 
+# TODO plan how Cloze questions will work
 def CLOZE_exporter(q):
-    q_root = init_question(q, "cloze")
-    # TODO https://docs.moodle.org/403/en/Embedded_Answers_(Cloze)_question_type#Format
+    # makes the question text (there's probs a better way to do this)
+    def mk_questiontext(q):
+        q.verify() # ensure len(q.answers) == blanks in question
+
+        brackets = [] # brackets is final {}s in questiontext
+        for q_blank_i in range(len(q.answers)): 
+            bracket = "{1:MCS:" # MCS to shuffle answers
+            for ans_i, a in enumerate(q.answers):
+                if q_blank_i==ans_i: # correct answer
+                    bracket+="=" 
+                bracket += a + "~"
+            bracket = bracket[:-1] + "}"
+            brackets.append(bracket)
+
+        split_q = q.question.split(Question.Cloze.BLANK_MARKER)
+        # note: len(split_q) == len(brackets)+1
+        output = ""
+        for i in range(len(brackets)):
+            output += split_q[i] + brackets[i]
+
+        return output + split_q[-1] 
+        
+    q_root = ET.Element("question")
+    q_root.set("type", "cloze")
+    q_root.append(text_inside("name", "Cloze Question"))
+    q_root.append(text_inside("questiontext", mk_questiontext(q)))
+    q_root.append(e_with_txt("shuffleanswers", 1)) # so answers aren't given in order
+    return q_root
+
 
 #################
 ## XML HEPLERS ##
@@ -90,12 +119,16 @@ def init_answer(ans_text, fraction, feedback=None):
     #     output.append(text_inside("feedback", feedback))
     return output
 
-
 # creates element: <e_name><text>content</text></e_name>
 def text_inside(e_name, content):
     output = ET.Element(e_name)
-    se = ET.SubElement(output, "text")
-    se.text = str(content)
+    output.append(e_with_txt("text", content))
+    return output
+
+# returns new element with given tag and text
+def e_with_txt(tag, text):
+    output = ET.Element(tag)
+    output.text = str(text)
     return output
 
 
