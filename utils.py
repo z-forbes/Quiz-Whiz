@@ -1,4 +1,4 @@
-from markdown import markdown
+from markdown import markdown # TODO remove?
 import re
 import base64
 import pypandoc
@@ -142,6 +142,32 @@ def sub_range(old_str, sub_str, start, end):
     end_str = old_str[end:]
     return start_str + sub_str + end_str
 
+# returns the properties from a raw question/answer string
+# format: << name1:val1; name2:val2 >>
+def get_props(s):
+    props_pattern = "<<((?:\n|.)*?)>>"
+    props = re.findall(props_pattern, s)
+    if len(props)==0 or props[0].strip()=="":
+        return None
+    
+    props = props[-1].replace("\n", "")
+    props_arr = remove_blanks(props.split(";"))
+    output = {}
+    for p in props_arr:
+        n_v = [s.strip() for s in p.split(":")]
+        if len(n_v)!=2:
+            error("Property {} is invalid.".format(n_v))
+        output[n_v[0]]=n_v[1]
+    return output
+
+# removes properties from a string
+def remove_props(s):
+    if s==None:
+        return None
+    props_pattern = "<<((?:\n|.)*?)>>"
+    return re.sub(props_pattern, "", s).strip()
+
+
 
 ############
 ## ARRAYS ##
@@ -173,6 +199,15 @@ def split_on_blank(arr):
         else:
             fst.append(x)
     return [fst, snd]
+
+# returns the intersection of two arrays
+def get_intersection(arr1, arr2):
+    output = []
+    for e1 in arr1:
+        for e2 in arr2:
+            if e1==e2:
+                output.append(e1)
+    return output
 
 
 ############

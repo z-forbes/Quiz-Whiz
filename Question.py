@@ -34,20 +34,46 @@ class Question(ABC):
             a_term = "blanks"
         elif self.type == QType.MATCH:
             a_term = "pairs"
-        return s + "\nNumber of {}: {}\n".format(a_term, a_len)
+        return s + "\nNumber of {}: {}".format(a_term, a_len) + "\nProperties: {}\n".format(self.properties)
 
     def __init__(self, question=None, description=None, answers=None, type=None):
         self.question    = question
         self.description = description
         self.answers     = answers
         self.type        = type
+        self.properties  = None
+        self.update_props()
+
+    # checks sources for properties. if sources=None, self.question and self.description are used.
+    # if found, updates self.properties and removes from source.
+    def update_props(self):        
+        if not self.properties:
+            self.properties = {}
+
+        for source in [self.question, self.description]:
+            if not source:
+                continue
+            new_props = get_props(source)
+            if new_props:
+                dupe_keys = get_intersection(new_props.keys(), self.properties.keys())
+                if dupe_keys!=[]:
+                    error("The following properties are being set twice in the same question: " + str(dupe_keys)[1:-1])
+                self.properties.update(new_props) # dictionary merge
+
+        self.question = remove_props(self.question) # TODO can this be done within loop? (is source reference or value)
+        self.description = remove_props(self.description)
+        if self.properties == {}:
+            self.properties = None
+
 
     def set_question(self, s):
         self.question = s
+        self.update_props()
         return self
     
     def set_description(self, s):
         self.description = s
+        self.update_props()
         return self
     
     def set_answers(self, a):
@@ -111,7 +137,6 @@ class Basic(Question):
             return QType.TF
 
         return QType.MC
-
     
     def get_correct_as(self):
         return [a for a in self.answers if a.correct]
@@ -122,23 +147,18 @@ class Basic(Question):
         def parse_answer(raw_answer):
             raw_answer = get_line_content(raw_answer)
 
-            props_pattern = "<<(.*?)>>"
-            props = re.findall(props_pattern, raw_answer)
-            if len(props)==0:
-                props = None
-            else:
-                props = remove_blanks(props[-1].split(" "))
-
-            raw_answer = re.sub(props_pattern, "", raw_answer).strip() # answer without bullet or properties
-            if raw_answer[0]==Basic.CORRECT:
+            props = get_props(raw_answer)
+            body = remove_props(raw_answer)
+            
+            if body[0]==Basic.CORRECT:
                 correct = True
-                body = raw_answer[len(Basic.CORRECT):] # removes correct marker 
+                body = body[len(Basic.CORRECT):] # removes correct marker 
             else:
                 correct = False
-                body = raw_answer
 
             return Answer(force_type(body), correct, props)
 
+        # start of parse_answers() #
         if len(lines)==0:
             return None
         

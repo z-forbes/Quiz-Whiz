@@ -12,7 +12,7 @@ def learn_test(man_file="2nd_marker_example.md"):
     # choose file
     dpath = "input/"
     fpath = get_single_file(dpath)
-    if not fpath:
+    if not fpath:   
         fpath = dpath+man_file
 
     # main
@@ -32,6 +32,10 @@ def moodle_test(man_file="match_only.md"):
     moodle_exporter.export(quiz, "output/moodle_import.xml")
     return quiz
 
-moodle_test()
+print()
+q = learn_test().questions[0]
+# print(q.properties)
+# print(q.description)
+print(q)
 
 print("finished")
