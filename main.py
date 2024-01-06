@@ -32,10 +32,9 @@ def moodle_test(man_file="match_only.md"):
     moodle_exporter.export(quiz, "output/moodle_import.xml")
     return quiz
 
-print()
-q = learn_test().questions[0]
-# print(q.properties)
-# print(q.description)
+q = moodle_test().questions[0]
 print(q)
+for a in q.answers:
+    print(a)
 
 print("finished")

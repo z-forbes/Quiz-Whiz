@@ -115,9 +115,11 @@ class Basic(Question):
         assert self.type in [QType.TF, QType.MC, QType.ESSAY]
 
         if self.type == QType.TF:
-            assert len(self.answers)==1
-            self.answers[0].correct = True # mark current (only) answer as correct
-            self.answers.append(Answer(not self.answers[0].body, False, None)) # add other Boolean to self.answers, mark it incorrect # TODO properties
+            if len(self.answers)==1:
+                self.answers[0].correct = True # mark only answer as correct
+                self.answers.append(Answer(not self.answers[0].body, False, None)) # add other Boolean to self.answers, mark it incorrect
+            if len(self.answers)!=2 or len(self.get_correct_as())!=1:
+                error("true/false answers formatted incorrectly")
             return
 
         if self.type == QType.MC:
@@ -133,7 +135,7 @@ class Basic(Question):
         
         bodies = [a.body for a in self.answers]
         # check if type is TF
-        if (bodies==[True] or bodies==[False]):
+        if (bodies in [[True], [False], [True, False], [False, True]]):
             return QType.TF
 
         return QType.MC

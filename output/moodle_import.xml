@@ -1,16 +1,22 @@
 <quiz>
-	<question type="multichoice">
+	<question type="truefalse">
 		<name>
 			<text>title</text>
 		</name>
 		<questiontext>
-			<text>title</text>
+			<text>description</text>
 		</questiontext>
 		<answer fraction="0">
-			<text>a1 no props</text>
+			<text>true</text>
+			<feedback>
+				<text>no lol</text>
+			</feedback>
 		</answer>
 		<answer fraction="100">
-			<text>a2 correct props</text>
+			<text>false</text>
+			<feedback>
+				<text>yes !!!!!!!!!!!!</text>
+			</feedback>
 		</answer>
 	</question>
 </quiz>

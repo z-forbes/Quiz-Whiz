@@ -15,7 +15,7 @@ def export(quiz, fpath):
     for question in quiz.questions:
         export_f = get_exporter(question.type)
         question_root = export_f(question)
-        # TODO question properties
+        question_root = add_properties(question_root, question.properties)
         root.append(question_root)
 
     tree = ET.ElementTree(root)
@@ -30,32 +30,26 @@ def export(quiz, fpath):
 def MC_exporter(q):
     q_root = init_question(q, "multichoice")
     for a in q.answers:
-        q_root.append(init_answer(a.body, 100*a.correct)) # 100*True=100, 100*False=0
+        q_root.append(init_answer(a.body, 100*a.correct, a.properties)) # 100*True=100, 100*False=0
     return q_root
 
 def TF_exporter(q):
     q_root = init_question(q, "truefalse")
-    answer = q.get_correct_as()[0].body
-    q_root.append(init_answer(str(answer).lower(), 100)) # correct
-    q_root.append(init_answer(str(not answer).lower(), 0)) # incorrect
+    for a in q.answers:
+        q_root.append(init_answer(str(a.body).lower(), 100*a.correct, a.properties))
     return q_root
 
+# TODO properties
 def NUM_exporter(q):
     q_root = init_question(q, "numerical")
-    ans = init_answer(q.get_answer(), 100) # only one answer so frac=100
-    
-    # TODO is tolerance in text?
-    # ans.append(text_inside("tolerance", q.get_tolerance()))
+    q_root.append(init_answer(q.get_answer(), 100, None)) # only one answer so frac=100
 
-    tol = ET.SubElement(ans, "tolerance")
-    tol.text = str(q.get_tolerance())
-    
-    q_root.append(ans)
+    q_root = add_properties(q_root, {"tolerance":q.get_tolerance})
     return q_root
 
 def ESSAY_exporter(q):
     q_root = init_question(q, "essay")
-    q_root.append(init_answer(" ", 0 )) # TODO defaults for essays?
+    q_root.append(init_answer(" ", 0, None)) # TODO defaults for essays?
     return q_root
 
 def MATCH_exporter(q):
@@ -112,11 +106,14 @@ def init_question(q, type):
     return output
 
 # creates answer with given answer text and fraction TODO and feedback if provided
-def init_answer(ans_text, fraction, feedback=None):
+def init_answer(ans_text, fraction, properties):
     output = text_inside("answer", ans_text)
+    if properties:
+        if "fraction" in properties.keys():
+            fraction = properties[fraction] # overwrite fraction default
+        output = add_properties(output, properties)
+    
     output.set("fraction", str(fraction))
-    # if feedback:
-    #     output.append(text_inside("feedback", feedback))
     return output
 
 # creates element: <e_name><text>content</text></e_name>
@@ -130,6 +127,18 @@ def e_with_txt(tag, text):
     output = ET.Element(tag)
     output.text = str(text)
     return output
+
+# adds given properties to question/answer root and returns root
+def add_properties(root, props):
+    if not props:
+        return root
+    for pname, pval in props.items():
+        if "feedback" in pname: # TODO verify heuristic
+            root.append(text_inside(pname, pval))
+        else:
+            root.append(e_with_txt(pname, pval))
+    return root
+
 
 
 ###########
