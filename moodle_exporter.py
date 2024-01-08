@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
 import Question
+from utils import *
 
 # TODO images
 # TODO <text><![CDATA[ md_to_html(content) ]]><text>
@@ -22,6 +23,17 @@ def export(quiz, fpath):
     ET.indent(tree, space="\t", level=0) # makes file readable
     tree.write(fpath, encoding="utf-8")
 
+    # sub unnecessary escape characters
+    f = open(fpath, "r")
+    contents = f.read()
+    f.close()
+    f = open(fpath, "w")
+    f.write(contents.replace("&lt;", "<").replace("&gt;", ">"))
+    f.close()
+
+    del_tmp_dir()
+
+
 ###############
 ## EXPORTERS ##
 ###############
@@ -31,25 +43,28 @@ def MC_exporter(q):
     q_root = init_question(q, "multichoice")
     for a in q.answers:
         q_root.append(init_answer(a.body, 100*a.correct, a.properties)) # 100*True=100, 100*False=0
+    if len(q.get_correct_as())!=1:
+        q_root = add_properties(q_root, {"single":"false"})
     return q_root
 
 def TF_exporter(q):
     q_root = init_question(q, "truefalse")
     for a in q.answers:
-        q_root.append(init_answer(str(a.body).lower(), 100*a.correct, a.properties))
+        q_root.append(init_answer(str(a.body).lower(), 100*a.correct, a.properties, to_html=False))
     return q_root
 
 # TODO properties
 def NUM_exporter(q):
     q_root = init_question(q, "numerical")
-    q_root.append(init_answer(q.get_answer(), 100, None)) # only one answer so frac=100
+    q_root.append(init_answer(q.get_answer(), 100, None, to_html=False)) # only one answer so frac=100
 
-    q_root = add_properties(q_root, {"tolerance":q.get_tolerance})
+    q_root = add_properties(q_root, {"tolerance":q.get_tolerance()})
     return q_root
 
 def ESSAY_exporter(q):
     q_root = init_question(q, "essay")
-    q_root.append(init_answer(" ", 0, None)) # TODO defaults for essays?
+    q_root.append(init_answer("", 0, None, to_html=False)) # TODO defaults for essays?
+
     return q_root
 
 def MATCH_exporter(q):
@@ -62,6 +77,8 @@ def MATCH_exporter(q):
 
 # TODO plan how Cloze questions will work
 def CLOZE_exporter(q):
+    if len(q.answers)==1:
+        error("Must have at least two choices in a cloze question.")
     # makes the question text (there's probs a better way to do this)
     def mk_questiontext(q):
         q.verify() # ensure len(q.answers) == blanks in question
@@ -87,7 +104,7 @@ def CLOZE_exporter(q):
     q_root = ET.Element("question")
     q_root.set("type", "cloze")
     q_root.append(text_inside("name", "Cloze Question"))
-    q_root.append(text_inside("questiontext", mk_questiontext(q)))
+    q_root.append(text_inside("questiontext", mk_questiontext(q), to_html=False))
     q_root.append(e_with_txt("shuffleanswers", 1)) # so answers aren't given in order
     return q_root
 
@@ -106,8 +123,8 @@ def init_question(q, type):
     return output
 
 # creates answer with given answer text and fraction TODO and feedback if provided
-def init_answer(ans_text, fraction, properties):
-    output = text_inside("answer", ans_text)
+def init_answer(ans_text, fraction, properties, to_html=True):
+    output = text_inside("answer", ans_text, to_html)
     if properties:
         if "fraction" in properties.keys():
             fraction = properties[fraction] # overwrite fraction default
@@ -116,9 +133,14 @@ def init_answer(ans_text, fraction, properties):
     output.set("fraction", str(fraction))
     return output
 
-# creates element: <e_name><text>content</text></e_name>
-def text_inside(e_name, content):
-    output = ET.Element(e_name)
+# to_html=True:  <e_name format="html"><text>md_to_html(content)</text></e_name>
+# to_html=False: <e_name><text>content</text></e_name>
+def text_inside(e_name, content, to_html=True):
+    attrib = {}
+    if to_html:
+        content = "<![CDATA["+md_to_html(str(content))+"]]>"
+        attrib["format"]="html"
+    output = ET.Element(e_name, attrib=attrib)
     output.append(e_with_txt("text", content))
     return output
 
@@ -134,7 +156,7 @@ def add_properties(root, props):
         return root
     for pname, pval in props.items():
         if "feedback" in pname: # TODO verify heuristic
-            root.append(text_inside(pname, pval))
+            root.append(text_inside(pname, pval, to_html=False))
         else:
             root.append(e_with_txt(pname, pval))
     return root

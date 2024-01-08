@@ -3,7 +3,7 @@ import re
 import base64
 import pypandoc
 import os
-from shutil import rmtree
+from shutil import rmtree, copy
 
 #############
 ## STRINGS ##
@@ -232,3 +232,21 @@ def mk_tmp_dir():
 
 def del_tmp_dir():
     rmtree(TMP_DIR())
+
+# defaults copy all output files to vm shared dir
+def file_copy(clear_output=False, current=None, new="/afs/inf.ed.ac.uk/user/s18/s1843023/Documents/new_vm/shared"):
+    if clear_output:
+        assert new=="/afs/inf.ed.ac.uk/user/s18/s1843023/Documents/new_vm/shared"
+        for f in os.listdir(new):
+            try:
+                os.remove(new+"/"+f)
+            except:
+                pass
+
+    if current==None:
+        to_copy = ["output/"+str(f) for f in os.listdir("output/") if ("." in f)]
+    else:
+        to_copy=[current]
+
+    for fpath in to_copy:
+        copy(fpath, new)

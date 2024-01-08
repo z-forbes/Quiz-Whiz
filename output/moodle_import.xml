@@ -1,0 +1,20 @@
+<quiz>
+	<question type="multichoice">
+		<name format="html">
+			<text><![CDATA[<p>alt test image in answers test</p> ]]></text>
+		</name>
+		<questiontext format="html">
+			<text><![CDATA[<p>which is appleton tower?</p> ]]></text>
+		</questiontext>
+		<answer format="html" fraction="0">
+			<text><![CDATA[<p><img src="https://upload.wikimedia.org/wikipedia/en/thumb/9/93/Burj_Khalifa.jpg/1200px-Burj_Khalifa.jpg" /></p> ]]></text>
+		</answer>
+		<answer format="html" fraction="100">
+			<text><![CDATA[<figure> <img src="https://www.ed.ac.uk/sites/default/files/styles/landscape_breakpoints_theme_uoe_mobile_1x/public/thumbnails/image/sm_appleton-tower.png?itok=NmlxuK53" alt="alt text" />  </figure> ]]></text>
+		</answer>
+		<answer format="html" fraction="0">
+			<text><![CDATA[<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Tour_Eiffel_Wikimedia_Commons_%28cropped%29.jpg/800px-Tour_Eiffel_Wikimedia_Commons_%28cropped%29.jpg" /></p> ]]></text>
+		</answer>
+		<single>true</single>
+	</question>
+</quiz>

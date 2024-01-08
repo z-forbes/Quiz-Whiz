@@ -1,6 +1,7 @@
 from input_parser import parse_input
 import learn_exporter, moodle_exporter
 from os import listdir
+from utils import *
 
 def get_single_file(dirpath):
     fs = [f for f in listdir(dirpath) if ("." in f)]
@@ -28,13 +29,14 @@ def moodle_test(man_file="match_only.md"):
         fpath = dpath+man_file
 
     # main
+    print("parsing input")
     quiz = parse_input(fpath)
+    print("creating output")
     moodle_exporter.export(quiz, "output/moodle_import.xml")
     return quiz
 
-q = moodle_test().questions[0]
-print(q)
-for a in q.answers:
-    print(a)
+# TODO check alt text
+moodle_test()
+file_copy(clear_output=True, current="output/moodle_import.xml")
 
 print("finished")
