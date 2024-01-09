@@ -1,7 +1,7 @@
 from enum import Enum
-from utils import *
+from program.utils import *
 from abc import ABC, abstractmethod
-from Answer import Answer
+from program.Answer import Answer
 import re
 
 # Question Types #

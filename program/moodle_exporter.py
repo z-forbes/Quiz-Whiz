@@ -1,9 +1,6 @@
 import xml.etree.ElementTree as ET
-import Question
-from utils import *
-
-# TODO images
-# TODO <text><![CDATA[ md_to_html(content) ]]><text>
+import program.Question
+from program.utils import *
 
 ##########
 ## MAIN ##
@@ -13,21 +10,27 @@ from utils import *
 # fpath: file path to export .xml file to
 def export(quiz, fpath):
     root = ET.Element("quiz")
+    Progress.reset()
     for question in quiz.questions:
+        Progress.export_update("Moodle")
         export_f = get_exporter(question.type)
         question_root = export_f(question)
         question_root = add_properties(question_root, question.properties)
         root.append(question_root)
 
+    Progress.reset()
     tree = ET.ElementTree(root)
     ET.indent(tree, space="\t", level=0) # makes file readable
-    tree.write(fpath, encoding="utf-8")
+    try: # can't use safe_open() since .write() required
+        tree.write(fpath, encoding="utf-8")
+    except:
+        error("Could not write Moodle output.")
 
     # sub unnecessary escape characters
-    f = open(fpath, "r")
+    f = safe_open(fpath, "r", encoding="utf-8")
     contents = f.read()
     f.close()
-    f = open(fpath, "w")
+    f = safe_open(fpath, "w", encoding="utf-8")
     f.write(contents.replace("&lt;", "<").replace("&gt;", ">"))
     f.close()
 
@@ -53,7 +56,6 @@ def TF_exporter(q):
         q_root.append(init_answer(str(a.body).lower(), 100*a.correct, a.properties, to_html=False))
     return q_root
 
-# TODO properties
 def NUM_exporter(q):
     q_root = init_question(q, "numerical")
     q_root.append(init_answer(q.get_answer(), 100, None, to_html=False)) # only one answer so frac=100

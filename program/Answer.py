@@ -1,4 +1,4 @@
-from utils import *
+from program.utils import *
 
 class Answer:
     def __str__(self):
@@ -12,4 +12,4 @@ class Answer:
     def __init__(self, body, correct, properties):
         self.body = body        # string
         self.correct = correct  # boolean
-        self.properties = properties  # ???
+        self.properties = properties  # dictionary

@@ -4,6 +4,10 @@ import base64
 import pypandoc
 import os
 from shutil import rmtree, copy
+import sys
+from colorama import init as colorama_init
+from colorama import Fore
+colorama_init()
 
 #############
 ## STRINGS ##
@@ -83,7 +87,7 @@ def md_to_html(md_str):
     # input: filepath of local image
     # output: string of image encoded in base64
     def img_to_b64(fpath):
-        with open(fpath, "rb") as f:
+        with safe_open(fpath, "rb") as f:
             data = str(base64.b64encode(f.read()))
             return "data:image/;base64, {}".format(data.replace("'", "")[1:])
     
@@ -130,8 +134,12 @@ def md_to_html(md_str):
             # images are local
             im_path = re.findall("\".*\"", src)[0].replace("\"", "")
             html = html.replace(src, "src=\"{}\"".format(img_to_b64(im_path)))
-    html = re.sub("<figcaption.*?<\/figcaption>", " ", html) # remove figcaption tag
-
+    # fix alt text
+    alts = re.findall("<figcaption>(.*?)<\/figcaption>", html)
+    for alt in alts: # skipped if no alt text, alts=[]
+        old_re = 'alt="".*?\/><figcaption>{}<\/figcaption>'.format(alt)
+        assert re.search(old_re, html) # ensure structure is as expected
+        html = re.sub(old_re, 'alt="{}"/> '.format(alt), html) # move alt text to alt="" and remove figcaption tag
     return html
 
 # replaces provided range in old_str with sub
@@ -156,7 +164,7 @@ def get_props(s):
     for p in props_arr:
         n_v = [s.strip() for s in p.split(":")]
         if len(n_v)!=2:
-            error("Property {} is invalid.".format(n_v))
+            error(f"Property '{p}' is invalid.")
         output[n_v[0]]=n_v[1]
     return output
 
@@ -166,8 +174,6 @@ def remove_props(s):
         return None
     props_pattern = "<<((?:\n|.)*?)>>"
     return re.sub(props_pattern, "", s).strip()
-
-
 
 ############
 ## ARRAYS ##
@@ -214,10 +220,40 @@ def get_intersection(arr1, arr2):
 ## ERRORS ##
 ############
 
-# throws an error (used for future flexibility)
-def error(msg):
-    raise Exception(msg)
+# prints error and terminates program
+# progress always shown apart from when error is unexpected.
+def error(msg, show_progress=True):
+    newline = "\n> "
+    progress = Progress.for_error()
+    if not show_progress or progress=="":
+        newline = ""
+        progress = ""
+    print(f"{Fore.YELLOW}Error{progress}: {newline}{str(msg)}{Fore.RESET}")
+    del_tmp_dir()
+    sys.exit()
 
+# keeps track of progress for more descriptive errors
+class Progress:
+    current_q = 0
+    current_action = None # parsing, exporting to moodle, exporting to learn
+    
+    def for_error():
+        if Progress.current_action:
+            return f" {Progress.current_action} question {Progress.current_q}"
+        else:
+            return ""
+
+    def parse_update():
+        Progress.current_q+=1
+        Progress.current_action = "parsing"
+
+    def export_update(service):
+        Progress.current_q+=1
+        Progress.current_action = f"exporting following to {service}:"
+
+    def reset():
+        Progress.current_q = 0
+        Progress.current_action = None
 
 ###########
 ## FILES ##
@@ -231,7 +267,8 @@ def mk_tmp_dir():
         os.mkdir(TMP_DIR())
 
 def del_tmp_dir():
-    rmtree(TMP_DIR())
+    if os.path.exists(TMP_DIR()):
+        rmtree(TMP_DIR())
 
 # defaults copy all output files to vm shared dir
 def file_copy(clear_output=False, current=None, new="/afs/inf.ed.ac.uk/user/s18/s1843023/Documents/new_vm/shared"):
@@ -250,3 +287,15 @@ def file_copy(clear_output=False, current=None, new="/afs/inf.ed.ac.uk/user/s18/
 
     for fpath in to_copy:
         copy(fpath, new)
+
+# open() with error checking
+def safe_open(fpath, m, encoding=None):
+    if m=="r" and not os.path.exists(fpath):
+        error("Provided input file path does not exist.")
+    try:
+        if encoding:
+            return open(fpath, m, encoding=encoding)
+        else:
+            return open(fpath, m)
+    except:
+        error(f"Could not open/write file '{fpath}'")

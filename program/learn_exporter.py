@@ -1,6 +1,6 @@
-import Question
-from utils import *
-# should make a copy of quiz and convert everything to html
+import program.Question
+from program.utils import *
+# could make a copy of quiz and convert everything to html
 # TODO can't import MC/MA questions with only one answer
 
 
@@ -10,12 +10,14 @@ from utils import *
 # quiz: Quiz object
 # fpath: output filepath
 def export(quiz, fpath):
+    Progress.reset()
     output = ""
     for question in quiz.questions:
+        Progress.export_update("Learn")
         export_f = get_exporter(question.type)
         output += export_f(question)+"\n"
-    
-    f = open(fpath, "w", encoding="utf-8")
+    Progress.reset()    
+    f = safe_open(fpath, "w", encoding="utf-8")
     f.write(output)
     f.close()
     del_tmp_dir()

@@ -1,6 +1,6 @@
-from Quiz import Quiz
-from utils import *
-import Question
+from program.Quiz import Quiz
+from program.utils import *
+import program.Question as Question
 
 ########
 # MAIN #
@@ -9,9 +9,10 @@ import Question
 # output: Quiz
 def parse_input(fpath):
     output = Quiz()
+    f = safe_open(fpath, "r")
 
-    f = open(fpath, "r")
     q_current = []
+    Progress.reset()              
     for line in f:
         if line[0]=="#": # first line of question
             if len(q_current)!=0: # if not first question
@@ -24,13 +25,17 @@ def parse_input(fpath):
         q_current.append(to_add)
 
     output.add_q(parse_question(q_current)) # add final q
+    Progress.reset()              
     return output
 
 # input: array of relevant lines for one question from input file
 # output: Question
 def parse_question(q_lines):
+    Progress.parse_update()
     tmp = split_on_blank(q_lines)
     pre_answers = remove_blanks(tmp[0]) # question (and description)
+    if pre_answers[0][0]!="#":
+        error("All questions must begin with '#'") # called on first question only
     answers = shrink_answers(remove_blanks(tmp[1]))
 
     q_class = find_q_class(answers) 

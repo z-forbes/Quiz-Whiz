@@ -35,8 +35,8 @@ def moodle_test(man_file="match_only.md"):
     moodle_exporter.export(quiz, "output/moodle_import.xml")
     return quiz
 
-# TODO check alt text
-moodle_test()
-file_copy(clear_output=True, current="output/moodle_import.xml")
+# moodle_test()
+# learn_test()
+# file_copy(clear_output=True, current="output/moodle_import.xml")
 
 print("finished")
