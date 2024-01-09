@@ -1,7 +1,7 @@
-from input_parser import parse_input
-import learn_exporter, moodle_exporter
+from program.input_parser import parse_input
+import program.learn_exporter, program.moodle_exporter
 from os import listdir
-from utils import *
+from program.utils import *
 
 def get_single_file(dirpath):
     fs = [f for f in listdir(dirpath) if ("." in f)]
