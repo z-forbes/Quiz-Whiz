@@ -1,0 +1,5 @@
+images: https://moodle.org/mod/forum/discuss.php?d=181211
+XML docs: https://docs.moodle.org/403/en/Moodle_XML_format
+
+
+
