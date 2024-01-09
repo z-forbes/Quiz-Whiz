@@ -41,3 +41,4 @@ def moodle_test(man_file="match_only.md"):
 # file_copy(clear_output=True, current="output/moodle_import.xml")
 
 print("finished")
+
