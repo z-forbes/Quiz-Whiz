@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+<!-- question: 31  -->
+  <question type="cloze">
+    <name>
+      <text>cloze question</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<pre>Match the following cities with the correct state:
+* San Francisco: {1:MULTICHOICE:=California#OK~Arizona#Wrong}
+* Tucson: {1:MULTICHOICE:California#Wrong~%100%Arizona#OK}
+* Los Angeles: {1:MULTICHOICE:=California#OK~Arizona#Wrong}
+* Phoenix: {1:MULTICHOICE:%0%California#Wrong~=Arizona#OK}
+The capital of France is {1:SHORTANSWER:%100%Paris#Congratulations!
+~%50%Marseille#No, that is the second largest city in France (after
+Paris).~*#Wrong answer. The capital of France is Paris, of course.}.</pre>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber></idnumber>
+  </question>
+
+</quiz>
