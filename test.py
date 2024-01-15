@@ -4,41 +4,23 @@ import program.moodle_exporter as moodle_exporter
 from os import listdir
 from program.utils import *
 
-def get_single_file(dirpath):
-    fs = [f for f in listdir(dirpath) if ("." in f)]
-    if len(fs)==1:
-        return dirpath + fs[0]
-    return None
+def shrink_answers(answers):
+    if answers == None or len(answers)==0:
+        return answers
+    output = []
+    current = ""
+    for a in answers:
+        if a[0]=="-" or type(force_type(a[0]))==int: # starts with - or int
+            if current != "":
+                current = current[:-1]
+                output.append(current)
+                current = ""
+        current += a + "\n"
 
-def learn_test(man_file="2nd_marker_example.md"):
-    # choose file
-    dpath = "input/"
-    fpath = get_single_file(dpath)
-    if not fpath:   
-        fpath = dpath+man_file
+    current = current[:-1]
+    output.append(current)
+    return output
 
-    # main
-    quiz = parse_input(fpath)
-    learn_exporter.export(quiz, "output/learn_import.txt")
-    return quiz
-    
-def moodle_test(man_file="match_only.md"):
-    # choose file
-    dpath = "input/"
-    fpath = get_single_file(dpath)
-    if not fpath:
-        fpath = dpath+man_file
-
-    # main
-    print("parsing input")
-    quiz = parse_input(fpath)
-    print("creating output")
-    moodle_exporter.export(quiz, "output/moodle_import.xml")
-    return quiz
-
-# moodle_test()
-# learn_test()
-# file_copy(clear_output=True, current="output/moodle_import.xml")
-
-print("finished")
-
+a = ["a\n\nb", "b\n\n\nc"]
+a = shrink_answers(a)
+print([e.replace("\n", "$") for e in a])

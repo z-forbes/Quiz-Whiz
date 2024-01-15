@@ -16,6 +16,8 @@ def parse_input(fpath):
     for line in f:
         if line[0]=="#": # first line of question
             if len(q_current)!=0: # if not first question
+                if q_current[-1]=="":
+                    q_current = q_current[:-1] # remove final newline separating question
                 output.add_q(parse_question(q_current))
                 q_current = []
         
@@ -36,7 +38,8 @@ def parse_question(q_lines):
     pre_answers = remove_blanks(tmp[0]) # question (and description)
     if pre_answers[0][0]!="#":
         error("All questions must begin with '#'") # called on first question only
-    answers = shrink_answers(remove_blanks(tmp[1]))
+    # answers = shrink_answers(remove_blanks(tmp[1]))
+    answers = shrink_answers(tmp[1])
 
     q_class = find_q_class(answers) 
     parsed_answers = q_class.parse_answers(answers)
@@ -65,9 +68,11 @@ def shrink_answers(answers):
     output = []
     current = ""
     for a in answers:
-        if a[0]=="-" or type(force_type(a[0]))==int: # var a starts with - or int
+        if a=="":
+            error("Blank line found in answers. Add a space to the line to include blank line.")
+        if a[0]=="-" or type(force_type(a[0]))==int: # starts with - or int
             if current != "":
-                current = current[:-1]
+                current = current[:-1] # remove trailing newline
                 output.append(current)
                 current = ""
         current += a + "\n"

@@ -1,14 +1,9 @@
 # alt test image in answers test <<single:true>>
 which is appleton tower?
 
-- ^![](https://www.ed.ac.uk/){ width=250px }
+line 1
+line 2 
+line 4
 
-alt test image in answers test <<single:true>>
-which is appleton tower?
-
-- ^![](https://www.ed.ac.uk/){ width=250px } 
-
-# alt test image in answers test <<single:true>>
-which is appleton tower?
-
-- ^![](https://www.ed.ac.uk/){ width=250px } 
+# question 2 
+desc

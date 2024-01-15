@@ -31,7 +31,7 @@ parser.add_argument('--learn', '-l', action='store_true',
                     help='Produce learn output.')
 
 parser.add_argument('--debug', '-d', action='store_true',
-                    help='Include to show detailed error messages.')
+                    help='Show detailed error messages.')
 
 # parser.add_argument('--clear-output', action='store_true', 
 #                     help='Clear output folder before creating new output') 
@@ -67,7 +67,8 @@ def main(args):
     # output
     output_dir = "output"
     # output dirname validation
-    if path.basename(args.output)=="program":
+    
+    if args.output and path.basename(args.output)=="program":
         error("Output directory cannot be the same as program directory")
     if args.output:
         output_dir = args.output
@@ -92,7 +93,7 @@ def main(args):
         if args.moodle:
             moodle(quiz, path.join(output_dir, f"MOODLE_{path.basename(quiz.input_file)}"))
 
-    print(f"{Fore.GREEN}Success!{Fore.RESET}")
+    print(f"{Fore.GREEN}Success!{Fore.RESET}\n")
 
 
 ## EXCECUTION STARTS HERE ##
