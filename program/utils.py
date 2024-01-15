@@ -122,11 +122,8 @@ def md_to_html(md_str):
             md_str = sub_range(md_str, "\n\n", nl_i, nl_i+1)
         return md_str
     
-    if ("*" in md_str) or ("_" in md_str) or ("[" in md_str) or ("`" in md_str):
-        md_str = format_not_code(md_str)
-        html = md_to_html_pandoc(md_str)
-    else:
-        html = f"<p>{md_str}</p>".replace("\n", "</p> <p>")
+    md_str = format_not_code(md_str)
+    html = md_to_html_pandoc(md_str)
     html = format_code(html)
     html = html.replace("\n", " ") # all remaining newlines redundant
 
@@ -139,10 +136,10 @@ def md_to_html(md_str):
             html = html.replace(src, "src=\"{}\"".format(img_to_b64(im_path)))
     # fix alt text
     alts = re.findall("<figcaption>(.*?)<\/figcaption>", html)
-    for alt in alts: # skipped if no alt text
+    for alt in alts: # skipped if no alt text, alts=[]
         old_re = 'alt="".*?\/><figcaption>{}<\/figcaption>'.format(alt)
         assert re.search(old_re, html) # ensure structure is as expected
-        html = re.sub(old_re, 'alt="{}"/> '.format(alt), html) # move alt text to alt="", remove figcaption tag
+        html = re.sub(old_re, 'alt="{}"/> '.format(alt), html) # move alt text to alt="" and remove figcaption tag
     return html
 
 # replaces provided range in old_str with sub
@@ -262,7 +259,7 @@ class Progress:
 ## FILES ##
 ###########
 def TMP_DIR():
-    return "program/temporary_directory_which_will_be_deleted!!!!!!!!/"
+    return "temporary_directory_which_will_be_deleted!!!!!!!!/"
 
 # creates directory TMP_DIR() if it doesn't exist
 def mk_tmp_dir():

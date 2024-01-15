@@ -21,7 +21,7 @@ def export(quiz, fpath):
     Progress.reset()
     tree = ET.ElementTree(root)
     ET.indent(tree, space="\t", level=0) # makes file readable
-    try: # can't use safe_open() since tree.write() required
+    try: # can't use safe_open() since .write() required
         tree.write(fpath, encoding="utf-8")
     except:
         error("Could not write Moodle output.")
@@ -77,6 +77,7 @@ def MATCH_exporter(q):
         q_root.append(sub_q)
     return q_root
 
+# TODO plan how Cloze questions will work
 def CLOZE_exporter(q):
     if len(q.answers)==1:
         error("Must have at least two choices in a cloze question.")
