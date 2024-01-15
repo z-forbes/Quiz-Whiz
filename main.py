@@ -93,7 +93,7 @@ def main(args):
         if args.moodle:
             moodle(quiz, path.join(output_dir, f"MOODLE_{path.basename(quiz.input_file)}"))
 
-    print(f"{Fore.GREEN}Success!{Fore.RESET}\n")
+    print(f"{Fore.GREEN}Success!{Fore.RESET}")
 
 
 ## EXCECUTION STARTS HERE ##

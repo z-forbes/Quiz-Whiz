@@ -34,25 +34,25 @@ def parse_input(fpath):
 # output: Question
 def parse_question(q_lines):
     Progress.parse_update()
-    tmp = split_on_blank(q_lines)
-    pre_answers = remove_blanks(tmp[0]) # question (and description)
+    split_q = split_on_blank(q_lines, space_is_blank=False)
+    pre_answers = split_q[0] # question (and description)
     if pre_answers[0][0]!="#":
-        error("All questions must begin with '#'") # called on first question only
-    # answers = shrink_answers(remove_blanks(tmp[1]))
-    answers = shrink_answers(tmp[1])
+        error("All questions must begin with '#'.") # called on first question only
 
-    q_class = find_q_class(answers) 
+    answers = shrink_answers(split_q[1])
+    verify_answers(answers) # ensures answers are of plausable format
+    q_class = find_q_class(answers)
     parsed_answers = q_class.parse_answers(answers)
 
-    output = q_class(answers=parsed_answers, question=get_line_content(pre_answers[0]))
+    q = q_class(answers=parsed_answers, question=get_line_content(pre_answers[0]))
     if len(pre_answers)>1:
         desc = ""
         # format multiline description
         for l in pre_answers[1:]:
             desc+=l+"\n"
-        output.set_description(desc[:-1]) # trailing \n removed
-
-    return output
+        q.set_description(desc[:-1]) # trailing \n removed
+ 
+    return q
 
 
 ###########
@@ -69,7 +69,7 @@ def shrink_answers(answers):
     current = ""
     for a in answers:
         if a=="":
-            error("Blank line found in answers. Add a space to the line to include blank line.")
+            error("Blank line found in answers/description. Add a space to the line to include blank line.")
         if a[0]=="-" or type(force_type(a[0]))==int: # starts with - or int
             if current != "":
                 current = current[:-1] # remove trailing newline
@@ -99,3 +99,23 @@ def find_q_class(answers):
         return Question.Num
     
     return Question.Basic
+
+
+# checks every answer starts with bullet or every answer starts with list index (X.) 
+# answers: raw, shrunk answers
+# throws error if bad, does nothing if good
+def verify_answers(answers):
+    msg = 'Incorrect answer format...\n"{}"'
+    num_pat = "[0-9]+\."
+    patterns = ["-", num_pat]
+    for a_i, a in enumerate(answers):
+        if not " " in a:
+            error(msg.format(a))
+        bullet = a.split(" ")[0]
+        for p in patterns[:]:
+            if not re.match(p, bullet):
+                patterns.remove(p)
+            if patterns==[]:
+                error(msg.format(a))
+            if patterns==[num_pat] and bullet.split(".")[0]!=str(a_i+1):
+                error(msg.format(a)+"\n(Numbers not sequential and starting from 1.)")

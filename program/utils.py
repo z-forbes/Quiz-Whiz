@@ -15,20 +15,22 @@ colorama_init()
 
 # input: string
 # output: True iff input is None/blank/whitespace-only
-def is_blank(s):
+def is_blank(s, space_is_blank=True):
+    if not space_is_blank:
+        s = s.replace(" ", "-") # - not removed by strip
     return s==None or s.strip()==""
 
 # removes HTML tags 
 def remove_tags(raw_html):
   return re.sub("<.*?>", "", raw_html)
 
-# removes first 'word' from string
+# removes first 'word' from string  
 # generally removes - / x. / #
+# input_parser.verify_answers() should ensure assertions
 def get_line_content(s):
-    if not " " in s:
-        print("utils.remove_bullet called with no space in string")
-        return s
+    assert (" " in s)
     content = s.split(" ")
+    assert re.match("[0-9]+\.", content[0]) or content[0] in ["-", "#"]
     output = ""
     for x in content[1:]:
         output += x + " "
@@ -176,13 +178,14 @@ def remove_props(s):
     if s==None:
         return None
     props_pattern = "<<((?:\n|.)*?)>>"
-    return re.sub(props_pattern, "", s).strip()
+    return re.sub(props_pattern, "", s)
 
 ############
 ## ARRAYS ##
 ############
 
-# input: array
+# arr: array
+# space_is_blank: True iff space(s) considered blank
 # output: array with blank elements removed
 def remove_blanks(arr):
     output = []
@@ -194,12 +197,12 @@ def remove_blanks(arr):
 # input: array
 # output: [array, array]
 # explaination: splits on the first blank element in arr. if no blank found, returns None
-def split_on_blank(arr):
+def split_on_blank(arr, space_is_blank=True):
     fst = []
     snd = []
     blank_found = False
     for x in arr:
-        if is_blank(x) and not blank_found:
+        if is_blank(x, space_is_blank) and not blank_found:
             blank_found = True
             continue # do not add first blank to any output
         
@@ -231,6 +234,8 @@ def error(msg, show_progress=True):
     if not show_progress or progress=="":
         newline = ""
         progress = ""
+    else:
+        msg = msg.replace("\n", newline)
     print(f"{Fore.YELLOW}Error{progress}: {newline}{str(msg)}{Fore.RESET}")
     del_tmp_dir()
     sys.exit()

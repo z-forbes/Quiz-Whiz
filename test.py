@@ -4,23 +4,19 @@ import program.moodle_exporter as moodle_exporter
 from os import listdir
 from program.utils import *
 
-def shrink_answers(answers):
-    if answers == None or len(answers)==0:
-        return answers
-    output = []
-    current = ""
+def verify_answers(answers):
+    msg = "Incorrect title/answer format: {}"
+    patterns = ["-", "[0-9]+\."]
     for a in answers:
-        if a[0]=="-" or type(force_type(a[0]))==int: # starts with - or int
-            if current != "":
-                current = current[:-1]
-                output.append(current)
-                current = ""
-        current += a + "\n"
+        if not " " in a:
+            error(msg.format(a))
+        bullet = a.split(" ")[0]
+        for p in patterns:
+            if not re.match(p, bullet):
+                patterns.remove(p)
+            if patterns==[]:
+                error(msg.format(a))
 
-    current = current[:-1]
-    output.append(current)
-    return output
 
-a = ["a\n\nb", "b\n\n\nc"]
-a = shrink_answers(a)
-print([e.replace("\n", "$") for e in a])
+a = ["10. fjns dkjgnf", "2. geldfjgnfd", "3. dfjgndfgs", "4. glj dgdlg"]
+verify_answers(a)

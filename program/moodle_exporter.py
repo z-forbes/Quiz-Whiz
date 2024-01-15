@@ -94,7 +94,7 @@ def CLOZE_exporter(q):
             bracket = bracket[:-1] + "}"
             brackets.append(bracket)
 
-        split_q = q.question.split(Question.Cloze.BLANK_MARKER)
+        split_q = q.question.split(program.Question.Cloze.BLANK_MARKER)
         # note: len(split_q) == len(brackets)+1
         output = ""
         for i in range(len(brackets)):
