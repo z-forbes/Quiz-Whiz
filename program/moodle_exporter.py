@@ -1,3 +1,4 @@
+# Creates file to import to Moodle from Quiz object
 import xml.etree.ElementTree as ET
 import program.Question
 from program.utils import *

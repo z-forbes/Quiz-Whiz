@@ -1,13 +1,13 @@
-from markdown import markdown # TODO remove?
+# Utils used accross program
+from markdown import markdown # TODO remove. talk about in report.
 import re
 import base64
 import pypandoc
 import os
 from shutil import rmtree, copy
 import sys
-from colorama import init as colorama_init
-from colorama import Fore
-colorama_init()
+from colorama import Fore, init
+init()
 
 #############
 ## STRINGS ##
@@ -331,3 +331,7 @@ def safe_open(fpath, m, encoding=None):
 # change file type of filepath
 def change_ftype(fpath, newtype):
     return os.path.splitext(fpath)[0]+"."+newtype.replace(".", "")
+
+# returns the comment marker
+def comment():
+    return "//"

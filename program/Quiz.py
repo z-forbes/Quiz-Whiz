@@ -1,3 +1,4 @@
+# Quiz object created by parser and used by exporters.
 class Quiz:
     def __init__(self):
         self.questions = []

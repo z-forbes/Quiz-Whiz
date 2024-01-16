@@ -1,0 +1,10 @@
+<quiz>
+	<question type="essay">
+		<name format="html">
+			<text><![CDATA[<p>placeholder</p>]]></text>
+		</name>
+		<answer fraction="0">
+			<text />
+		</answer>
+	</question>
+</quiz>

@@ -1,3 +1,4 @@
+# Gets arguments from user, runs program.
 import argparse
 import os.path as path
 
@@ -7,13 +8,11 @@ from program.input_parser import parse_input
 from program.learn_exporter import export as learn
 from program.moodle_exporter import export as moodle
 
-# TODO option to not conver to HTML to speed things up?
-
-
 ############
 ## PARSER ##
 ############
-parser = argparse.ArgumentParser(description='Markdown to Moodle/Learn Ultlra converter!\nDocumentation: https://github.com/lewisforbes/ug5-project/blob/main/readme.md')
+parser = argparse.ArgumentParser(description='Markdown to Moodle/Learn Ultlra converter!\nDocumentation: https://github.com/lewisforbes/ug5-project/blob/main/readme.md',
+                                 epilog="Note: at least one of --moodle, --learn required.", formatter_class=argparse.RawDescriptionHelpFormatter)
 
 # required
 parser.add_argument('input', type=str,
@@ -23,11 +22,11 @@ parser.add_argument('input', type=str,
 parser.add_argument('--output', '-o', type=str,
                     help='Path of output directory.')
 
-
 # optional args to select output(s)
-parser.add_argument('--moodle', '-m', action='store_true',
+outputs = parser.add_argument_group()
+outputs.add_argument('--moodle', '-m', action='store_true',
                     help='Produce Moodle output.')
-parser.add_argument('--learn', '-l', action='store_true',
+outputs.add_argument('--learn', '-l', action='store_true',
                     help='Produce Mearn output.')
 
 # output modes
@@ -36,6 +35,14 @@ parser.add_argument('--debug', '-d', action='store_true',
 
 parser.add_argument('--no_colour', '-nc', action='store_true',
                     help='Do not output colour to terminal.')
+
+# question numbers
+nums = parser.add_mutually_exclusive_group()
+nums.add_argument('--add_nums', '-an', action='store_true',
+                    help='Adds question numbers to input file(s).')
+
+nums.add_argument('--remove_nums', '-rn', action='store_true',
+                    help='Reverses --add_nums flag.')
 
 
 args = parser.parse_args()
@@ -54,11 +61,48 @@ if args.output and (os.path.abspath("program") in os.path.abspath(args.output)):
 # MAIN #
 ########
 def main(args):
+    # deals with --add_nums and --remove_nums
+    def nums_flags(args, inputs):
+        assert not (args.add_nums and args.remove_nums)
+        qnum = comment() + " Question {} //\n"
+        if args.add_nums:
+            for fpath in inputs:
+                q_i = 0
+                new_lines = []
+                f = safe_open(fpath, 'r')
+                qnum_present = False
+                for line in f:
+                    if line[0]=="#":
+                        q_i+=1
+                        if not qnum_present:
+                            new_lines.append(qnum.format(q_i))
+                    new_lines.append(line)
+                    qnum_present = line==qnum.format(q_i+1)
+
+                f.close()
+                f = safe_open(fpath, 'w')
+                f.writelines(new_lines)
+                f.close()
+        if args.remove_nums:
+            for fpath in inputs:
+                new_lines = []
+                f = safe_open(fpath, 'r')
+                for line in f:
+                    if re.match(qnum.format("[0-9]+"), line):
+                        continue
+                    new_lines.append(line)
+                f.close()
+                f = safe_open(fpath, 'w')
+                f.writelines(new_lines)
+                f.close()
+   
     # input
     if path.isdir(args.input):
         inputs = [path.join(args.input,f) for f in os.listdir(args.input) if ("." in f)]
     else:
         inputs = [args.input]
+    
+    nums_flags(args, inputs)
     quizzes = [parse_input(i) for i in inputs]
 
     # set all Quiz.input_file
@@ -90,7 +134,7 @@ def main(args):
         if args.moodle:
             moodle(quiz, path.join(output_dir, f"MOODLE_{change_ftype(bname, 'xml')}"))
 
-    print(f"{Fore.GREEN}Success!{Fore.RESET}")
+    print(f"{Fore.GREEN}Finished!{Fore.RESET}")
 
 
 ## EXCECUTION STARTS HERE ##

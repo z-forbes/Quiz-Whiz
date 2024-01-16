@@ -1,20 +1,25 @@
 <quiz>
 	<question type="multichoice">
 		<name format="html">
-			<text><![CDATA[<p>example question with code </p>]]></text>
+			<text><![CDATA[<p>test</p>]]></text>
 		</name>
-		<questiontext format="html">
-			<text><![CDATA[<p>this is code in the description</p> <div class="sourceCode" id="cb1"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="bu">sum</span>(x, y):</span><br><span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    output <span class="op">=</span> x<span class="op">+</span>y <span class="co"># python sum</span></span><br><span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> output</span></code></pre></div> ]]></text>
-		</questiontext>
 		<answer format="html" fraction="0">
-			<text><![CDATA[<p>first answer</p>]]></text>
+			<text><![CDATA[<p>hi</p>]]></text>
 		</answer>
 		<answer format="html" fraction="0">
-			<text><![CDATA[<p>second answer with code</p> <div class="sourceCode" id="cb1"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> a<span class="op">+</span>b</span></code></pre></div> ]]></text>
-		</answer>
-		<answer format="html" fraction="0">
-			<text><![CDATA[<p>third answer</p>]]></text>
+			<text><![CDATA[<p>hello</p>]]></text>
 		</answer>
 		<single>false</single>
+	</question>
+	<question type="multichoice">
+		<name format="html">
+			<text><![CDATA[<p>test</p>]]></text>
+		</name>
+		<answer format="html" fraction="100">
+			<text><![CDATA[<p>hi</p>]]></text>
+		</answer>
+		<answer format="html" fraction="0">
+			<text><![CDATA[<p>hello</p>]]></text>
+		</answer>
 	</question>
 </quiz>

@@ -1,3 +1,4 @@
+# Parses/validates input file and creates Quiz object.
 from program.Quiz import Quiz
 from program.utils import *
 import program.Question as Question
@@ -15,6 +16,8 @@ def parse_input(fpath):
     Progress.reset()
     f_empty = True
     for line in f:
+        if len(line)>=len(comment()) and line[0:len(comment())]==comment():
+            continue
         if f_empty and line.strip()!="": # first condition for efficiency
             f_empty = False
         if line[0]=="#": # first line of question
@@ -74,7 +77,7 @@ def shrink_answers(answers):
     current = ""
     for a in answers:
         if a=="":
-            error("Blank line found in answers/description. Add a space to the line to include blank line.")
+            error(f"Blank line found in answers/description. Add a space to include in output or '{comment()}' to hide in output.")
         if a[0]=="-" or type(force_type(a[0]))==int: # starts with - or int
             if current != "":
                 current = current[:-1] # remove trailing newline

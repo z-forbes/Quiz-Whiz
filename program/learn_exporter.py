@@ -1,3 +1,4 @@
+# Creates file to import to Learn from Quiz object
 import program.Question
 from program.utils import *
 # could make a copy of quiz and convert everything to html
