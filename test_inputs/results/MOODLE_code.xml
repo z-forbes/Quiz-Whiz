@@ -1,10 +1,100 @@
 <quiz>
+	<question type="multichoice">
+		<name format="html">
+			<text><![CDATA[<p>MC</p>]]></text>
+		</name>
+		<questiontext format="html">
+			<text><![CDATA[<p>before code</p> <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="cf">assert</span> slay</span><br><span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="bu">print</span>(<span class="st">&amp;quot;serve&amp;quot;</span>)</span></code></pre></div> <p>after code</p> ]]></text>
+		</questiontext>
+		<answer format="html" fraction="100">
+			<text><![CDATA[<p>before code</p> <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="cf">assert</span> slay</span><br><span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="bu">print</span>(<span class="st">&amp;quot;serve&amp;quot;</span>)</span></code></pre></div> <p>after code</p> ]]></text>
+		</answer>
+		<answer format="html" fraction="0">
+			<text><![CDATA[<p>before code</p> <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="cf">assert</span> slay</span><br><span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="bu">print</span>(<span class="st">&amp;quot;serve&amp;quot;</span>)</span></code></pre></div> <p>after code</p> ]]></text>
+		</answer>
+	</question>
+	<question type="truefalse">
+		<name format="html">
+			<text><![CDATA[<p>TF</p>]]></text>
+		</name>
+		<questiontext format="html">
+			<text><![CDATA[<p>before code</p> <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="cf">assert</span> slay</span><br><span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="bu">print</span>(<span class="st">&amp;quot;serve&amp;quot;</span>)</span></code></pre></div> <p>after code</p> ]]></text>
+		</questiontext>
+		<answer fraction="100">
+			<text>true</text>
+		</answer>
+		<answer fraction="0">
+			<text>false</text>
+		</answer>
+	</question>
 	<question type="essay">
 		<name format="html">
-			<text><![CDATA[<p>placeholder</p>]]></text>
+			<text><![CDATA[<p>Essay</p>]]></text>
 		</name>
+		<questiontext format="html">
+			<text><![CDATA[<p>before code</p> <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="cf">assert</span> slay</span><br><span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="bu">print</span>(<span class="st">&amp;quot;serve&amp;quot;</span>)</span></code></pre></div> <p>after code</p> ]]></text>
+		</questiontext>
 		<answer fraction="0">
 			<text />
 		</answer>
+	</question>
+	<question type="multichoice">
+		<name format="html">
+			<text><![CDATA[<p>Match</p>]]></text>
+		</name>
+		<questiontext format="html">
+			<text><![CDATA[<p>before code</p> <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="cf">assert</span> slay</span><br><span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="bu">print</span>(<span class="st">&amp;quot;serve&amp;quot;</span>)</span></code></pre></div> <p>after code</p> ]]></text>
+		</questiontext>
+		<answer format="html" fraction="0">
+			<text><![CDATA[<p>before code</p> <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="cf">assert</span> slay</span><br><span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="bu">print</span>(<span class="st">&amp;quot;serve&amp;quot;</span>)</span></code></pre></div> <p>after code</p> <p>before code</p> <div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="cf">assert</span> slay</span> <span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="bu">print</span>(<span class="st">&amp;quot;serve&amp;quot;</span>)</span></code></pre></div> <p>after code</p> ]]></text>
+		</answer>
+		<answer format="html" fraction="0">
+			<text><![CDATA[<p>before code</p> <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="cf">assert</span> slay</span><br><span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="bu">print</span>(<span class="st">&amp;quot;serve&amp;quot;</span>)</span></code></pre></div> <p>after code///d1</p> ]]></text>
+		</answer>
+		<answer format="html" fraction="0">
+			<text><![CDATA[<p>e1///before code</p> <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="cf">assert</span> slay</span><br><span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="bu">print</span>(<span class="st">&amp;quot;serve&amp;quot;</span>)</span></code></pre></div> <p>after code</p> ]]></text>
+		</answer>
+		<single>false</single>
+	</question>
+	<question type="cloze">
+		<name format="html">
+			<text><![CDATA[<p>Cloze Question</p>]]></text>
+		</name>
+		<questiontext>
+			<text>FIB many answers desc {1:MCS:=before code
+```python
+assert slay
+print("serve")
+```
+after code~before code
+```python
+assert slay
+print("serve")
+```
+after code} {1:MCS:before code
+```python
+assert slay
+print("serve")
+```
+after code~=before code
+```python
+assert slay
+print("serve")
+```
+after code}</text>
+		</questiontext>
+		<shuffleanswers>1</shuffleanswers>
+	</question>
+	<question type="numerical">
+		<name format="html">
+			<text><![CDATA[<p>NUM</p>]]></text>
+		</name>
+		<questiontext format="html">
+			<text><![CDATA[<p>before code</p> <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="cf">assert</span> slay</span><br><span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="bu">print</span>(<span class="st">&amp;quot;serve&amp;quot;</span>)</span></code></pre></div> <p>after code</p> ]]></text>
+		</questiontext>
+		<answer fraction="100">
+			<text>100</text>
+		</answer>
+		<tolerance>10</tolerance>
 	</question>
 </quiz>

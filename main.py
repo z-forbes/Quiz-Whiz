@@ -16,33 +16,33 @@ parser = argparse.ArgumentParser(description='Markdown to Moodle/Learn Ultlra co
 
 # required
 parser.add_argument('input', type=str,
-                    help='Path of input file/directory')
+                    help='path of input file/directory')
 
 # optional
 parser.add_argument('--output', '-o', type=str,
-                    help='Path of output directory.')
+                    help='path of output directory (default "output/")')
 
 # optional args to select output(s)
 outputs = parser.add_argument_group()
 outputs.add_argument('--moodle', '-m', action='store_true',
-                    help='Produce Moodle output.')
+                    help='produce Moodle output')
 outputs.add_argument('--learn', '-l', action='store_true',
-                    help='Produce Mearn output.')
+                    help='produce Mearn output')
 
 # output modes
 parser.add_argument('--debug', '-d', action='store_true',
-                    help='Show detailed error messages.')
+                    help='show detailed error messages')
 
 parser.add_argument('--no_colour', '-nc', action='store_true',
-                    help='Do not output colour to terminal.')
+                    help="doesn't output colour to terminal")
 
 # question numbers
 nums = parser.add_mutually_exclusive_group()
 nums.add_argument('--add_nums', '-an', action='store_true',
-                    help='Adds question numbers to input file(s).')
+                    help='adds question numbers to input file(s)')
 
 nums.add_argument('--remove_nums', '-rn', action='store_true',
-                    help='Reverses --add_nums flag.')
+                    help='undos action of --add_nums')
 
 
 args = parser.parse_args()

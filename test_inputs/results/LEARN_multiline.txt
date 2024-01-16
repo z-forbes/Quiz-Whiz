@@ -1,0 +1,7 @@
+MC	<p>MC</p> <p>desc line 1</p> <p>desc line 2</p>	<p>correct line 1</p> <p>correct line 2</p>	correct	<p>incorrect line 1</p> <p>incorrect line 2</p>	incorrect
+TF	<p>TF</p> <p>desc line 1</p> <p>desc line 2</p>	true
+ESS	<p>Essay</p>	<p>desc line 1</p> <p>desc line 2</p>
+MAT	<p><p>Match</p> <p>desc line 1</p> <p>desc line 2</p></p>	<p>a1</p> <p>a2</p>	<p>b1</p>	<p>c1</p>	<p>d1</p> <p>d2</p>	<p>e1</p> <p>e2</p>	<p>f1</p> <p>f2</p>	<p>g1</p>	<br> <p>g2</p>
+FIB	FIB one answer ___ 	a line 1 a line 2
+FIB_PLUS	<p>FIB many answers desc [a] [b]</p> 	a	a1 line 1 a1 line 2		b	a2 line 2 a2 line 2	
+NUM	<p>NUM</p> <p>desc line 1</p> <p>desc line 2</p>	100	10

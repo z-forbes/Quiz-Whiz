@@ -1,10 +1,88 @@
 <quiz>
+	<question type="multichoice">
+		<name format="html">
+			<text><![CDATA[<p>MC</p>]]></text>
+		</name>
+		<questiontext format="html">
+			<text><![CDATA[<p>before <img src="https://lewisforbes.com/wp-content/uploads/2023/11/IMG_3137-min-1024x768.jpg" width="250" alt="alt text" /> after</p> ]]></text>
+		</questiontext>
+		<answer format="html" fraction="100">
+			<text><![CDATA[<p>before <img src="https://lewisforbes.com/wp-content/uploads/2023/11/IMG_3137-min-1024x768.jpg" width="250" alt="alt text" /> after</p> ]]></text>
+		</answer>
+		<answer format="html" fraction="0">
+			<text><![CDATA[<p>before <img src="https://lewisforbes.com/wp-content/uploads/2023/11/IMG_3137-min-1024x768.jpg" width="250" alt="alt text" /> after</p> ]]></text>
+		</answer>
+	</question>
+	<question type="truefalse">
+		<name format="html">
+			<text><![CDATA[<p>TF</p>]]></text>
+		</name>
+		<questiontext format="html">
+			<text><![CDATA[<p>before <img src="https://lewisforbes.com/wp-content/uploads/2023/11/IMG_3137-min-1024x768.jpg" width="250" alt="alt text" /> after</p> ]]></text>
+		</questiontext>
+		<answer fraction="100">
+			<text>true</text>
+		</answer>
+		<answer fraction="0">
+			<text>false</text>
+		</answer>
+	</question>
 	<question type="essay">
 		<name format="html">
-			<text><![CDATA[<p>placeholder</p>]]></text>
+			<text><![CDATA[<p>Essay</p>]]></text>
 		</name>
+		<questiontext format="html">
+			<text><![CDATA[<p>before <img src="https://lewisforbes.com/wp-content/uploads/2023/11/IMG_3137-min-1024x768.jpg" width="250" alt="alt text" /> after</p> ]]></text>
+		</questiontext>
 		<answer fraction="0">
 			<text />
 		</answer>
+	</question>
+	<question type="matching">
+		<name format="html">
+			<text><![CDATA[<p>Match</p>]]></text>
+		</name>
+		<questiontext format="html">
+			<text><![CDATA[<p>before <img src="https://lewisforbes.com/wp-content/uploads/2023/11/IMG_3137-min-1024x768.jpg" width="250" alt="alt text" /> after</p> ]]></text>
+		</questiontext>
+		<subquestion format="html">
+			<text><![CDATA[<p>before <img src="https://lewisforbes.com/wp-content/uploads/2023/11/IMG_3137-min-1024x768.jpg" width="250" alt="alt text" /> after</p> ]]></text>
+			<answer format="html">
+				<text><![CDATA[<p>before <img src="https://lewisforbes.com/wp-content/uploads/2023/11/IMG_3137-min-1024x768.jpg" width="250" alt="alt text" /> after</p> ]]></text>
+			</answer>
+		</subquestion>
+		<subquestion format="html">
+			<text><![CDATA[<p>a</p>]]></text>
+			<answer format="html">
+				<text><![CDATA[<p>before <img src="https://lewisforbes.com/wp-content/uploads/2023/11/IMG_3137-min-1024x768.jpg" width="250" alt="alt text" /> after</p> ]]></text>
+			</answer>
+		</subquestion>
+		<subquestion format="html">
+			<text><![CDATA[<p>before <img src="https://lewisforbes.com/wp-content/uploads/2023/11/IMG_3137-min-1024x768.jpg" width="250" alt="alt text" /> after</p> ]]></text>
+			<answer format="html">
+				<text><![CDATA[<p>b</p>]]></text>
+			</answer>
+		</subquestion>
+	</question>
+	<question type="cloze">
+		<name format="html">
+			<text><![CDATA[<p>Cloze Question</p>]]></text>
+		</name>
+		<questiontext>
+			<text>FIB many answers desc {1:MCS:=before ![alt text](https://lewisforbes.com/wp-content/uploads/2023/11/IMG_3137-min-1024x768.jpg){width=250px} after ~before ![alt text](https://lewisforbes.com/wp-content/uploads/2023/11/IMG_3137-min-1024x768.jpg){width=250px} after } {1:MCS:before ![alt text](https://lewisforbes.com/wp-content/uploads/2023/11/IMG_3137-min-1024x768.jpg){width=250px} after ~=before ![alt text](https://lewisforbes.com/wp-content/uploads/2023/11/IMG_3137-min-1024x768.jpg){width=250px} after }</text>
+		</questiontext>
+		<shuffleanswers>1</shuffleanswers>
+	</question>
+	<question type="numerical">
+		<name format="html">
+			<text><![CDATA[<p>NUM</p>]]></text>
+		</name>
+		<questiontext format="html">
+			<text><![CDATA[<p>before <img src="https://lewisforbes.com/wp-content/uploads/2023/11/IMG_3137-min-1024x768.jpg" width="250" alt="alt text" /> after</p> ]]></text>
+		</questiontext>
+		<answer fraction="100">
+			<text>100</text>
+		</answer>
+		<tolerance>10</tolerance>
 	</question>
 </quiz>
