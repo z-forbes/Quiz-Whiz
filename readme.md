@@ -1,6 +1,33 @@
 This program facilitates the creation of quiz questions for Moodle and Learn Ultra. 
-To use it, you must provide a markdown file of the following format...
 
+It is run through the command line as follows:
+
+`python3 main.py input [--moodle] [--learn] [--output OUTPUT] [--debug] [--no_colour] [--add_nums | --remove_nums]`
+
+Where...
+
+```
+Required:
+  input                         Path of input file/directory
+
+At least one required:
+  --moodle, -m                  Produce Moodle output.
+  --learn, -l                   Produce Mearn output.
+
+Independent options:
+  --output OUTPUT, -o OUTPUT    Path of output directory. Default "output/".
+
+  --debug, -d                   Show detailed error messages.
+
+  --no_colour, -nc              Doesn't output colour to terminal.
+
+Mutually exclusive options:
+  --add_nums, -an               Adds question numbers to input file(s).
+  --remove_nums, -rn            Undos action of --add_nums.
+```
+
+
+Input files are markdown files of the following format...
 ## Input File Structure
 Files consist of questions separated by one or more blank lines:
 
@@ -74,7 +101,7 @@ optional question description
 ```
 
 ### Essay
-Essay quesions do not have descriptions. `<br>` can be used to create a newline if required.
+Essay quesions do not have descriptions.
 ```
 # Question Title
 optional question placeholder
@@ -85,3 +112,6 @@ Images can be included in most questions, although Learn will reject images plac
 They can be either local or from the web. If local, images will be encoded in base 64 to be uploaded.
 
 They are included as follows `![alt text](path_to_image)`
+
+## Comments
+Comments are included by starting a line with '//'.
