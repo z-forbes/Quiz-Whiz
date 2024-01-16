@@ -12,8 +12,11 @@ def parse_input(fpath):
     f = safe_open(fpath, "r")
 
     q_current = []
-    Progress.reset()              
+    Progress.reset()
+    f_empty = True
     for line in f:
+        if f_empty and line.strip()!="": # first condition for efficiency
+            f_empty = False
         if line[0]=="#": # first line of question
             if len(q_current)!=0: # if not first question
                 if q_current[-1]=="":
@@ -26,6 +29,8 @@ def parse_input(fpath):
             to_add = line[:-1]
         q_current.append(to_add)
 
+    if f_empty:
+        error(f"Input file '{os.path.basename(fpath)}' is empty.")
     output.add_q(parse_question(q_current)) # add final q
     Progress.reset()              
     return output

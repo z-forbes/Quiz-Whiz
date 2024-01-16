@@ -16,7 +16,8 @@ def export(quiz, fpath):
         export_f = get_exporter(question.type)
         question_root = export_f(question)
         question_root = add_properties(question_root, question.properties)
-        root.append(question_root)
+        if question_root:
+            root.append(question_root)
 
     Progress.reset()
     tree = ET.ElementTree(root)
@@ -79,7 +80,8 @@ def MATCH_exporter(q):
 
 def CLOZE_exporter(q):
     if len(q.answers)==1:
-        error("Must have at least two choices in a cloze question.")
+        warning("Must have at least two choices in a cloze question. Skipping question.")
+        return None
     # makes the question text (there's probs a better way to do this)
     def mk_questiontext(q):
         q.verify() # ensure len(q.answers) == blanks in question
@@ -153,7 +155,7 @@ def e_with_txt(tag, text):
 
 # adds given properties to question/answer root and returns root
 def add_properties(root, props):
-    if not props:
+    if not props or not root:
         return root
     for pname, pval in props.items():
         if "feedback" in pname: # TODO verify heuristic

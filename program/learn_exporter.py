@@ -73,6 +73,9 @@ def MATCH_exporter(q):
 
 def CLOZE_exporter(q):
     q.verify() # check number of blanks is same as number of answers
+    if q.description:
+        warning("Descriptions not included in Cloze exports for Learn.")
+
     if len(q.answers)==1:
         return mk_FIB(q)
     else:
@@ -81,16 +84,16 @@ def CLOZE_exporter(q):
 # Cloze Helpers #
 # used for questions with one blank
 def mk_FIB(q):
-    content = [q.question.replace(Question.Cloze.BLANK_MARKER, "___"), q.answers[0]]
+    content = [q.question.replace(program.Question.Cloze.BLANK_MARKER, "___"), q.answers[0]]
     return arr_to_line(["FIB"]+[remove_tags(md_to_html(e)) for e in content])
 
 # used for questions with multiple blanks
 def mk_FIB_PLUS(q):
     if len(q.answers)>26:
-        error("too many answers in fill in blanks question") # TODO can you get more than 26?
+        error("Too many answers in fill in blanks question, Learn accepts a max of 26.") # TODO can you get more than 26?
 
     ALPH = "abcdefghijklmnopqrstuvwxyz"
-    BM = Question.Cloze.BLANK_MARKER
+    BM = program.Question.Cloze.BLANK_MARKER
     new_q = md_to_html(q.question)
     answers = []
     for i in range(new_q.count(BM)):

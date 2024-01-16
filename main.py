@@ -26,21 +26,28 @@ parser.add_argument('--output', '-o', type=str,
 
 # optional args to select output(s)
 parser.add_argument('--moodle', '-m', action='store_true',
-                    help='Produce moodle output.')
+                    help='Produce Moodle output.')
 parser.add_argument('--learn', '-l', action='store_true',
-                    help='Produce learn output.')
+                    help='Produce Mearn output.')
 
+# output modes
 parser.add_argument('--debug', '-d', action='store_true',
                     help='Show detailed error messages.')
 
-# parser.add_argument('--clear-output', action='store_true', 
-#                     help='Clear output folder before creating new output') 
+parser.add_argument('--no_colour', '-nc', action='store_true',
+                    help='Do not output colour to terminal.')
+
+
 args = parser.parse_args()
 
 # ensure output format is specified
 if not (args.learn or args.moodle):
     print(Fore.YELLOW)
     parser.error('No output format specified - include --moodle and/or --learn')
+
+# output dirname validation
+if args.output and (os.path.abspath("program") in os.path.abspath(args.output)):
+    error("Cannot write output within program directory.")
 
 
 ########
@@ -63,13 +70,9 @@ def main(args):
     print("Parsed question totals:")
     for q in quizzes:
         print(f"'{q.input_file}': {len(q.questions)}")
-
+    
     # output
     output_dir = "output"
-    # output dirname validation
-    
-    if args.output and path.basename(args.output)=="program":
-        error("Output directory cannot be the same as program directory")
     if args.output:
         output_dir = args.output
     if not path.isdir(output_dir):
@@ -77,26 +80,27 @@ def main(args):
             os.mkdir(output_dir)
         except:
             error(f"Unable to create directory '{output_dir}'")
-
-
-    # if args.clear_output:
-    #     old_dir = path.join(output_dir, "old_outputs")
-    #     if not path.exists(old_dir):
-    #         os.mkdir(old_dir)
-    #     old_fpaths = [path.join(output_dir,f) for f in os.listdir(output_dir) if not path.isdir(path.join(output_dir,f))] # paths of files in current output dir
         
-    print()
+    print() # newline in terminal
     for quiz in quizzes:
         print(f"Exporting {quiz.input_file}...")
+        bname = path.basename(quiz.input_file)
         if args.learn:
-            learn(quiz, path.join(output_dir, f"LEARN_{path.basename(quiz.input_file)}"))
+            learn(quiz, path.join(output_dir, f"LEARN_{change_ftype(bname, 'txt')}"))
         if args.moodle:
-            moodle(quiz, path.join(output_dir, f"MOODLE_{path.basename(quiz.input_file)}"))
+            moodle(quiz, path.join(output_dir, f"MOODLE_{change_ftype(bname, 'xml')}"))
 
     print(f"{Fore.GREEN}Success!{Fore.RESET}")
 
 
 ## EXCECUTION STARTS HERE ##
+if args.no_colour:
+    Fore.YELLOW = ""
+    Fore.RED = ""
+    Fore.BLUE = ""
+    Fore.GREEN = ""
+    Fore.RESET = ""
+
 # normal
 if not args.debug:
     try:
@@ -116,9 +120,9 @@ if args.debug:
         success = True # known error occured
     except:
         # print Utils.Progress details
-        if Progress.for_error()=="":
+        if Progress.current_action=="":
             print(f"{Fore.YELLOW}No progress update since start of excecution or since Utils.Progress reset.{Fore.RESET}\n")
         else:
-            print(f"{Fore.YELLOW}Error occured when{Progress.for_error()}.{Fore.RESET}\n")
+            print(f"{Fore.YELLOW}Error occured when{Progress.current_action}.{Fore.RESET}\n")
     if not success:
         main(args) # show error in full
