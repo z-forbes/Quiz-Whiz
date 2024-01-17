@@ -115,3 +115,17 @@ They are included as follows `![alt text](path_to_image){width=_px}`. Size infor
 
 ## Comments
 Comments are included by starting a line with '//'.
+
+## Newlines
+Where permitted, newlines are copied from markdown file to output. Newlines can also be added using `>>>`, useful when adding newlines to titles.
+
+The following are equivalent:
+```
+#  Question Title
+Description line 1
+Description line 2
+```
+```
+# Question Title
+Description line 1>>>Description line 2
+```
