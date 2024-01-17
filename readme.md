@@ -107,16 +107,17 @@ Essay quesions do not have descriptions.
 optional question placeholder
 ```
 
-## Images
+## Additional Formatting
+### Images
 Images can be included in most questions, although Learn will reject images placed in certain locations. 
 They can be either local or from the web. If local, images will be encoded in base 64 to be uploaded.
 
 They are included as follows `![alt text](path_to_image){width=_px}`. Size information inside `{}` is optional, see the [Pandoc documentation](https://pandoc.org/MANUAL.html#extension-link_attributes) for details. 
 
-## Comments
+### Comments
 Comments are included by starting a line with '//'.
 
-## Newlines
+### Newlines
 Where permitted, newlines are copied from markdown file to output. Newlines can also be added using `>>>`, useful when adding newlines to titles.
 
 The following are equivalent:
