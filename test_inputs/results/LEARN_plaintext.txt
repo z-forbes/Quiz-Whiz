@@ -6,11 +6,11 @@ TF	<p>TF without desc (F)</p>	false
 TF	<p>TF explicit (F)</p>	false
 ESS	<p>Essay desc</p>	<p>description</p>
 ESS	<p>Essay no desc</p>
-MAT	<p><p>Match desc</p> <p>description</p></p>	<p>2</p>	<p>4</p>	<p>3</p>	<p>9</p>	<p>4</p>	<p>16</p>
-MAT	<p><p>Match no desc</p></p>	<p>2</p>	<p>4</p>	<p>3</p>	<p>9</p>	<p>4</p>	<p>16</p>
-FIB	FIB one answer desc ___ 	answer
-FIB	FIB one answer no desc ___ 	answer
-FIB_PLUS	<p>FIB many answers desc [a] [b] [c]</p> 	a	answer 1		b	answer 2		c	answer 3	
+MAT	<p>Match desc</p> <p>description</p>	<p>2</p>	<p>4</p>	<p>3</p>	<p>9</p>	<p>4</p>	<p>16</p>
+MAT	<p>Match no desc</p>	<p>2</p>	<p>4</p>	<p>3</p>	<p>9</p>	<p>4</p>	<p>16</p>
+FIB	<p>FIB one answer desc ___</p> <p>description</p> 	answer ![test](https://lewisforbes.com/wp-content/uploads/2023/04/IMG_4681-1024x768.jpg){width=100px}
+FIB	<p>FIB one answer no desc ___</p> 	answer
+FIB_PLUS	<p>FIB many answers desc [a] [b] [c]</p> <p>description</p> 	a	answer 1		b	answer 2		c	answer 3	
 FIB_PLUS	<p>FIB many answers no desc [a] [b] [c]</p> 	a	answer 1		b	answer 2		c	answer 3	
 NUM	<p>NUM desc</p> <p>description</p>	100	10
 NUM	<p>NUM no desc</p>	100	10

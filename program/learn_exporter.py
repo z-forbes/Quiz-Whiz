@@ -67,15 +67,16 @@ def ESSAY_exporter(q):
     return arr_to_line(["ESS", md_to_html(q.question)] + placeholder)
 
 def MATCH_exporter(q):
-    line = [mk_qtext(q)]
+    answers = []
     for pair in q.answers:
-        line += pair
-    return arr_to_line(["MAT"] + [md_to_html(e) for e in line])
+        answers += pair
+    return arr_to_line(["MAT", mk_qtext(q)] + [md_to_html(e) for e in answers])
 
 def CLOZE_exporter(q):
     q.verify() # check number of blanks is same as number of answers
-    if q.description:
-        warning("Descriptions not included in Cloze exports for Learn.")
+    joined_answers = str(q.answers)[1:-1] # slice removes brackets
+    if ("\n" in joined_answers) or ("*" in joined_answers) or ("_" in joined_answers) or ("[" in joined_answers) or ("`" in joined_answers): # TODO >>> newline - deal with when parsing not in md_to_str()
+        warning("Non-plaintext (or newline) found in Match answers. Learn does not accept HTML so check results are as expected.")
 
     if len(q.answers)==1:
         return mk_FIB(q)
@@ -85,8 +86,11 @@ def CLOZE_exporter(q):
 # Cloze Helpers #
 # used for questions with one blank
 def mk_FIB(q):
-    content = [q.question.replace(program.Question.Cloze.BLANK_MARKER, "___"), q.answers[0]]
-    return arr_to_line(["FIB"]+[remove_tags(md_to_html(e)) for e in content])
+    old_q = q.question
+    q.question = q.question.replace(program.Question.Cloze.BLANK_MARKER, "___")
+    output = arr_to_line(["FIB"]+[mk_qtext(q), q.answers[0].replace("\n", " ")])
+    q.question = old_q
+    return output
 
 # used for questions with multiple blanks
 def mk_FIB_PLUS(q):
@@ -95,15 +99,15 @@ def mk_FIB_PLUS(q):
 
     ALPH = "abcdefghijklmnopqrstuvwxyz"
     BM = program.Question.Cloze.BLANK_MARKER
-    new_q = md_to_html(q.question)
+    new_q = mk_qtext(q)
     answers = []
     for i in range(new_q.count(BM)):
         BM_i = new_q.find(BM)
         pre_BM = new_q[0:BM_i]
         post_BM = new_q[BM_i+len(BM):]
-        new_q = pre_BM + "[{}]".format(ALPH[i]) + post_BM
-        answers += [ALPH[i], remove_tags(md_to_html(q.answers[i])), None]
-    
+        new_q = pre_BM + f"[{ALPH[i]}]" + post_BM
+        answers += [ALPH[i], q.answers[i].replace("\n", " "), None] # None adds extra tab
+
     return arr_to_line(["FIB_PLUS", new_q] + answers)
 
 

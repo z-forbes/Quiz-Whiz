@@ -151,6 +151,8 @@ def md_to_html(md_str):
             html = re.sub(old_re, 'alt="{}"/> '.format(alt), html) # move alt text to alt="", remove figcaption tag
         return html
 
+    ## MANUAL NEWLINE ##
+    md_str = md_str.replace(">>>", "\n")
 
     ## CHOOSE HOW TO CONVERT INITIAL MD ##
     if ("*" in md_str) or ("_" in md_str) or ("[" in md_str) or ("`" in md_str):

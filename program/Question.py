@@ -201,7 +201,7 @@ class Match(Question):
         for l in lines:
             current = l.split(Match.SPLITTER)
             if len(current)!=2:
-                error("match answers poorly formatted")
+                error("Match answers poorly formatted.")
             pairs.append(current)
         
         return pairs

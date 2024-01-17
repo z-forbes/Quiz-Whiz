@@ -51,7 +51,7 @@ description
 # FIB one answer desc []
 description
 
-1. answer
+1. answer ![test](https://lewisforbes.com/wp-content/uploads/2023/04/IMG_4681-1024x768.jpg){width=100px}    
 
 # FIB one answer no desc []
 
