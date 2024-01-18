@@ -3,9 +3,6 @@
 		<name format="html">
 			<text><![CDATA[<p>MC with desc</p>]]></text>
 		</name>
-		<questiontext format="html">
-			<text><![CDATA[<p>description</p>]]></text>
-		</questiontext>
 		<answer format="html" fraction="100">
 			<text><![CDATA[<p>correct</p>]]></text>
 		</answer>
@@ -47,9 +44,6 @@
 		<name format="html">
 			<text><![CDATA[<p>TF with desc (T)</p>]]></text>
 		</name>
-		<questiontext format="html">
-			<text><![CDATA[<p>description</p>]]></text>
-		</questiontext>
 		<answer fraction="100">
 			<text>true</text>
 		</answer>
@@ -83,9 +77,6 @@
 		<name format="html">
 			<text><![CDATA[<p>Essay desc</p>]]></text>
 		</name>
-		<questiontext format="html">
-			<text><![CDATA[<p>description</p>]]></text>
-		</questiontext>
 		<answer fraction="0">
 			<text />
 		</answer>
@@ -102,9 +93,6 @@
 		<name format="html">
 			<text><![CDATA[<p>Match desc</p>]]></text>
 		</name>
-		<questiontext format="html">
-			<text><![CDATA[<p>description</p>]]></text>
-		</questiontext>
 		<subquestion format="html">
 			<text><![CDATA[<p>2</p>]]></text>
 			<answer format="html">
@@ -169,9 +157,6 @@
 		<name format="html">
 			<text><![CDATA[<p>NUM desc</p>]]></text>
 		</name>
-		<questiontext format="html">
-			<text><![CDATA[<p>description</p>]]></text>
-		</questiontext>
 		<answer fraction="100">
 			<text>100</text>
 		</answer>

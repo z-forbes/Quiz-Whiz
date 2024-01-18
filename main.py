@@ -8,6 +8,8 @@ from program.input_parser import parse_input
 from program.learn_exporter import export as learn
 from program.moodle_exporter import export as moodle
 
+from tabulate import tabulate
+
 ############
 ## PARSER ##
 ############
@@ -103,7 +105,13 @@ def main(args):
         inputs = [args.input]
     
     nums_flags(args, inputs)
-    quizzes = [parse_input(i) for i in inputs]
+    quizzes = []
+    print("Parsing input(s)...", end=" ")
+    for i in inputs:
+        Progress.import_file = path.basename(i)
+        quizzes.append(parse_input(i))
+    Progress.import_file = None
+    print("finished!")
 
     # set all Quiz.input_file
     assert len(quizzes)==len(inputs)
@@ -111,9 +119,7 @@ def main(args):
         q.input_file = path.basename(inputs[i])
 
     # display parse summary
-    print("Parsed question totals:")
-    for q in quizzes:
-        print(f"'{q.input_file}': {len(q.questions)}")
+    print(tabulate([[q.input_file, len(q.questions)] for q in quizzes], tablefmt='rounded_outline', headers=["File", "Questions"]), end="")
     
     # output
     output_dir = "output"
@@ -127,14 +133,14 @@ def main(args):
         
     print() # newline in terminal
     for quiz in quizzes:
-        print(f"Exporting {quiz.input_file}...")
+        print(f"\nExporting {quiz.input_file}...")
         bname = path.basename(quiz.input_file)
         if args.learn:
             learn(quiz, path.join(output_dir, f"LEARN_{change_ftype(bname, 'txt')}"))
         if args.moodle:
             moodle(quiz, path.join(output_dir, f"MOODLE_{change_ftype(bname, 'xml')}"))
 
-    print(f"{Fore.GREEN}Finished!{Fore.RESET}")
+    print(f"\n{Fore.GREEN}Finished!{Fore.RESET}")
 
 
 ## EXCECUTION STARTS HERE ##

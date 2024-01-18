@@ -1,2 +1,1 @@
-MA	<p>test</p>	<p>hi</p>	incorrect	<p>hello</p>	incorrect
-MC	<p>test</p>	<p>hi</p>	correct	<p>hello</p>	incorrect
+ESS	<p>test</p>

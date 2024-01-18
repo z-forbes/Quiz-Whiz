@@ -41,22 +41,26 @@ def parse_input(fpath):
 # input: array of relevant lines for one question from input file
 # output: Question
 def parse_question(q_lines):
+    NEWLINE = ">>>"
     Progress.parse_update()
-    split_q = split_on_blank(q_lines, space_is_blank=False)
-    pre_answers = split_q[0] # question (and description)
-    if pre_answers[0][0]!="#":
+    question = q_lines[0].replace(NEWLINE, "\n")
+    if question[0]!="#":
         error("All questions must begin with '#'.") # called on first question only
+    
+    q_lines = [l.replace(NEWLINE, "\n") for l in q_lines[1:]]
+    split_q = split_on_blank(q_lines, space_is_blank=False)
+    desc = split_q[0] # [desc_line1, desc_line2, ...] or []
 
     answers = shrink_answers(split_q[1])
     verify_answers(answers) # ensures answers are of plausable format
     q_class = find_q_class(answers)
     parsed_answers = q_class.parse_answers(answers)
 
-    q = q_class(answers=parsed_answers, question=get_line_content(pre_answers[0]))
-    if len(pre_answers)>1:
+    q = q_class(answers=parsed_answers, question=get_line_content(question))
+    if len(desc)>=1:
         desc = ""
         # format multiline description
-        for l in pre_answers[1:]:
+        for l in desc:
             desc+=l+"\n"
         q.set_description(desc[:-1]) # trailing \n removed
  

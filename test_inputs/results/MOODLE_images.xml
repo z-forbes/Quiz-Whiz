@@ -3,9 +3,6 @@
 		<name format="html">
 			<text><![CDATA[<p>MC</p>]]></text>
 		</name>
-		<questiontext format="html">
-			<text><![CDATA[<p>before <img src="https://lewisforbes.com/wp-content/uploads/2023/11/IMG_3137-min-1024x768.jpg" width="250" alt="alt text" /> after</p> ]]></text>
-		</questiontext>
 		<answer format="html" fraction="100">
 			<text><![CDATA[<p>before <img src="https://lewisforbes.com/wp-content/uploads/2023/11/IMG_3137-min-1024x768.jpg" width="250" alt="alt text" /> after</p> ]]></text>
 		</answer>
@@ -17,9 +14,6 @@
 		<name format="html">
 			<text><![CDATA[<p>TF</p>]]></text>
 		</name>
-		<questiontext format="html">
-			<text><![CDATA[<p>before <img src="https://lewisforbes.com/wp-content/uploads/2023/11/IMG_3137-min-1024x768.jpg" width="250" alt="alt text" /> after</p> ]]></text>
-		</questiontext>
 		<answer fraction="100">
 			<text>true</text>
 		</answer>
@@ -31,9 +25,6 @@
 		<name format="html">
 			<text><![CDATA[<p>Essay</p>]]></text>
 		</name>
-		<questiontext format="html">
-			<text><![CDATA[<p>before <img src="https://lewisforbes.com/wp-content/uploads/2023/11/IMG_3137-min-1024x768.jpg" width="250" alt="alt text" /> after</p> ]]></text>
-		</questiontext>
 		<answer fraction="0">
 			<text />
 		</answer>
@@ -42,9 +33,6 @@
 		<name format="html">
 			<text><![CDATA[<p>Match</p>]]></text>
 		</name>
-		<questiontext format="html">
-			<text><![CDATA[<p>before <img src="https://lewisforbes.com/wp-content/uploads/2023/11/IMG_3137-min-1024x768.jpg" width="250" alt="alt text" /> after</p> ]]></text>
-		</questiontext>
 		<subquestion format="html">
 			<text><![CDATA[<p>before <img src="https://lewisforbes.com/wp-content/uploads/2023/11/IMG_3137-min-1024x768.jpg" width="250" alt="alt text" /> after</p> ]]></text>
 			<answer format="html">
@@ -77,9 +65,6 @@
 		<name format="html">
 			<text><![CDATA[<p>NUM</p>]]></text>
 		</name>
-		<questiontext format="html">
-			<text><![CDATA[<p>before <img src="https://lewisforbes.com/wp-content/uploads/2023/11/IMG_3137-min-1024x768.jpg" width="250" alt="alt text" /> after</p> ]]></text>
-		</questiontext>
 		<answer fraction="100">
 			<text>100</text>
 		</answer>

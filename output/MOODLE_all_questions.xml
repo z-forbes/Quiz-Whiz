@@ -1,25 +1,10 @@
 <quiz>
-	<question type="multichoice">
+	<question type="essay">
 		<name format="html">
 			<text><![CDATA[<p>test</p>]]></text>
 		</name>
-		<answer format="html" fraction="0">
-			<text><![CDATA[<p>hi</p>]]></text>
-		</answer>
-		<answer format="html" fraction="0">
-			<text><![CDATA[<p>hello</p>]]></text>
-		</answer>
-		<single>false</single>
-	</question>
-	<question type="multichoice">
-		<name format="html">
-			<text><![CDATA[<p>test</p>]]></text>
-		</name>
-		<answer format="html" fraction="100">
-			<text><![CDATA[<p>hi</p>]]></text>
-		</answer>
-		<answer format="html" fraction="0">
-			<text><![CDATA[<p>hello</p>]]></text>
+		<answer fraction="0">
+			<text />
 		</answer>
 	</question>
 </quiz>

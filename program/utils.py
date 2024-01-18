@@ -151,11 +151,8 @@ def md_to_html(md_str):
             html = re.sub(old_re, 'alt="{}"/> '.format(alt), html) # move alt text to alt="", remove figcaption tag
         return html
 
-    ## MANUAL NEWLINE ##
-    md_str = md_str.replace(">>>", "\n")
-
     ## CHOOSE HOW TO CONVERT INITIAL MD ##
-    if ("*" in md_str) or ("_" in md_str) or ("[" in md_str) or ("`" in md_str):
+    if has_formatting(md_str):
         md_str = format_not_code(md_str)
         html = md_to_html_pandoc(md_str)
     else:
@@ -200,6 +197,10 @@ def remove_props(s):
         return None
     props_pattern = "<<((?:\n|.)*?)>>"
     return re.sub(props_pattern, "", s)
+
+# returns true iff string possibly contains markdown formatting, images or code
+def has_formatting(s):
+    return ("*" in s) or ("_" in s) or ("[" in s) or ("`" in s)
 
 ############
 ## ARRAYS ##
@@ -256,23 +257,28 @@ def error(msg, show_progress=True):
         newline = ""
     else:
         msg = msg.replace("\n", newline)
+
+    import_file = ""
+    if Progress.import_file:
+        import_file = f" in '{Progress.import_file}'"
     
-    print(f"{Fore.RED}Error{progress}: {newline}{msg}{Fore.RESET}")
+    print(f"\n{Fore.RED}Error{progress}{import_file}: {newline}{msg}{Fore.RESET}")
     del_tmp_dir()
     sys.exit()
 
 # keeps track of progress for more descriptive errors
 class Progress:
+    import_file = None
     current_q = 0
     current_action = "" # parsing, exporting to moodle, exporting to learn
 
     def parse_update():
         Progress.current_q+=1
-        Progress.current_action = f" parsing question {Progress.current_q}"
+        Progress.current_action = f" parsing Q{Progress.current_q}"
 
     def export_update(service):
         Progress.current_q+=1
-        Progress.current_action = f" exporting question {Progress.current_q} to {service}"
+        Progress.current_action = f" exporting Q{Progress.current_q} to {service}"
 
     def reset():
         Progress.current_q = 0
@@ -283,7 +289,7 @@ def warning(msg, show_progress=True):
     progress = Progress.current_action
     if not show_progress:
         progress = ""
-    print(f"{Fore.BLUE}Warning while{progress}: {msg}{Fore.RESET}")
+    print(f"{Fore.BLUE}({progress.strip()}) \tWarning: {msg}{Fore.RESET}")
 
 ###########
 ## FILES ##
@@ -321,7 +327,7 @@ def file_copy(clear_output=False, current=None, new="/afs/inf.ed.ac.uk/user/s18/
 # open() with error checking
 def safe_open(fpath, m, encoding=None):
     if m=="r" and not os.path.exists(fpath):
-        error("Provided input file path does not exist.")
+        error(f"Provided input filepath ({fpath}) does not exist.")
     try:
         if encoding:
             return open(fpath, m, encoding=encoding)

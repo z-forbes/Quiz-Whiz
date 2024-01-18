@@ -75,7 +75,7 @@ def MATCH_exporter(q):
 def CLOZE_exporter(q):
     q.verify() # check number of blanks is same as number of answers
     joined_answers = str(q.answers)[1:-1] # slice removes brackets
-    if ("\n" in joined_answers) or ("*" in joined_answers) or ("_" in joined_answers) or ("[" in joined_answers) or ("`" in joined_answers): # TODO >>> newline - deal with when parsing not in md_to_str()
+    if ("\n" in joined_answers) or has_formatting(joined_answers):
         warning("Non-plaintext (or newline) found in Match answers. Learn does not accept HTML so check results are as expected.")
 
     if len(q.answers)==1:
