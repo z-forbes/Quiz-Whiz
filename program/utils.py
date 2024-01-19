@@ -284,9 +284,9 @@ def get_intersection(arr1, arr2):
     return output
 
 
-############
-## ERRORS ##
-############
+##############
+## TERMINAL ##
+##############
 
 # prints error and terminates program
 # progress always shown apart from when error is unexpected.
@@ -306,11 +306,14 @@ def error(msg, show_progress=True):
     del_tmp_dir()
     sys.exit()
 
-# keeps track of progress for more descriptive errors
+# keeps track of progress/status for more descriptive errors
 class Progress:
     import_file = None
     current_q = 0
     current_action = "" # parsing, exporting to moodle, exporting to learn
+    
+    warn_count = 0
+    quiet=False
 
     def parse_update():
         Progress.current_q+=1
@@ -326,10 +329,17 @@ class Progress:
 
 # prints warning message but doesn't exit program
 def warning(msg, show_progress=True):
+    Progress.warn_count+=1
     progress = Progress.current_action
     if not show_progress:
         progress = ""
-    print(f"{Fore.BLUE}({progress.strip()}) \tWarning: {msg}{Fore.RESET}")
+    my_print(f"{Fore.BLUE}({progress.strip()}) \tWarning: {msg}{Fore.RESET}")
+
+def my_print(x="", **kwargs):
+    if Progress.quiet:
+        return
+    print(x, **kwargs)
+
 
 ###########
 ## FILES ##
@@ -383,3 +393,4 @@ def change_ftype(fpath, newtype):
 # returns the comment marker
 def comment():
     return "//"
+

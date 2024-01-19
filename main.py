@@ -67,6 +67,9 @@ parser.add_argument('--debug', '-d', action='store_true',
 parser.add_argument('--no_colour', '-nc', action='store_true',
                     help="doesn't output colour to terminal")
 
+parser.add_argument('--quiet', '-q', action='store_true',
+                    help='suppresses all non-error outputs')
+
 # question numbers
 nums = parser.add_mutually_exclusive_group()
 nums.add_argument('--add_nums', '-an', action='store_true',
@@ -86,6 +89,9 @@ if not (args.learn or args.moodle):
 # output dirname validation
 if args.output and (os.path.abspath("program") in os.path.abspath(args.output)):
     error("Cannot write output within program directory.")
+
+if args.quiet:
+    Progress.quiet = True
 
 ########
 # MAIN #
@@ -134,12 +140,12 @@ def main(args):
     
     nums_flags(args, inputs)
     quizzes = []
-    print("Parsing input(s)...", end=" ")
+    my_print("Parsing input(s)...", end=" ")
     for i in inputs:
         Progress.import_file = path.basename(i)
         quizzes.append(parse_input(i))
     Progress.import_file = None
-    print("finished!")
+    my_print("finished!")
 
     # set all Quiz.input_file
     assert len(quizzes)==len(inputs)
@@ -147,8 +153,7 @@ def main(args):
         q.input_file = path.basename(inputs[i])
 
     # display parse summary
-    # print(tabulate([[q.input_file, len(q.questions)] for q in quizzes], tablefmt='rounded_outline', headers=["File", "Questions"]), end="")
-    print(make_parse_table(quizzes), end="")
+    my_print(make_parse_table(quizzes), end="")
 
     # output
     output_dir = "output"
@@ -160,16 +165,23 @@ def main(args):
         except:
             error(f"Unable to create directory '{output_dir}'")
         
-    print() # newline in terminal
+    my_print() # newline in terminal
     for quiz in quizzes:
-        print(f"\nExporting {quiz.input_file}...")
+        my_print(f"\nExporting {quiz.input_file}...")
         bname = path.basename(quiz.input_file)
         if args.learn:
             learn(quiz, path.join(output_dir, f"LEARN_{change_ftype(bname, 'txt')}"))
         if args.moodle:
             moodle(quiz, path.join(output_dir, f"MOODLE_{change_ftype(bname, 'xml')}"))
 
-    print(f"\n{Fore.GREEN}Finished!{Fore.RESET}")
+    with_warnings = ""
+    if Progress.warn_count!=0:
+        s="s"
+        if Progress.warn_count==1:
+            s = ""
+        with_warnings = f" with {Progress.warn_count} warning{s}"
+    my_print()
+    print(f"{Fore.GREEN}Finished{with_warnings}.{Fore.RESET}")
 
 
 ## EXCECUTION STARTS HERE ##
@@ -200,8 +212,9 @@ if args.debug:
     except:
         # print Utils.Progress details
         if Progress.current_action=="":
-            print(f"{Fore.YELLOW}No progress update since start of excecution or since Utils.Progress reset.{Fore.RESET}\n")
+            my_print(f"{Fore.YELLOW}No progress update since start of excecution or since Utils.Progress reset.{Fore.RESET}\n")
         else:
-            print(f"{Fore.YELLOW}Error occured when{Progress.current_action}.{Fore.RESET}\n")
+            my_print(f"{Fore.YELLOW}Error occured when{Progress.current_action}.{Fore.RESET}\n")
     if not success:
+        Progress.quiet = True # don't reshow program output
         main(args) # show error in full
