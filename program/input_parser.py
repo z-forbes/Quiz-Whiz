@@ -63,7 +63,6 @@ def parse_question(q_lines):
         for l in desc_arr:
             desc+=l+"\n"
         q.set_description(desc[:-1]) # trailing \n removed
-
     return q
 
 
