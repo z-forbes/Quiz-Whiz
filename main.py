@@ -1,6 +1,35 @@
 # Gets arguments from user, runs program.
+# Test user has required modules installed. Prompt them to install if not.
+def init_new_modules():
+    import tabulate
+    import pypandoc
+    import colorama
+
+try:
+    init_new_modules()
+except ModuleNotFoundError:
+    from sys import exit
+    from os import system
+    packages = ["tabulate", "pypandoc", "colorama"]
+    yes = ["(y)es", "y", "yes"]
+    no = ["(n)o", "n", "no"]
+    while True:
+        print("Missing required package(s).")
+        user_in = input(f"Install following: {str(packages)[1:-1]}?\n[{yes[0]}/{no[0]}] > ")
+        if user_in.lower() in yes:
+            break
+        if user_in.lower() in no:
+            print("Exiting.")
+            exit()
+        print("Invalid input.")
+    for p in packages:
+        system(f"pip install {p}")
+    print("Finished setup.")
+
+# Begin normal excecution
 import argparse
 import os.path as path
+import os
 
 from program.utils import *
 
@@ -57,7 +86,6 @@ if not (args.learn or args.moodle):
 # output dirname validation
 if args.output and (os.path.abspath("program") in os.path.abspath(args.output)):
     error("Cannot write output within program directory.")
-
 
 ########
 # MAIN #
@@ -119,8 +147,9 @@ def main(args):
         q.input_file = path.basename(inputs[i])
 
     # display parse summary
-    print(tabulate([[q.input_file, len(q.questions)] for q in quizzes], tablefmt='rounded_outline', headers=["File", "Questions"]), end="")
-    
+    # print(tabulate([[q.input_file, len(q.questions)] for q in quizzes], tablefmt='rounded_outline', headers=["File", "Questions"]), end="")
+    print(make_parse_table(quizzes), end="")
+
     # output
     output_dir = "output"
     if args.output:

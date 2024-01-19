@@ -6,6 +6,7 @@ import pypandoc
 import os
 from shutil import rmtree, copy
 import sys
+from tabulate import tabulate
 from colorama import Fore, init
 init()
 
@@ -201,6 +202,45 @@ def remove_props(s):
 # returns true iff string possibly contains markdown formatting, images or code
 def has_formatting(s):
     return ("*" in s) or ("_" in s) or ("[" in s) or ("`" in s)
+
+# makes table summarising parsed questions
+def make_parse_table(quizzes):
+    FILE = "File"
+    TOTAL = "Total Qs"
+    to_write = {FILE:[], TOTAL:[]}
+    # get all qtypes
+    for quiz in quizzes:
+        for qtype in quiz.question_summary():
+            to_write[qtype]=[]
+
+    # find qtype counts in each quiz
+    totals = []
+    for quiz in quizzes:
+        summary = quiz.question_summary()
+        to_write[TOTAL].append(sum(summary.values()))
+        for qtype in to_write:
+            if qtype==TOTAL:
+                continue
+            if qtype==FILE: # not actually qtype
+                to_write[FILE].append(quiz.input_file)
+            else:
+                if qtype in summary:
+                    to_write[qtype].append(summary[qtype])
+                else:
+                    to_write[qtype].append(0)
+
+    # add totals column
+    if len(quizzes)>1:
+        to_write[FILE] += ["-", "Total"]
+        for key in to_write:
+            if key==FILE:
+                continue
+            to_write[key] += ["-",sum(to_write[key])]
+
+    
+    return tabulate(to_write, tablefmt='rounded_outline', headers="keys")
+
+
 
 ############
 ## ARRAYS ##

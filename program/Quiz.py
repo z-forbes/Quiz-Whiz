@@ -7,3 +7,12 @@ class Quiz:
     def add_q(self, q):
         self.questions.append(q)
 
+    # returns summary of questions: {QType:count}
+    def question_summary(self):
+        output = {}
+        for q in self.questions:
+            if q.type.value in output:
+                output[q.type.value]+=1
+            else:
+                output[q.type.value]=1
+        return output

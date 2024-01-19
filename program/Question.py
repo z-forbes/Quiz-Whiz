@@ -5,13 +5,14 @@ from program.Answer import Answer
 import re
 
 # Question Types #
+# ensure values are unique!
 class QType(Enum):
-    MC = 1     # Basic()
-    TF = 2     # Basic()
-    ESSAY = 3  # Basic()
-    CLOZE = 4  # Cloze()
-    MATCH = 5  # Match()
-    NUM = 6    # Num()
+    MC     = "MC"       # Basic()
+    TF     = "TF"       # Basic()
+    ESSAY  = "Essay"    # Basic()
+    CLOZE  = "Cloze"    # Cloze()
+    MATCH  = "Match"    # Match()
+    NUM    = "Numeric"  # Num()
 
 #######################
 # ABSTRACT SUPERCLASS #

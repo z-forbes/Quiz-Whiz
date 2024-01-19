@@ -3,3 +3,7 @@ import program.learn_exporter as learn_exporter
 import program.moodle_exporter as moodle_exporter
 from os import listdir
 from program.utils import *
+from program.Question import QType
+
+a = QType.MATCH
+print(a.value)
