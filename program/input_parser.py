@@ -49,7 +49,7 @@ def parse_question(q_lines):
     
     q_lines = [l.replace(NEWLINE, "\n") for l in q_lines[1:]]
     split_q = split_on_blank(q_lines, space_is_blank=False)
-    desc = split_q[0] # [desc_line1, desc_line2, ...] or []
+    desc_arr = split_q[0] # [desc_line1, desc_line2, ...] or []
 
     answers = shrink_answers(split_q[1])
     verify_answers(answers) # ensures answers are of plausable format
@@ -57,13 +57,13 @@ def parse_question(q_lines):
     parsed_answers = q_class.parse_answers(answers)
 
     q = q_class(answers=parsed_answers, question=get_line_content(question))
-    if len(desc)>=1:
+    if len(desc_arr)>=1:
         desc = ""
         # format multiline description
-        for l in desc:
+        for l in desc_arr:
             desc+=l+"\n"
         q.set_description(desc[:-1]) # trailing \n removed
- 
+
     return q
 
 

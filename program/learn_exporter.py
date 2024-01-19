@@ -76,7 +76,7 @@ def CLOZE_exporter(q):
     q.verify() # check number of blanks is same as number of answers
     joined_answers = str(q.answers)[1:-1] # slice removes brackets
     if ("\n" in joined_answers) or has_formatting(joined_answers):
-        warning("Non-plaintext (or newline) found in Match answers. Learn does not accept HTML so check results are as expected.")
+        warning("Non-plaintext (or newline) found in Fill in Blanks answers. Learn does not accept HTML so check results are as expected.")
 
     if len(q.answers)==1:
         return mk_FIB(q)
