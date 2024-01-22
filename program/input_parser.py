@@ -80,7 +80,7 @@ def shrink_answers(answers):
     current = ""
     for a in answers:
         if a=="":
-            error(f"Blank line found in answers/description. Add a space to include in output or '{comment()}' to hide in output.")
+            error(f"Blank line found in answers/description. Add a space to include in output or '{comment()}' to hide in output.\nInclude --add_numbers flag to find erroneous question, check start/end of file for extra newlines.")
         if a[0]=="-" or type(force_type(a[0]))==int: # starts with - or int
             if current != "":
                 current = current[:-1] # remove trailing newline

@@ -7,3 +7,5 @@ from program.Question import QType
 
 a = QType.MATCH
 print(a.value)
+
+print("test")

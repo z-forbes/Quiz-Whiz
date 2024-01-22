@@ -175,7 +175,7 @@ def main(args):
         if args.moodle:
             moodle(quiz, path.join(output_dir, f"MOODLE_{change_ftype(bname, 'xml')}"))
 
-    with_warnings = ""
+    with_warnings = " with no warnings"
     if Progress.warn_count!=0:
         s="s"
         if Progress.warn_count==1:
