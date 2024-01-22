@@ -392,5 +392,5 @@ def change_ftype(fpath, newtype):
 
 # returns the comment marker
 def comment():
-    return ";"
+    return ":"
 

@@ -100,7 +100,8 @@ def main(args):
     # deals with --add_nums and --remove_nums
     def nums_flags(args, inputs):
         assert not (args.add_nums and args.remove_nums)
-        qnum = comment() + " Question {} //\n"
+        # qnum = comment() + " Question {} //\n"
+        qnum = comment()*2 + " Question {} " + comment()*2 + "\n" # no f"_" as using .format() later 
         if args.add_nums:
             for fpath in inputs:
                 q_i = 0
