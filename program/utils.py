@@ -390,7 +390,16 @@ def safe_open(fpath, m, encoding=None):
 def change_ftype(fpath, newtype):
     return os.path.splitext(fpath)[0]+"."+newtype.replace(".", "")
 
-# returns the comment marker
+# returns the comment marker (global variable)
 def comment():
     return ":"
 
+# moves files to the shared vm folder for testing
+def to_vm(from_dir, dice=True):
+    import shutil
+    if dice:
+        to_dir = "/afs/inf.ed.ac.uk/user/s18/s1843023/Documents/new_vm/shared"
+    else:
+        error("Add windows fpath")
+    for fpath in os.listdir(from_dir):
+        shutil.copy(os.path.join(from_dir, fpath), to_dir)

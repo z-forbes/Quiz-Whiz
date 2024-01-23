@@ -78,6 +78,11 @@ nums.add_argument('--add_nums', '-an', action='store_true',
 nums.add_argument('--remove_nums', '-rn', action='store_true',
                     help='undos action of --add_nums')
 
+# TODO delete
+nums.add_argument('--export', '-e', action='store_true', help="moves results to shared vm folder")
+
+
+
 
 args = parser.parse_args()
 
@@ -181,6 +186,12 @@ def main(args):
         if Progress.warn_count==1:
             s = ""
         with_warnings = f" with {Progress.warn_count} warning{s}"
+    
+    # TODO delete
+    if args.export:
+        to_vm(output_dir)
+    # end delete
+    
     my_print()
     print(f"{Fore.GREEN}Finished{with_warnings}.{Fore.RESET}")
 
