@@ -4,13 +4,13 @@
 			<text><![CDATA[<p>MC</p>]]></text>
 		</name>
 		<questiontext format="html">
-			<text><![CDATA[<p>before code</p> <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> slay</span><br><span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&amp;quot;serve&amp;quot;</span>)</span></code></pre></div> <p>after code</p> ]]></text>
+			<text><![CDATA[<p>before code</p> <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="cf">assert</span> slay</span><br><span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="bu">print</span>(<span class="st">&amp;quot;serve&amp;quot;</span>)</span></code></pre></div> <p>after code</p> ]]></text>
 		</questiontext>
 		<answer format="html" fraction="100">
-			<text><![CDATA[<p>before code</p> <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> slay</span><br><span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&amp;quot;serve&amp;quot;</span>)</span></code></pre></div> <p>after code</p> ]]></text>
+			<text><![CDATA[<p>before code</p> <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="cf">assert</span> slay</span><br><span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="bu">print</span>(<span class="st">&amp;quot;serve&amp;quot;</span>)</span></code></pre></div> <p>after code</p> ]]></text>
 		</answer>
 		<answer format="html" fraction="0">
-			<text><![CDATA[<p>before code</p> <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> slay</span><br><span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&amp;quot;serve&amp;quot;</span>)</span></code></pre></div> <p>after code</p> ]]></text>
+			<text><![CDATA[<p>before code</p> <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="cf">assert</span> slay</span><br><span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="bu">print</span>(<span class="st">&amp;quot;serve&amp;quot;</span>)</span></code></pre></div> <p>after code</p> ]]></text>
 		</answer>
 	</question>
 	<question type="truefalse">
@@ -18,7 +18,7 @@
 			<text><![CDATA[<p>TF</p>]]></text>
 		</name>
 		<questiontext format="html">
-			<text><![CDATA[<p>before code</p> <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> slay</span><br><span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&amp;quot;serve&amp;quot;</span>)</span></code></pre></div> <p>after code</p> ]]></text>
+			<text><![CDATA[<p>before code</p> <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="cf">assert</span> slay</span><br><span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="bu">print</span>(<span class="st">&amp;quot;serve&amp;quot;</span>)</span></code></pre></div> <p>after code</p> ]]></text>
 		</questiontext>
 		<answer fraction="100">
 			<text>true</text>
@@ -32,7 +32,7 @@
 			<text><![CDATA[<p>Essay</p> <pre><code>def slay()</code></pre> ]]></text>
 		</name>
 		<questiontext format="html">
-			<text><![CDATA[<p>before code</p> <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> slay</span><br><span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&amp;quot;serve&amp;quot;</span>)</span></code></pre></div> <p>after code</p> ]]></text>
+			<text><![CDATA[<p>before code</p> <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="cf">assert</span> slay</span><br><span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="bu">print</span>(<span class="st">&amp;quot;serve&amp;quot;</span>)</span></code></pre></div> <p>after code</p> ]]></text>
 		</questiontext>
 		<answer fraction="0">
 			<text />
@@ -43,16 +43,16 @@
 			<text><![CDATA[<p>Match</p>]]></text>
 		</name>
 		<questiontext format="html">
-			<text><![CDATA[<p>before code</p> <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> slay</span><br><span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&amp;quot;serve&amp;quot;</span>)</span></code></pre></div> <p>after code</p> ]]></text>
+			<text><![CDATA[<p>before code</p> <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="cf">assert</span> slay</span><br><span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="bu">print</span>(<span class="st">&amp;quot;serve&amp;quot;</span>)</span></code></pre></div> <p>after code</p> ]]></text>
 		</questiontext>
 		<subquestion format="html">
-			<text><![CDATA[<p>before code</p> <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> slay</span><br><span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&amp;quot;serve&amp;quot;</span>)</span></code></pre></div> <p>after code</p> ]]></text>
+			<text><![CDATA[<p>before code</p> <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="cf">assert</span> slay</span><br><span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="bu">print</span>(<span class="st">&amp;quot;serve&amp;quot;</span>)</span></code></pre></div> <p>after code</p> ]]></text>
 			<answer format="html">
-				<text><![CDATA[<p>before code</p> <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> slay</span><br><span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&amp;quot;serve&amp;quot;</span>)</span></code></pre></div> <p>after code</p> ]]></text>
+				<text><![CDATA[<p>before code</p> <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="cf">assert</span> slay</span><br><span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="bu">print</span>(<span class="st">&amp;quot;serve&amp;quot;</span>)</span></code></pre></div> <p>after code</p> ]]></text>
 			</answer>
 		</subquestion>
 		<subquestion format="html">
-			<text><![CDATA[<p>before code</p> <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> slay</span><br><span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&amp;quot;serve&amp;quot;</span>)</span></code></pre></div> <p>after code</p> ]]></text>
+			<text><![CDATA[<p>before code</p> <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="cf">assert</span> slay</span><br><span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="bu">print</span>(<span class="st">&amp;quot;serve&amp;quot;</span>)</span></code></pre></div> <p>after code</p> ]]></text>
 			<answer format="html">
 				<text><![CDATA[<p>d1</p>]]></text>
 			</answer>
@@ -60,7 +60,7 @@
 		<subquestion format="html">
 			<text><![CDATA[<p>e1</p>]]></text>
 			<answer format="html">
-				<text><![CDATA[<p>before code</p> <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> slay</span><br><span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&amp;quot;serve&amp;quot;</span>)</span></code></pre></div> <p>after code</p> ]]></text>
+				<text><![CDATA[<p>before code</p> <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="cf">assert</span> slay</span><br><span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="bu">print</span>(<span class="st">&amp;quot;serve&amp;quot;</span>)</span></code></pre></div> <p>after code</p> ]]></text>
 			</answer>
 		</subquestion>
 	</question>
@@ -98,7 +98,7 @@ after code}</text>
 			<text><![CDATA[<p>NUM</p>]]></text>
 		</name>
 		<questiontext format="html">
-			<text><![CDATA[<p>before code</p> <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> slay</span><br><span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&amp;quot;serve&amp;quot;</span>)</span></code></pre></div> <p>after code</p> ]]></text>
+			<text><![CDATA[<p>before code</p> <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="cf">assert</span> slay</span><br><span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="bu">print</span>(<span class="st">&amp;quot;serve&amp;quot;</span>)</span></code></pre></div> <p>after code</p> ]]></text>
 		</questiontext>
 		<answer fraction="100">
 			<text>100</text>

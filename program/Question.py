@@ -143,7 +143,8 @@ class Basic(Question):
     
     def get_correct_as(self):
         return [a for a in self.answers if a.correct]
-
+    
+    
     # static method
     # returns general [Answer], MC, TF etc not decided here 
     def parse_answers(lines):

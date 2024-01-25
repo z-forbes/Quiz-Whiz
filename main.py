@@ -36,6 +36,8 @@ from program.utils import *
 from program.input_parser import parse_input
 from program.learn_exporter import export as learn
 from program.moodle_exporter import export as moodle
+from program.markdown_exporter import export as markdown
+
 
 from tabulate import tabulate
 
@@ -79,15 +81,15 @@ nums.add_argument('--remove_nums', '-rn', action='store_true',
                     help='undos action of --add_nums')
 
 # TODO delete
-nums.add_argument('--export', '-e', action='store_true', help="moves results to shared vm folder")
+parser.add_argument('--export', '-e', action='store_true', help="moves results to shared vm folder")
 
-
+parser.add_argument('--temp', action='store_true')
 
 
 args = parser.parse_args()
 
 # ensure output format is specified
-if not (args.learn or args.moodle):
+if not (args.learn or args.moodle or args.temp):
     print(Fore.YELLOW)
     parser.error('No output format specified - include --moodle and/or --learn')
 
@@ -179,6 +181,8 @@ def main(args):
             learn(quiz, path.join(output_dir, f"LEARN_{change_ftype(bname, 'txt')}"))
         if args.moodle:
             moodle(quiz, path.join(output_dir, f"MOODLE_{change_ftype(bname, 'xml')}"))
+        if args.temp:
+            markdown(quiz, path.join(output_dir, f"MARKDOWN_{change_ftype(bname, 'md')}"))
 
     with_warnings = " with no warnings"
     if Progress.warn_count!=0:
