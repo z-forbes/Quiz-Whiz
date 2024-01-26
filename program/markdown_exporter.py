@@ -16,12 +16,23 @@ def export(quiz, fpath):
     for question in quiz.questions:
         Progress.export_update("Markdown")
         export_f = get_exporter(question.type)
-        output += export_f(question)+"\n"
+        output += export_f(question)+"\n\\\n\n"
     Progress.reset()    
     f = safe_open(fpath, "w", encoding="utf-8")
     f.write(output)
     f.close()
-    del_tmp_dir()
+
+def mk_no_correct(fpath):
+    f = safe_open(fpath, "r")
+    contents = f.read()
+    f.close()
+    
+    new_fpath = os.path.join(TMP_DIR(), "no_correct"+os.path.basename(fpath))
+    f = safe_open(new_fpath, "w")
+    f.write(re.sub(mk_correct("(.|\n)*?"),"", contents))
+    f.close()
+    return new_fpath
+
 
 ############### 
 ## EXPORTERS ## 
@@ -30,38 +41,36 @@ def export(quiz, fpath):
 
 def MC_exporter(q):
     output = mk_title_desc(q)
+    correct = []
     for i, a in enumerate(q.answers):
         output += f"\n{i+1}. {a.body}"
-    correct = [(i+1) for i,a in enumerate(q.answers) if a.correct]
+        if a.correct:
+            correct.append(i+1)
+
     if correct==[]:
-        correct="None"
-    else:
-        correct=str(correct)[1:-1]
-    output+= "\n" + correct_line(correct)
-    return output
+        correct="_None_"
+    return output + mk_correct(str(correct)[1:-1])
 
 
 def TF_exporter(q):
     correct = q.get_correct_as()
     if len(correct)!=1:
         error("not 1 correct answer in TF question")
-    return mk_title_desc(q) + "\n1. True\n2. False\n" + correct_line(correct[0].body)
+    return mk_title_desc(q) + "\n1. True\n2. False\n" + mk_correct(correct[0].body)
 
 def NUM_exporter(q):
-    return mk_title_desc(q) + correct_line(f"{q.get_answer()} ± {q.get_tolerance()}")
+    return mk_title_desc(q) + mk_correct(f"{q.get_answer()} ± {q.get_tolerance()}")
 
 def ESSAY_exporter(q):
-    return mk_title_desc(q)
+    return mk_title_desc(q) + "\n"
 
 def MATCH_exporter(q):
     # no input validation. 
     # headers: [a,b], contents: [[a,b],[c,d],...,[e,f]]
-    def mk_table(contents, headers=["Group 1", "Group 2"], correct=False):
+    def mk_table(contents, headers=["Group 1", "Group 2"]):
         rows = [headers] + [["---", "---"]] + contents
         output = ""
         for r in rows:
-            if correct:
-                output += correct_marker() + " "
             output += f"| {r[0]} | {r[1]} |\n"
         return "\n"+output
     
@@ -74,14 +83,31 @@ def MATCH_exporter(q):
 
     output = mk_title_desc(q) + "\n"
     output += "Match each item in the first group to one in the second group:\n" + mk_table(shuffle_answers(q.answers))
-    output += correct_line("\n" + mk_table(q.answers, correct=True))
+    output += mk_correct("\n" + mk_table(q.answers))
     return output
-
 
 def CLOZE_exporter(q):
     q.verify() # check number of blanks is same as number of answers
-    # TODO
-    pass
+    
+    # title and descripton
+    question_old = q.question
+    q.question = q.question.replace("[]", f"[{'&nbsp;'*5}]")
+    output = mk_title_desc(q)
+    q.question = question_old
+    
+    # options
+    if len(q.answers)>1:
+        output += "\n\nOptions:\n\n"
+        as_copy = q.answers[:]
+        shuffle(as_copy)
+        for a in as_copy:
+            output += f"- {a}\n"
+    
+    # correct
+    correct = q.question
+    for a in q.answers:
+        correct = correct.replace("[]", f"**[{a}]**", 1)
+    return output + mk_correct(correct)
 
 
 
@@ -96,11 +122,9 @@ def get_exporter(qtype):
 def mk_title_desc(question):
     output = f"### {question.question}"
     if question.description:
-        output += f"\n{question.description}\n"
+        output += f"\n{question.description}"
+
     return output
 
-def correct_line(correct):
-    return f"\n{correct_marker()}Correct: {correct}\n"
-
-def correct_marker():
-    return "<!---- correct! --->"
+def mk_correct(answer):
+    return f"\n\n<!-- correct start -->\nCorrect: {answer}\n<!-- correct end -->\n"

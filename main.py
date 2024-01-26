@@ -37,6 +37,7 @@ from program.input_parser import parse_input
 from program.learn_exporter import export as learn
 from program.moodle_exporter import export as moodle
 from program.markdown_exporter import export as markdown
+from program.markdown_exporter import mk_no_correct
 
 
 from tabulate import tabulate
@@ -52,15 +53,19 @@ parser.add_argument('input', type=str,
                     help='path of input file/directory')
 
 # optional
-parser.add_argument('--output', '-o', type=str,
+parser.add_argument('--output', '-o', type=str, dest='path',
                     help='path of output directory (default "output/")')
 
 # optional args to select output(s)
 outputs = parser.add_argument_group()
 outputs.add_argument('--moodle', '-m', action='store_true',
                     help='produce Moodle output')
+
 outputs.add_argument('--learn', '-l', action='store_true',
                     help='produce Mearn output')
+
+outputs.add_argument('--file', '-f', type=str, dest="ext", nargs='+',
+                     help='file extention(s) of output file(s)')
 
 # output modes
 parser.add_argument('--debug', '-d', action='store_true',
@@ -83,18 +88,16 @@ nums.add_argument('--remove_nums', '-rn', action='store_true',
 # TODO delete
 parser.add_argument('--export', '-e', action='store_true', help="moves results to shared vm folder")
 
-parser.add_argument('--temp', action='store_true')
-
 
 args = parser.parse_args()
 
 # ensure output format is specified
-if not (args.learn or args.moodle or args.temp):
+if not (args.learn or args.moodle or args.ext):
     print(Fore.YELLOW)
     parser.error('No output format specified - include --moodle and/or --learn')
 
 # output dirname validation
-if args.output and (os.path.abspath("program") in os.path.abspath(args.output)):
+if args.path and (os.path.abspath("program") in os.path.abspath(args.path)):
     error("Cannot write output within program directory.")
 
 if args.quiet:
@@ -165,8 +168,8 @@ def main(args):
 
     # output
     output_dir = "output"
-    if args.output:
-        output_dir = args.output
+    if args.path:
+        output_dir = args.path
     if not path.isdir(output_dir):
         try:
             os.mkdir(output_dir)
@@ -181,8 +184,24 @@ def main(args):
             learn(quiz, path.join(output_dir, f"LEARN_{change_ftype(bname, 'txt')}"))
         if args.moodle:
             moodle(quiz, path.join(output_dir, f"MOODLE_{change_ftype(bname, 'xml')}"))
-        if args.temp:
-            markdown(quiz, path.join(output_dir, f"MARKDOWN_{change_ftype(bname, 'md')}"))
+        if args.ext:
+            mk_tmp_dir()
+            tmp_correct = path.join(TMP_DIR(), "for_file_convert.md")
+            markdown(quiz, tmp_correct)
+            tmp_no_correct = mk_no_correct(tmp_correct)
+            for ftype in args.ext:
+                try:
+                    pypandoc.convert_file(tmp_correct, ftype, format='md', extra_args=['--mathjax'],
+                                        outputfile=path.join(output_dir, f"{ftype.upper()}_sols_{change_ftype(bname, ftype)}",))
+                    pypandoc.convert_file(tmp_no_correct, ftype, format='md', extra_args=['--mathjax'],
+                                    outputfile=path.join(output_dir, f"{ftype.upper()}_no_sols_{change_ftype(bname, ftype)}",))
+                except RuntimeError as e:
+                    e = str(e)                    
+                    if "Invalid output format!" in e:
+                        error(f"Invalid file type specified ({ftype}). Must be one of:\n{e.split(':')[1]}")
+                    else:
+                        error("Unexpected pandoc error occured.\n" + e.replace("\nTry pandoc --help for more information.", ""))
+            del_tmp_dir()
 
     with_warnings = " with no warnings"
     if Progress.warn_count!=0:

@@ -5,7 +5,6 @@ Optional description
 2. second blank
 3. third blank
 
-
 # 2. Close/fill in blanks: this [] is [] the [] question.
 
 1. 2first blank

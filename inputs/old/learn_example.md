@@ -45,7 +45,7 @@
 :: Question 8 ::
 # Approximately, how many species of birds are there?
 
-- 10000 (1000)
+- 10000 [1000]
 
 :: Question 9 ::
 # What is the output of the following function, for $a=2$ and $b=3$
@@ -60,7 +60,7 @@ def f(a, b):
 
 :: Question 10 ::
 # What animal is this? 
-![](images/snail.png)
+![](/afs/inf.ed.ac.uk/user/s18/s1843023/Downloads/ug5-project-main/inputs/images/snail.png)
 
 - Giraffe
 - ^Snail
@@ -74,4 +74,3 @@ def f(a, b):
 - ![](https://www.worldometers.info/img/flags/bl-flag.gif)
 - ![](https://www.worldometers.info/img/flags/br-flag.gif)
 - ![](https://www.worldometers.info/img/flags/gy-flag.gif)
-
