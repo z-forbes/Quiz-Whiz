@@ -42,7 +42,7 @@ def f(a, b):
 - 6
 
 # What animal is this? 
-![](images/snail.png)
+![](C:\Users\lforbes3\Downloads\ug5-project-main\ug5-project-main\inputs\images\snail.png)
 
 - Giraffe
 - ^Snail

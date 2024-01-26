@@ -1,5 +1,5 @@
 # Utils used accross program
-from markdown import markdown # TODO remove. talk about in report.
+# from markdown import markdown # TODO remove. talk about in report.
 import re
 import base64
 import pypandoc
@@ -214,7 +214,6 @@ def make_parse_table(quizzes):
             to_write[qtype]=[]
 
     # find qtype counts in each quiz
-    totals = []
     for quiz in quizzes:
         summary = quiz.question_summary()
         to_write[TOTAL].append(sum(summary.values()))
@@ -338,6 +337,7 @@ def warning(msg, show_progress=True):
 def my_print(x="", **kwargs):
     if Progress.quiet:
         return
+    
     print(x, **kwargs)
 
 
