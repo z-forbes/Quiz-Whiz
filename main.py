@@ -28,7 +28,17 @@ except ModuleNotFoundError:
         print("Invalid input.\n")
     for p in packages:
         system(f"pip install {p}")
-    print("\nFinished setup.\n")
+    print("\nPackages installed.\n")
+
+# check pandoc installed
+try:
+    import pypandoc
+    pypandoc.convert_text("example", "html", format="md")
+except OSError:
+    print("No Pandoc installation found. Download from URL below and ensure 'pandoc' added to PATH.")
+    print("https://pandoc.org/installing.html")
+    input("\nPress ENTER to exit.")
+    exit()
 
 # Begin normal excecution
 import argparse
