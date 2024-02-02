@@ -51,7 +51,7 @@ def f(a, b):
 
 # Which flag is the odd one out?
 
-- ^![](https://www.worldometers.info/img/flags/be-flag.gif)
+- ^![](https://www.worldometers.info/img/flags/be-flag.gif){width=10px}
 - ![](https://www.worldometers.info/img/flags/bl-flag.gif)
 - ![](https://www.worldometers.info/img/flags/br-flag.gif)
 - ![](https://www.worldometers.info/img/flags/gy-flag.gif)
