@@ -46,39 +46,35 @@ def pandoc_fr(md_str):
 
 
 md = '''
-normal text 
-code:
-```python
-def sum(a,b):
-    return a+b
-```
-local image: ![alt text](inputs/images/dot.png)
-web image: ![alt text](https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSai5tNIi1MsKHbPiTwr6-fM4eyCUWwJMZGB7xnQbAy3KNGmxnt){width=100px}
-**bold text** *italic test*
+![](inputs\images\snail.png)
 '''
 # with open("delete.html", "w") as f:
 #     f.write(md_to_html_pandoc(md))
 #     # f.write(markdown.markdown(md))
 #     # f.wr_te(markdown2.markdown(md))
 
-start = timer()
-for _ in range(1000):
-    markdown.markdown(md)
-print(timer() - start)
+# start = timer()
+# for _ in range(10):
+#     markdown.markdown(md)
+# print(timer() - start)
 
 
-start = timer()
-for _ in range(1000):
-    markdown2.markdown(md)
-print(timer() - start)
+# start = timer()
+# for _ in range(10):
+#     markdown2.markdown(md)
+# print(timer() - start)
 
 
-start = timer()
-for _ in range(1000):
-    md_to_html_pandoc(md)
-print(timer() - start)
+# start = timer()
+# for _ in range(10):
+#     md_to_html_pandoc(md)
+# print(timer() - start)
 
-start = timer()
-for _ in range(1000):
-    pandoc_fr(md)
-print(timer() - start)
+# start = timer()
+# for _ in range(10):
+#     pandoc_fr(md)
+# print(timer() - start)
+
+
+with open("tmp.txt", "r") as f:
+    print(repr(f.read()))
