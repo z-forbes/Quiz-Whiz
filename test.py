@@ -75,6 +75,6 @@ md = '''
 #     pandoc_fr(md)
 # print(timer() - start)
 
-
-with open("tmp.txt", "r") as f:
-    print(repr(f.read()))
+pypandoc.__pandoc_path = "program/pandoc/pandoc.exe"
+pypandoc._ensure_pandoc_path()
+print(pypandoc.convert_text("example", "html", format="md"))

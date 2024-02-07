@@ -176,13 +176,14 @@ class Cloze(Question):
         self.type   = QType.CLOZE
         if "question" in kwargs.keys():
             self.question = re.sub("\[.*?\]", Cloze.BLANK_MARKER, self.question) # standardises all blanks
+        self.verify()
 
     def verify(self):
         if not self.answers or not self.question:
-            error("Cloze.verify() called before Close.answers and/or Cloze.question set") 
+            raise Exception("Cloze.verify() called before Close.answers and/or Cloze.question set") 
 
         if len(self.answers) != self.question.count(Cloze.BLANK_MARKER):
-            error("Cloze poorly formatted")
+            error(f"Cloze poorly formatted. Number of blanks ({self.question.count(Cloze.BLANK_MARKER)}) must equal number of answers ({len(self.answers)}).")
 
     # static method
     def parse_answers(lines):

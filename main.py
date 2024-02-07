@@ -30,15 +30,8 @@ except ModuleNotFoundError:
         system(f"pip install {p}")
     print("\nPackages installed.\n")
 
-# check pandoc installed
-try:
-    import pypandoc
-    pypandoc.convert_text("example", "html", format="md")
-except OSError:
-    print("No Pandoc installation found. Download from URL below and ensure 'pandoc' added to PATH.")
-    print("https://pandoc.org/installing.html")
-    input("\nPress ENTER to exit.")
-    exit()
+from program.utils import ensure_pandoc_installed
+ensure_pandoc_installed() # ends termination if no pandoc
 
 # Begin normal excecution
 import argparse
@@ -62,8 +55,8 @@ from tabulate import tabulate
 # gets user's input, validates all arguments, returns args
 def get_user_args():
     ## MAKE PARSER ##
-    parser = argparse.ArgumentParser(description='Markdown to Moodle/Learn Ultlra converter!\nDocumentation: https://github.com/lewisforbes/ug5-project/blob/main/readme.md',
-                                    epilog="Note: at least one of --moodle, --learn required.", formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser = argparse.ArgumentParser(description='Markdown to Moodle/Learn Ultlra converter!\nDocumentation: https://github.com/lewisforbes/ug5-project/blob/main/readme.md', # TODO update docs url
+                                    epilog="Note: at least one of --moodle, --learn, --file required.", formatter_class=argparse.RawDescriptionHelpFormatter)
 
     # required
     parser.add_argument('input', type=str,
@@ -115,18 +108,20 @@ def get_user_args():
 
     # output dirname validation
     if args.path and (os.path.abspath("program") in os.path.abspath(args.path)):
-        error("Cannot write output within program directory.")
+        error("Cannot write output within /program directory.")
 
     ## PROGRAM CONFIG ##
-    if args.quiet:
-        Progress.quiet = True
-
+    Progress.quiet = args.quiet
     if args.no_colour:
-        Fore.YELLOW = ""
-        Fore.RED = ""
-        Fore.BLUE = ""
-        Fore.GREEN = ""
-        Fore.RESET = ""
+        Fore.BLACK           = ""
+        Fore.RED             = ""
+        Fore.GREEN           = ""
+        Fore.YELLOW          = ""
+        Fore.BLUE            = ""
+        Fore.MAGENTA         = ""
+        Fore.CYAN            = ""
+        Fore.WHITE           = ""
+        Fore.RESET           = ""
 
     return args
 

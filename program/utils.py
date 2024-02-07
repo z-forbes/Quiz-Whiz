@@ -5,7 +5,7 @@ import base64
 import pypandoc
 import os
 import subprocess
-from shutil import rmtree, copy
+from shutil import rmtree
 import sys
 from tabulate import tabulate
 from colorama import Fore, init
@@ -332,7 +332,8 @@ def warning(msg, show_progress=True):
     progress = Progress.current_action
     if not show_progress:
         progress = ""
-    my_print(f"{Fore.BLUE}({progress.strip()}) \tWarning: {msg}{Fore.RESET}")
+    msg = msg.replace("\n", "\n"+" "*len(progress.strip()+"() ")+"\t"+" "*len("Warning: ")) # adds whitespace
+    my_print(f"{Fore.BLUE}({progress.strip()}) \tWarning: {msg}\n{Fore.RESET}")
 
 def my_print(x="", **kwargs):
     if Progress.quiet:
@@ -357,22 +358,22 @@ def del_tmp_dir():
         rmtree(TMP_DIR())
 
 # defaults copy all output files to vm shared dir
-def file_copy(clear_output=False, current=None, new="/afs/inf.ed.ac.uk/user/s18/s1843023/Documents/new_vm/shared"):
-    if clear_output:
-        assert new=="/afs/inf.ed.ac.uk/user/s18/s1843023/Documents/new_vm/shared"
-        for f in os.listdir(new):
-            try:
-                os.remove(new+"/"+f)
-            except:
-                pass
+# def file_copy(clear_output=False, current=None, new="C:\Users\lewis\Documents\vm\shared"):
+#     if clear_output:
+#         assert new=="C:\Users\lewis\Documents\vm\shared"
+#         for f in os.listdir(new):
+#             try:
+#                 os.remove(new+"/"+f)
+#             except:
+#                 pass
 
-    if current==None:
-        to_copy = ["output/"+str(f) for f in os.listdir("output/") if ("." in f)]
-    else:
-        to_copy=[current]
+#     if current==None:
+#         to_copy = ["output/"+str(f) for f in os.listdir("output/") if ("." in f)]
+#     else:
+#         to_copy=[current]
 
-    for fpath in to_copy:
-        copy(fpath, new)
+#     for fpath in to_copy:
+#         copy(fpath, new)
 
 # open() with error checking
 def safe_open(fpath, m, encoding=None):
@@ -398,8 +399,41 @@ def comment():
 def to_vm(from_dir, dice=True):
     import shutil
     if dice:
-        to_dir = "/afs/inf.ed.ac.uk/user/s18/s1843023/Documents/new_vm/shared"
+        to_dir = "C:/Users/lewis/Documents/vm/shared"
     else:
         error("Add windows fpath")
     for fpath in os.listdir(from_dir):
         shutil.copy(os.path.join(from_dir, fpath), to_dir)
+
+def ensure_pandoc_installed():
+    def check():
+        try:
+            subprocess.run('pandoc --version', check=True, capture_output=True)
+            # pypandoc._ensure_pandoc_path() # don't think this is neccessary. slows excecution
+            return True
+        except:
+            return False      
+
+    # check if normal pandoc installed
+    if check():
+        return
+
+    # check if local pandoc installed
+    PPATH = "program/pandoc/pandoc.exe"
+    if os.path.exists(PPATH):
+        # os.environ.setdefault('PYPANDOC_PANDOC', PPATH)
+        os.environ["PATH"] = f"{os.path.dirname(os.path.abspath(PPATH))};{os.environ.get('PATH', '')}"
+        if check():
+            return
+        
+    # no pandoc found
+    do_download = "download pandoc"
+    user_in = input(f"No Pandoc installation found. Enter '{do_download}' to install Pandoc in program directory.\n> ")
+    if user_in in [do_download, f"'{do_download}'"]:
+        print("Downloading and installing Pandoc.")
+        pypandoc.download_pandoc(targetfolder="program/pandoc", delete_installer=True)
+        os.environ["PATH"] = f"{os.path.dirname(os.path.abspath(PPATH))};{os.environ.get('PATH', '')}"
+    else:
+        print("\nPandoc required. Download from URL below and ensure 'pandoc' added to PATH.")
+        print("https://pandoc.org/installing.html")
+        exit()

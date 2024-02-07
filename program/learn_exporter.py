@@ -16,11 +16,12 @@ def export(quiz, fpath):
     for question in quiz.questions:
         Progress.export_update("Learn")
         export_f = get_exporter(question.type)
-        output += export_f(question)+"\n"
+        q_to_add = export_f(question)
+        if q_to_add: # skip question if none 
+            output += export_f(question)+"\n"
     Progress.reset()    
-    f = safe_open(fpath, "w", encoding="utf-8")
-    f.write(output)
-    f.close()
+    with safe_open(fpath, "w", encoding="utf-8") as f:
+        f.write(output)
     del_tmp_dir()
 
 
@@ -30,6 +31,9 @@ def export(quiz, fpath):
 # each exporter exports 1 Question q
 
 def MC_exporter(q):
+    if len(q.answers)==1:
+        warning("Learn does not accept MC questions with one answer only.\nSkipping question.")
+        return None
     CORRECT = "correct"
     INCORRECT = "incorrect"
 
@@ -52,7 +56,7 @@ def MC_exporter(q):
 def TF_exporter(q):
     correct = q.get_correct_as()
     if len(correct)!=1:
-        error("not 1 correct answer in TF question")
+        raise Exception("Not 1 correct answer in TF question")
     return arr_to_line(["TF", mk_qtext(q), str(correct[0].body).lower()])
 
 def NUM_exporter(q):
@@ -76,7 +80,7 @@ def CLOZE_exporter(q):
     q.verify() # check number of blanks is same as number of answers
     joined_answers = str(q.answers)[1:-1] # slice removes brackets
     if ("\\n" in joined_answers) or has_formatting(joined_answers): # both True: "\\n" in str(["\n"]), not "\n" in str(["\n"])
-        warning("Non-plaintext (or newline) found in Fill in Blanks answers. Learn does not accept HTML so check results are as expected.")
+        warning("Non-plaintext (or newline) found in Fill in Blanks answers.\nLearn does not accept HTML so check results are as expected.")
 
     if len(q.answers)==1:
         return mk_FIB(q)
