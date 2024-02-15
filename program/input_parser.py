@@ -52,6 +52,7 @@ def parse_question(q_lines):
     desc_arr = split_q[0] # [desc_line1, desc_line2, ...] or []
 
     answers = shrink_answers(split_q[1])
+
     verify_answers(answers) # ensures answers are of plausable format
     q_class = find_q_class(answers)
     parsed_answers = q_class.parse_answers(answers)
@@ -100,10 +101,13 @@ def find_q_class(answers):
         # only reached if no break
         return Question.Cloze
 
+    is_match = len(answers)>0 # if answers==[], is_match=False
     for a in answers:
-        if not "///" in a:
+        if not Question.Match.SPLITTER in a:
+            is_match = False
             break
-        # only reached if no break
+    
+    if is_match:
         return Question.Match
 
     if Question.Num.is_num(answers):

@@ -166,6 +166,8 @@ class Basic(Question):
         if len(lines)==0:
             return None
         
+        if Match.SPLITTER in str(lines):
+            warning(f"Match splitter ({Match.SPLITTER}) found in MC answers.\nDid you mean to make an MC question?")
         return [parse_answer(l) for l in lines]
 
 class Cloze(Question):

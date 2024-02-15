@@ -177,12 +177,12 @@ def main(args):
         nums_flags(args, inputs)
     
         quizzes = []
-        my_print("Parsing input(s)...", end=" ")
+        s = "" if len(inputs)==1 else "s"
+        my_print(f"Parsing {len(inputs)} input file{s} provided...")
         for i in inputs:
             Progress.import_file = path.basename(i)
             quizzes.append(parse_input(i))
         Progress.import_file = None
-        my_print("finished!")
 
         # set all Quiz.input_file
         assert len(quizzes)==len(inputs)
@@ -249,9 +249,7 @@ def main(args):
         # make "finished" message
         with_warnings = " with no warnings"
         if Progress.warn_count!=0:
-            s="s"
-            if Progress.warn_count==1:
-                s = ""
+            s= "" if Progress.warn_count==1 else "s"
             with_warnings = f" with {Progress.warn_count} warning{s}"
         return f"{Fore.GREEN}Finished{with_warnings}.{Fore.RESET}"
 
