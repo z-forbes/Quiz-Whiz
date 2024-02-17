@@ -409,9 +409,9 @@ def ensure_pandoc_installed():
     def check():
         try:
             subprocess.run('pandoc --version', check=True, capture_output=True)
-            # pypandoc._ensure_pandoc_path() # don't think this is neccessary. slows excecution
             return True
         except:
+            # error since pandoc not found
             return False      
 
     # check if normal pandoc installed
@@ -420,9 +420,10 @@ def ensure_pandoc_installed():
 
     # check if local pandoc installed
     PPATH = "program/pandoc/pandoc.exe"
+    env_value = f"{os.path.dirname(os.path.abspath(PPATH))};{os.environ.get('PATH', '')}"
     if os.path.exists(PPATH):
         # os.environ.setdefault('PYPANDOC_PANDOC', PPATH)
-        os.environ["PATH"] = f"{os.path.dirname(os.path.abspath(PPATH))};{os.environ.get('PATH', '')}"
+        os.environ["PATH"] = env_value
         if check():
             return
         
@@ -432,7 +433,7 @@ def ensure_pandoc_installed():
     if user_in in [do_download, f"'{do_download}'"]:
         print("Downloading and installing Pandoc.")
         pypandoc.download_pandoc(targetfolder="program/pandoc", delete_installer=True)
-        os.environ["PATH"] = f"{os.path.dirname(os.path.abspath(PPATH))};{os.environ.get('PATH', '')}"
+        os.environ["PATH"] = env_value
     else:
         print("\nPandoc required. Download from URL below and ensure 'pandoc' added to PATH.")
         print("https://pandoc.org/installing.html")
