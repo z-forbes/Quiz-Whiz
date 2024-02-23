@@ -58,6 +58,11 @@ def parse_question(q_lines):
     parsed_answers = q_class.parse_answers(answers)
 
     q = q_class(answers=parsed_answers, question=get_line_content(question))
+    # warn about FIB mistake
+    if q.type!=Question.QType.CLOZE and Question.Cloze.BLANK_MARKER in q.question:
+        warning(f"{Question.QType.CLOZE.value} blank marker '{Question.Cloze.BLANK_MARKER}' found in {q.type.value} question. Is this a mistake?")
+    
+    # description
     if len(desc_arr)>=1:
         desc = ""
         # format multiline description
