@@ -1,4 +1,4 @@
-This program facilitates the creation of quiz questions for Moodle and Learn Ultra. [Click here to install](https://github.com/lewisforbes/ug5-project/archive/refs/heads/main.zip).
+This program facilitates the creation of quiz questions for Moodle and Learn Ultra. [Click here to download.](https://github.com/lewisforbes/ug5-project/archive/refs/heads/main.zip).
 
 It is run through the command line as follows:
 
