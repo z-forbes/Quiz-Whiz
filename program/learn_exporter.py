@@ -32,7 +32,7 @@ def export(quiz, fpath):
 
 def MC_exporter(q):
     if len(q.answers)==1:
-        warning(f"Learn does not accept MC questions with one answer only.\n{Fore.RED}Skipping question.")
+        warning(f"Learn does not accept {program.Question.QType.MC.value} questions with one answer only.\n{Fore.RED}Skipping question.")
         return None
     CORRECT = "correct"
     INCORRECT = "incorrect"
@@ -80,7 +80,7 @@ def CLOZE_exporter(q):
     q.verify() # check number of blanks is same as number of answers
     joined_answers = str(q.answers)[1:-1] # slice removes brackets
     if ("\\n" in joined_answers) or has_formatting(joined_answers): # both True: "\\n" in str(["\n"]), not "\n" in str(["\n"])
-        warning("Non-plaintext (or newline) found in Fill in Blanks answers.\nLearn does not accept HTML here so check results are as expected.")
+        warning(f"Non-plaintext (or newline) found in {program.Question.QType.CLOZE.value} answers.\nLearn does not accept HTML here so check results are as expected.")
 
     if len(q.answers)==1:
         return mk_FIB(q)

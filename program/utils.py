@@ -221,7 +221,10 @@ def make_parse_table(quizzes):
             if qtype==TOTAL:
                 continue
             if qtype==FILE: # not actually qtype
-                to_write[FILE].append(quiz.input_file)
+                if len(quiz.input_file)<=20:
+                    to_write[FILE].append(quiz.input_file)
+                else:
+                    to_write[FILE].append(quiz.input_file[:18]+"...")                
             else:
                 if qtype in summary:
                     to_write[qtype].append(summary[qtype])
