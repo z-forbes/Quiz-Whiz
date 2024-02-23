@@ -26,12 +26,23 @@ except ModuleNotFoundError:
             print("Exiting.")
             exit()
         print("Invalid input.\n")
+    print("Installing packages...")
     for p in packages:
-        system(f"pip install {p}")
-    print("\nPackages installed.\n")
+        system(f"pip install {p} -q")
+    print("Complete.\n")
 
 from program.utils import ensure_pandoc_installed
 ensure_pandoc_installed() # ends termination if no pandoc
+
+import sys
+if len(sys.argv)==1:
+    msg = "All installation requirements met."
+    print("-"*len(msg))
+    print(msg)
+    print("-"*len(msg))
+    print("Run `python3 main.py -h` for usage information.")
+    sys.exit()
+
 
 # Begin normal excecution
 import argparse
