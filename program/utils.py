@@ -412,15 +412,14 @@ def to_vm(from_dir, dice=True):
 def ensure_pandoc_installed():
     def check():
         try:
-            subprocess.run('pandoc --version', check=True, capture_output=True, shell=True) # TODO check shell=True works on windows. required on dice to find pandoc
+            subprocess.run('pandoc --version', check=True, capture_output=True, shell=True)
             return True
         except:
             # error since pandoc not found
             return False      
 
     # check if normal pandoc installed
-    if check():
-        return
+    if check(): return
 
     # check if local pandoc installed
     PPATH = "program/pandoc/pandoc.exe"
@@ -434,10 +433,10 @@ def ensure_pandoc_installed():
     do_download = "download pandoc"
     user_in = input(f"No Pandoc installation found. Enter '{do_download}' to install Pandoc in program directory.\n> ")
     if user_in in [do_download, f"'{do_download}'"]:
-        print("Downloading and installing Pandoc. This may take a few minutes.")
-        # pypandoc.download_pandoc(targetfolder=os.path.join(os.getcwd(), "program/pandoc"), delete_installer=True) # abs path required on linux
+        print("Downloading and installing Pandoc. This may quite a few minutes.")
+        pypandoc.download_pandoc(targetfolder=os.path.join(os.getcwd(), "program/pandoc"), delete_installer=True) # abs path required on linux
         os.environ["PATH"] = env_value
-        check()
+        if not check(): raise Exception("Something went wrong installing Pandoc.")
     else:
         print("\nPandoc required. Download from URL below and ensure 'pandoc' added to PATH.")
         print("https://pandoc.org/installing.html")
