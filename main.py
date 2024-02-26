@@ -67,7 +67,7 @@ from tabulate import tabulate
 def get_user_args():
     ## MAKE PARSER ##
     parser = argparse.ArgumentParser(description='Markdown to Moodle/Learn Ultlra converter!\nDocumentation: https://github.com/lewisforbes/ug5-project/blob/main/readme.md', # TODO update docs url
-                                    epilog="Note: at least one of --moodle, --learn, --file required.", formatter_class=argparse.RawDescriptionHelpFormatter)
+                                    epilog="Note: at least one of --moodle, --learn and --file required.", formatter_class=argparse.RawDescriptionHelpFormatter)
 
     # required
     parser.add_argument('input', type=str,
@@ -83,7 +83,7 @@ def get_user_args():
                         help='produce Moodle output')
 
     outputs.add_argument('--learn', '-l', action='store_true',
-                        help='produce Mearn output')
+                        help='produce Learn output')
 
     outputs.add_argument('--file', '-f', type=str, dest="ext", nargs='+',
                         help='file extention(s) of output file(s)')
