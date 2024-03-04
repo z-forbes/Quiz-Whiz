@@ -1,4 +1,7 @@
 This program facilitates the creation of quiz questions for Moodle and Learn Ultra.
+
+![overview diagram](docs/overview.png)
+
 # Installation
 1. Ensure [Python3](https://www.python.org/) and [Pip](https://pypi.org/project/pip/) are installed.
 2. [Download this repo](https://github.com/lewisforbes/ug5-project/archive/refs/heads/main.zip) and unzip the files.
