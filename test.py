@@ -27,3 +27,6 @@ def count_lines():
 # subprocess.run('pandoc --version', check=True, shell=True)
 # subprocess.run('freespace', check=True)
 
+s = "\n\ntest \n \n"
+a = "\n"
+print(f"-{s.strip(a)}-")

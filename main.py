@@ -275,32 +275,34 @@ def main(args):
 #################################
 args = get_user_args()
 
-## NORMAL ## 
-if not args.debug:
-    try:
-        main(args)
-    except SystemExit:
-        pass # known error already displayed
-    except:
-        error("An unexpected error occured. Rerun with --debug flag for details.", show_progress=False)
+# this is here so it can be called after files are fixed in utils.
+def go():
+    ## NORMAL ## 
+    if not args.debug:
+        try:
+            main(args)
+        except SystemExit:
+            pass # known error already displayed
+        except:
+            error("An unexpected error occured. Rerun with --debug flag for details.", show_progress=False)
 
-## DEBUG ## 
-if args.debug:
-    success = False
-    try:
-        main(args)
-        success = True
-    except SystemExit:
-        success = True # known error occured
-    except:
-        # print Utils.Progress details
-        if Progress.current_action=="":
-            my_print(f"{Fore.YELLOW}No progress update since start of excecution or since Utils.Progress reset.{Fore.RESET}\n")
-        else:
-            my_print(f"{Fore.YELLOW}Error occured when{Progress.current_action}.{Fore.RESET}\n")
-    if not success:
-        Progress.quiet = True # don't reshow program output
-        main(args) # show error in full
+    ## DEBUG ## 
+    if args.debug:
+        success = False
+        try:
+            main(args)
+            success = True
+        except SystemExit:
+            success = True # known error occured
+        except:
+            # print Utils.Progress details
+            if Progress.current_action=="":
+                my_print(f"{Fore.YELLOW}No progress update since start of excecution or since Utils.Progress reset.{Fore.RESET}\n")
+            else:
+                my_print(f"{Fore.YELLOW}Error occured when{Progress.current_action}.{Fore.RESET}\n")
+        if not success:
+            Progress.quiet = True # don't reshow program output
+            main(args) # show error in full
 
-
+go()
 ## END OF FILE ##

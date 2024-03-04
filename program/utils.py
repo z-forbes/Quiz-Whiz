@@ -31,9 +31,12 @@ def remove_tags(raw_html):
 # generally removes - / x. / #
 # input_parser.verify_answers() should ensure assertions
 def get_line_content(s):
-    assert (" " in s)
-    content = s.split(" ")
-    assert re.match("[0-9]+\.", content[0]) or content[0] in ["-", "#"]
+    try:
+        content = s.split(" ")
+        assert re.match("[0-9]+\.", content[0]) or content[0] in ["-", "#"]
+    except:
+        not_enough_spaces(s) # ends termination
+
     output = ""
     for x in content[1:]:
         output += x + " "
@@ -251,10 +254,10 @@ def make_parse_table(quizzes):
 # arr: array
 # space_is_blank: True iff space(s) considered blank
 # output: array with blank elements removed
-def remove_blanks(arr):
+def remove_blanks(arr, space_is_blank=True):
     output = []
     for x in arr:
-        if not is_blank(x):
+        if not is_blank(x, space_is_blank):
             output.append(x)
     return output
 
@@ -441,3 +444,100 @@ def ensure_pandoc_installed():
         print("\nPandoc required. Download from URL below and ensure 'pandoc' added to PATH.")
         print("https://pandoc.org/installing.html")
         exit()
+
+# called when there isn't a space after # or - or X. when there should be
+# asks user if they want program to fix this
+# fixes if neccessary, ends termination regardless
+def not_enough_spaces(line):
+    ## INFORM USER OF MISTAKE, ASK WHAT THEY WANT TO DO ##
+    bullet = ""
+    if line[0] in ["#", "-"]:
+        bullet = line[0]
+    elif re.match("[0-9]+\.", line):
+        bullet = line.split(".")[0]+"."
+    else:
+        Exception("This shouldn't be reached. Line: "+str(line))
+    print(f"{Fore.RED}\nSpace missing after '{bullet}' in line '{line}'. There may be more similar errors.{Fore.RESET}")
+    assert Progress.import_file
+    print(f"Do you want to add spaces where required in {Progress.import_file}?")    
+    while True:
+        ans = input("Type yes or no > ")
+        if ans=="yes":
+            print() # terminal newline
+            break
+        if ans=="no":
+            print("Ending termination.")
+            exit()
+        print("Invalid response.")
+    
+    ## USER ASKED FOR PROGRAM TO FIX FILE ##
+    # get file contents
+    with safe_open(Progress.import_file, "r") as f:
+        raw_contents = f.read()
+    
+    total_changes = 0
+    # first line edge case
+    if raw_contents[0]=="#" and raw_contents[1]!=" ":
+        total_changes+=1
+        print("Changing '#' to '# ' at start of file.")
+        raw_contents = "# " + raw_contents[1:] # add space after first #
+    
+    # standard replacements
+    for b in ["(#)", "(-)", "([0-9]+\.)"]:
+        pattern = "\n" + b + "([^ ])" # newline precedes bullet, space does not
+        match_count = len(re.findall(pattern, raw_contents))
+        s = "" if match_count==1 else "s"
+        if match_count!=0:
+            total_changes+=match_count
+            raw_contents = re.sub(pattern, f"\n\\1 \\2", raw_contents)
+            pretty_b = b.replace('(', '').replace(')', '').replace('[0-9]+\\', 'X')
+            if not Progress.quiet: print(f"Fixed {match_count} incorrect use{s} of '{pretty_b}'.")
+
+    # write to file
+    with safe_open(Progress.import_file, "w") as f:
+        f.write(raw_contents)
+
+    s = "" if total_changes==1 else "s"
+    print(f"{Fore.GREEN}Made {total_changes} update{s} to {Progress.import_file}. Try rerunning program.")
+    exit()
+
+
+# called when there are blank lines where there shouldn't be.
+# asks user if they want program to fix this
+# fixes if neccessary, ends termination regardless
+def random_blank_lines():
+    assert Progress.import_file
+    print(f"\n{Fore.RED}There are blank lines where there shouldn't be any in {Progress.import_file}.{Fore.RESET}")
+    print("Do you the program to fix this?")    
+    while True:
+        ans = input("Type yes or no > ")
+        if ans=="yes":
+            print() # terminal newline
+            break
+        if ans=="no":
+            print("Ending termination.")
+            exit()
+        print("Invalid response.")
+
+    # user wants blank lines to be fixed
+    with safe_open(Progress.import_file, "r") as f:
+        raw_contents = f.read()
+
+    with safe_open(Progress.import_file, "w") as f:
+        old_len = len(raw_contents)
+        updated_contents = re.sub("\n+\n\n", "\n\n", raw_contents.strip("\n"))
+        # updated_contents = re.sub("(- .+?)\n\n+(- .+?)[\n|$]", "\\1\n\\2")
+        len_diff = old_len - len(updated_contents)
+        f.write(updated_contents)
+
+
+    if len_diff==0:
+        print(f"Could not remove any newlines. {Fore.BLUE}Check for empty lines in answers of Q{Progress.current_q}.{Fore.RESET}")
+        print(f"To keep the blank line, add a space to show in output, or include {comment()} to hide in output.")
+        exit()
+    else:
+        s = "" if len_diff==1 else "s"
+        print(f"{Fore.GREEN}Removed {len_diff} newline{s}{Fore.RESET}, but some may have been missed.")
+        print("Try rerunning program.\n")
+        exit()
+

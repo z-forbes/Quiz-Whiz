@@ -41,11 +41,14 @@ def parse_input(fpath):
 # input: array of relevant lines for one question from input file
 # output: Question
 def parse_question(q_lines):
+    if remove_blanks(q_lines, space_is_blank=False)==[]:
+        random_blank_lines() # ends termination
+
     NEWLINE = ">>>"
     Progress.parse_update()
     question = q_lines[0].replace(NEWLINE, "\n")
     if question[0]!="#":
-        error("All questions must begin with '#'.") # called on first question only
+        error(f"Input file must begin with '#' (for a question) or '{comment()}' (for a comment).") # called on first question only
     
     q_lines = [l.replace(NEWLINE, "\n") for l in q_lines[1:]]
     split_q = split_on_blank(q_lines, space_is_blank=False)
@@ -86,7 +89,8 @@ def shrink_answers(answers):
     current = ""
     for a in answers:
         if a=="":
-            error(f"Blank line found in answers/description. Add a space to include in output or '{comment()}' to hide in output.\nInclude --add_numbers flag to find erroneous question, check start/end of file for extra newlines.")
+            random_blank_lines() # ends termination
+            # error(f"Blank line found in answers/description. Add a space to include in output or '{comment()}' to hide in output.\nInclude --add_numbers flag to find erroneous question, check start/end of file for extra newlines.")
         if a[0]=="-" or type(force_type(a[0]))==int: # starts with - or int
             if current != "":
                 current = current[:-1] # remove trailing newline
@@ -130,12 +134,15 @@ def verify_answers(answers):
     patterns = ["-", num_pat]
     for a_i, a in enumerate(answers):
         if not " " in a:
-            error(msg.format(a))
+            # no space in answer
+            not_enough_spaces(a) # ends termination   
         bullet = a.split(" ")[0]
         for p in patterns[:]:
-            if not re.match(p, bullet):
+            if not re.fullmatch(p, bullet):
                 patterns.remove(p)
             if patterns==[]:
-                error(msg.format(a))
+                # answer doesn't start with number or bullet
+                not_enough_spaces(a) # ends termination
             if patterns==[num_pat] and bullet.split(".")[0]!=str(a_i+1):
+                # answer starts with number but in the wrong order
                 error(msg.format(a)+"\n(Numbers not sequential and starting from 1.)")

@@ -19,7 +19,7 @@ Required:
 
 At least one required:
   --moodle, -m                  Produce Moodle output.
-  --learn, -l                   Produce Mearn output.
+  --learn, -l                   Produce Learn output.
 
 Independent options:
   --output OUTPUT, -o OUTPUT    Path of output directory. Default "output/".
