@@ -35,11 +35,6 @@ An example input file might look something like:
 # Alan Turing was a famous pianist.
 
 - False
-
-# monday, tuesday, [], thursday, [], saturday, sunday
-
-1. wednesday
-2. friday
 ```
 
 Which creates the following questions on Learn:
