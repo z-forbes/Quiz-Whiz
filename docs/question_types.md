@@ -4,7 +4,9 @@ This program can create 6 different question types:
 - [Multiple Choice](#multiple-choice)
 - [True/False](#truefalse)
 - [Numeric](#numeric)
-- [Multiple Choice](#multiple-choice) 
+- [Fill in the Blanks](#fill-in-the-blanks)
+- [Match](#match)
+- [Essay](#essay)
 
 ## <ins>Multiple Choice</ins> [(↑)](#question-types)
 In these questions, students are asked to select correct answers from a list. Although, there can be any number of *correct* answers, including zero, there must be at least 2 answers total for Learn to accept the question. [↑fsdfsdf](#top)
@@ -61,7 +63,7 @@ These have a numerical answer and a threshold outlining what counts as a correct
 
 ```
 
-## <ins>Full Skeleton</ins> [(↑)](#question-types)
+## <ins>Full Skeleton
 ```
 # Question Title
 optional question description
@@ -88,7 +90,13 @@ optional question description
 1. first blank
 2. second blank
 3. third blank
-```
+```rnoon all,
+
+I’m delighted to confirm we’ve received delivery of the graduation tops.
+
+Collection will be at 1.30 on Tuesday from G.03 in the Forum.
+
+You can ask someone to collect on your 
 
 ## <ins>Match</ins> [(↑)](#question-types)
 ### Basic Example
