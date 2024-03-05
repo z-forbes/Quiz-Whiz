@@ -10,34 +10,36 @@ This program facilitates the creation of quiz questions for Moodle and Learn Ult
 
 ### [Detailed installation instructions here](docs/installation.md)
 
-# Usage
+# Basic Usage
 
-The program is run through the command line as follows:
+At its simplist, the program is run through the command line as follows:
 
-`python3 main.py input [--moodle] [--learn] [--output OUTPUT] [--debug] [--no_colour] [--add_nums | --remove_nums]`
+`python3 main.py path/to/input.md --VLE`
 
-Where...
+Where `--VLE` is either `--learn` or `--moodle`, and `path/to/input.md` is the filepath to an input file of the correct format.
+
+An example input file might look something like:
 
 ```
-Required:
-  input                         Path of input file/directory
+# What colour is the sky at night?
 
-At least one required:
-  --moodle, -m                  Produce Moodle output.
-  --learn, -l                   Produce Learn output.
+- Pink
+- ^Black
+- Green
 
-Independent options:
-  --output OUTPUT, -o OUTPUT    Path of output directory. Default "output/".
+# Alan Turing was a famous pianist.
 
-  --debug, -d                   Show detailed error messages.
+- False
 
-  --no_colour, -nc              Doesn't output colour to terminal.
+# monday, tuesday, [], thursday, [], saturday, sunday
 
-Mutually exclusive options:
-  --add_nums, -an               Adds question numbers to input file(s).
-  --remove_nums, -rn            Undos action of --add_nums.
+1. wednesday
+2. friday
 ```
 
+Which creates the following questions on Learn:
+
+![Example questions on Learn](docs/learn_example_qs.png)
 
 Input files are markdown files of the following format...
 ## Input File Structure
@@ -51,73 +53,6 @@ Files consist of questions separated by one or more blank lines:
 [question3]
 ```
 
-## Question Types
-There are 6 different question types, each with a different format.
-
-### Multiple Choice
-In these questions, students are asked to select correct answers from a list. Although, there can be any number of *correct* answers, including zero, there must be at least 2 answers total for Learn to accept the question.
-
-```
-# Question Title
-optional question description
-
-- answer 1
-second line of answer 1
-- ^answer 2 (correct)
-- ^answer 3 (correct)
-second line of answer 3
-- answer 4
-```
-
-### True/False
-Although these can be equivalently expressed as multiple choice questions, they are more concisely written in as True/False questions. 
-Note the boolean answer is case-insensitive.
-
-```
-# Question Title
-optional question description
-
-- false
-```
-
-### Numeric
-Note that the square brackets are required around the threshold
-
-```
-# Question Title
-optional question description
-
-- answer [threshold]
-```
-
-### Cloze
-Note that the number of blanks in the question and answer must be the same.
-
-```
-# Question Title with [] some [] blanks [].
-optional question description
-
-1. first blank
-2. second blank
-3. third blank
-```
-
-### Match
-```
-# Question Title
-optional question description
-
-- pair 1 first item///pair 1 second item
-- pair 2 first item///pair 2 second item
-- pair 3 first item///pair 3 second item
-```
-
-### Essay
-Essay quesions do not have descriptions.
-```
-# Question Title
-optional question placeholder
-```
 
 ## Additional Formatting
 ### Images
