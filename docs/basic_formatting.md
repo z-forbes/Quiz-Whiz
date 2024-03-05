@@ -1,3 +1,16 @@
+# Basic Formatting
+Files consist of questions separated by one blank line:
+
+```
+[first question]
+
+[second question]
+
+[third question]
+...
+```
+
+
 # Question Types
 This program can create 6 different question types:
 
