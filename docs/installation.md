@@ -1,13 +1,5 @@
 [← ← ←](../../../#installation)
-# Overview 
-1. Ensure [Python3](https://www.python.org/) and [Pip](https://pypi.org/project/pip/) are installed.
-2. [Download this repo](https://github.com/lewisforbes/ug5-project/archive/refs/heads/main.zip) and unzip the files.
-3. Run `python3 main.py` to install dependancies.
-4. If you see `All installation requirements met.` the program is ready to be
-
-# Detailed Instructions
-The step numbers match those in the overview above.
-
+# Detailed Installation Instructions
 ## 1. Ensure Python3 and Pip are installed.
 Run ``python3 --version``. If you get an "comand not found" error, [install Python3](https://www.python.org/) and ensure it's on Path.
 
