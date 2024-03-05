@@ -40,7 +40,7 @@ if len(sys.argv)==1:
     print("-"*len(msg))
     print(msg)
     print("-"*len(msg))
-    print("Run `python3 main.py -h` for usage information.")
+    print("Run `python3 main.py -h` for usage information.\n")
     sys.exit()
 
 
