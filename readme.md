@@ -11,7 +11,7 @@ This program facilitates the creation of quiz questions for Moodle and Learn Ult
 ### [Detailed installation instructions here](docs/installation.md)
 
 # Full Usage Contents
-- [Question formatting](docs/question_types.md)
+- [Basic question formatting](docs/basic_formatting.md)
 - [Advanced formatting](docs/advanced_formatting.md)
 - [Complete usage details](docs/complete_usage.md)
 
