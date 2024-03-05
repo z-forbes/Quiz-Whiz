@@ -8,6 +8,8 @@ This program facilitates the creation of quiz questions for Moodle and Learn Ult
 3. Run `python3 main.py` to install dependancies.
 4. If you see `All installation requirements met.` the program is ready to be used!
 
+### [Detailed installation instructions here](docs/installation.md)
+
 # Usage
 
 The program is run through the command line as follows:
