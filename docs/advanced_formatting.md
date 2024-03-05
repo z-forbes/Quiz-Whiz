@@ -13,7 +13,7 @@ Where permitted, newlines are copied from markdown file to output. Newlines can 
 
 The following are equivalent:
 ```
-#  Question Title
+# Question Title
 Description line 1
 Description line 2
 ```
