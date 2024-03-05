@@ -63,7 +63,7 @@ These have a numerical answer and a threshold outlining what counts as a correct
 
 ```
 
-## <ins>Full Skeleton
+### Full Skeleton
 ```
 # Question Title
 optional question description
@@ -90,13 +90,7 @@ optional question description
 1. first blank
 2. second blank
 3. third blank
-```rnoon all,
-
-I’m delighted to confirm we’ve received delivery of the graduation tops.
-
-Collection will be at 1.30 on Tuesday from G.03 in the Forum.
-
-You can ask someone to collect on your 
+```
 
 ## <ins>Match</ins> [(↑)](#question-types)
 ### Basic Example
