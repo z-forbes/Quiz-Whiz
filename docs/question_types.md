@@ -1,6 +1,11 @@
-This program can create 6 different question types.
+This program can create 6 different question types:
 
-## Multiple Choice
+- [Multiple Choice](#multiple-choice)
+- [True/False](#truefalse)
+- [Numeric](#numeric)
+- [Multiple Choice](#multiple-choice) 
+
+## <ins>Multiple Choice
 In these questions, students are asked to select correct answers from a list. Although, there can be any number of *correct* answers, including zero, there must be at least 2 answers total for Learn to accept the question.
 
 ### Basic Example
@@ -25,7 +30,7 @@ second line of answer 3
 - answer 4
 ```
 
-## True/False
+## <ins>True/False
 Although these can be equivalently expressed as multiple choice questions, they are more concisely written in as True/False questions. 
 The boolean answer is case-insensitive.
 
@@ -44,7 +49,7 @@ optional question description
 - false
 ```
 
-## Numeric
+## <ins>Numeric
 These have a numerical answer and a threshold outlining what counts as a correct answer.
 
 ### Basic Example
@@ -55,7 +60,7 @@ These have a numerical answer and a threshold outlining what counts as a correct
 
 ```
 
-## Full Skeleton
+## <ins>Full Skeleton
 ```
 # Question Title
 optional question description
@@ -63,7 +68,7 @@ optional question description
 - answer [threshold]
 ```
 
-## Fill in the Blanks
+## <ins>Fill in the Blanks
 These require numbers, not dashes, as bullets.
 
 ### Basic Example
@@ -84,7 +89,7 @@ optional question description
 3. third blank
 ```
 
-## Match
+## <ins>Match
 ### Basic Example
 ```
 # Match the penguins to their homes:
@@ -105,9 +110,9 @@ optional question description
 - pair 3 first item///pair 3 second item
 ```
 
-## Essay
+## <ins>Essay
 Essay quesions have optional 'placeholders' instead of descriptions.
-## Basic Example
+## <ins>Basic Example
 ```
 # Write 400 words on the history of Speed Garage.
 ```
