@@ -9,7 +9,7 @@ This program can create 6 different question types:
 - [Essay](#essay-)
 
 ## <ins>Multiple Choice</ins> [(↑)](#question-types)
-In these questions, students are asked to select correct answers from a list. Although, there can be any number of *correct* answers, including zero, there must be at least 2 answers total for Learn to accept the question. [↑fsdfsdf](#top)
+In these questions, students are asked to select correct answers from a list. Although, there can be any number of *correct* answers, including zero, there must be at least 2 answers total for Learn to accept the question.
 
 ### Basic Example
 ```
