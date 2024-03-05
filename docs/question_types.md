@@ -115,7 +115,7 @@ optional question description
 
 ## <ins>Essay</ins> [(↑)](#question-types)
 Essay quesions have optional 'placeholders' instead of descriptions.
-## <ins>Basic Example
+### Basic Example
 ```
 # Write 400 words on the history of Speed Garage.
 ```
