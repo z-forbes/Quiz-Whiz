@@ -1,3 +1,4 @@
+# Question Types
 This program can create 6 different question types:
 
 - [Multiple Choice](#multiple-choice)
@@ -5,8 +6,8 @@ This program can create 6 different question types:
 - [Numeric](#numeric)
 - [Multiple Choice](#multiple-choice) 
 
-## <ins>Multiple Choice
-In these questions, students are asked to select correct answers from a list. Although, there can be any number of *correct* answers, including zero, there must be at least 2 answers total for Learn to accept the question.
+## <ins>Multiple Choice</ins> [(↑)](#question-types)
+In these questions, students are asked to select correct answers from a list. Although, there can be any number of *correct* answers, including zero, there must be at least 2 answers total for Learn to accept the question. [↑fsdfsdf](#top)
 
 ### Basic Example
 ```
@@ -30,7 +31,7 @@ second line of answer 3
 - answer 4
 ```
 
-## <ins>True/False
+## <ins>True/False</ins> [(↑)](#question-types)
 Although these can be equivalently expressed as multiple choice questions, they are more concisely written in as True/False questions. 
 The boolean answer is case-insensitive.
 
@@ -49,7 +50,7 @@ optional question description
 - false
 ```
 
-## <ins>Numeric
+## <ins>Numeric</ins> [(↑)](#question-types)
 These have a numerical answer and a threshold outlining what counts as a correct answer.
 
 ### Basic Example
@@ -60,7 +61,7 @@ These have a numerical answer and a threshold outlining what counts as a correct
 
 ```
 
-## <ins>Full Skeleton
+## <ins>Full Skeleton</ins> [(↑)](#question-types)
 ```
 # Question Title
 optional question description
@@ -68,7 +69,7 @@ optional question description
 - answer [threshold]
 ```
 
-## <ins>Fill in the Blanks
+## <ins>Fill in the Blanks</ins> [(↑)](#question-types)
 These require numbers, not dashes, as bullets.
 
 ### Basic Example
@@ -89,7 +90,7 @@ optional question description
 3. third blank
 ```
 
-## <ins>Match
+## <ins>Match</ins> [(↑)](#question-types)
 ### Basic Example
 ```
 # Match the penguins to their homes:
@@ -110,7 +111,7 @@ optional question description
 - pair 3 first item///pair 3 second item
 ```
 
-## <ins>Essay
+## <ins>Essay</ins> [(↑)](#question-types)
 Essay quesions have optional 'placeholders' instead of descriptions.
 ## <ins>Basic Example
 ```
