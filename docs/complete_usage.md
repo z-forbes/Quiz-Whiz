@@ -4,7 +4,7 @@
 The program has the following argument structure:
 ```
 python3 main.py path/to/input
-                [--moodle] [--learn [--file EXT [EXT ...]]   <-- at least one required
+                [--moodle] [--learn] [--file EXT [EXT ...]]   <-- at least one required
                 [--output path/to/output/directory]
                 [--debug] [--no_colour] [--quiet]
                 [--add_nums | --remove_nums] 
