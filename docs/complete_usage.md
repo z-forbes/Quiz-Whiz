@@ -46,4 +46,25 @@ If provided directory doesn't exist, a new one will be created.
 |optional|
 |---|
 
-Shows debug output.
+Shows full error with an unknown error occurs:
+![example of debug flag](debug_example.png)
+
+## No Colour Mode
+|optional|
+|---|
+
+Prevents colour from being outputted to the terminal.
+
+## Quiet Mode
+|optional|
+|---|
+
+Supresses all of the program's outputs apart from the last 'success' message:
+![example of program running with and without the quiet flag](quiet_example.png)
+
+## Add/Remove Nums
+|optional, mutually exclusive|
+|---|
+
+`--add_nums` adds comments containing question numbers as understood by the program. Can be helpful when identifying errors. \
+`--remove_nums` removes these comments.
