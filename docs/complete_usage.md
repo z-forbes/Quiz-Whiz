@@ -69,4 +69,4 @@ Supresses all of the program's outputs apart from the last 'success' message:
 `--add_nums` adds comments containing question numbers as understood by the program. Can be helpful when identifying errors. \
 `--remove_nums` removes these comments.
 
-See [`add_nums_example.md`](/add_nums_example.md) for an example of these comments.
+See [`add_nums_example.md`](add_nums_example.md) for an example of these comments.
