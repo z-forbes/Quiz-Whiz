@@ -12,7 +12,7 @@ This program facilitates the creation of quiz questions for Moodle and Learn Ult
 
 # Full Usage
 - [Basic question formatting](docs/basic_formatting.md)
-- [Advanced formatting](docs/advanced_formatting.md)
+- [Advanced formatting (including properties)](docs/advanced_formatting.md)
 - [Complete usage details](docs/complete_usage.md)
 
 # Basic Usage
