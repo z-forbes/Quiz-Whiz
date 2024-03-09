@@ -66,7 +66,7 @@ from tabulate import tabulate
 # gets user's input, validates all arguments, returns args
 def get_user_args():
     ## MAKE PARSER ##
-    parser = argparse.ArgumentParser(description='Markdown to Moodle/Learn Ultlra converter!\nDocumentation: https://github.com/lewisforbes/ug5-project/blob/main/readme.md', # TODO update docs url
+    parser = argparse.ArgumentParser(description=f'{get_logo()}\n\nDocumentation: https://github.com/lewisforbes/ug5-project/blob/main/readme.md', # TODO update docs url
                                     epilog="Note: at least one of --moodle, --learn and --file required.", formatter_class=argparse.RawDescriptionHelpFormatter)
 
     # required
@@ -192,6 +192,7 @@ def main(args):
         my_print(f"Parsing {len(inputs)} input file{s} provided...")
         for i in inputs:
             Progress.import_file = path.basename(i)
+            Progress.import_fpath = i
             quizzes.append(parse_input(i))
         Progress.import_file = None
 
@@ -226,10 +227,10 @@ def main(args):
             bname = path.basename(quiz.input_file)
             if args.learn:
                 learn(quiz, path.join(output_dir, f"LEARN_{change_ftype(bname, 'txt')}"))
-                my_print("Learn file created.")
+                my_print("Learn file created.\n")
             if args.moodle:
                 moodle(quiz, path.join(output_dir, f"MOODLE_{change_ftype(bname, 'xml')}"))
-                my_print("Moodle file created.")
+                my_print("Moodle file created.\n")
             if args.ext:
                 mk_tmp_dir()
                 tmp_correct = path.join(TMP_DIR(), "for_file_convert.md")
@@ -251,6 +252,8 @@ def main(args):
                         else:
                             error("Unexpected pandoc error occured.\n" + e.replace("\nTry pandoc --help for more information.", ""))
                 del_tmp_dir()
+            if len(quizzes)>1:
+                my_print("- "*30)
 
         # TODO delete
         if args.export:
