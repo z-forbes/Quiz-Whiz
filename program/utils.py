@@ -192,7 +192,11 @@ def get_props(s):
         n_v = [s.strip() for s in p.split(":")]
         if len(n_v)!=2:
             error(f"Property '{p}' is invalid.")
-        output[n_v[0]]=n_v[1]
+        if n_v[0] in output:
+            if output[n_v[0]]!=n_v[1]:
+                error(f"Property '{n_v[0]}' declared as both '{output[n_v[0]]}' and '{n_v[1]}'.")
+        else:
+            output[n_v[0]]=n_v[1]
     return output
 
 # removes properties from a string
@@ -245,7 +249,16 @@ def make_parse_table(quizzes):
     
     return tabulate(to_write, tablefmt='rounded_outline', headers="keys")
 
-
+# returns the contents of logo.txt
+def get_logo():
+    try:
+        f = open("program/logo.txt", "r")
+        output = f.read()
+        f.close()
+        return output
+    except:
+        t = "- Quiz Whiz -"
+        return f"{'-'*len(t)}\n{t}\n{'-'*len(t)}\n"
 
 ############
 ## ARRAYS ##
@@ -314,6 +327,7 @@ def error(msg, show_progress=True):
 # keeps track of progress/status for more descriptive errors
 class Progress:
     import_file = None
+    import_fpath = None # import_file = path.basepath(import_fpath)
     current_q = 0
     current_action = "" # parsing, exporting to moodle, exporting to learn
     
@@ -472,7 +486,7 @@ def not_enough_spaces(line):
     
     ## USER ASKED FOR PROGRAM TO FIX FILE ##
     # get file contents
-    with safe_open(Progress.import_file, "r") as f:
+    with safe_open(Progress.import_fpath, "r") as f:
         raw_contents = f.read()
     
     total_changes = 0
@@ -494,7 +508,7 @@ def not_enough_spaces(line):
             if not Progress.quiet: print(f"Fixed {match_count} incorrect use{s} of '{pretty_b}'.")
 
     # write to file
-    with safe_open(Progress.import_file, "w") as f:
+    with safe_open(Progress.import_fpath, "w") as f:
         f.write(raw_contents)
 
     s = "" if total_changes==1 else "s"
@@ -508,7 +522,7 @@ def not_enough_spaces(line):
 def random_blank_lines():
     assert Progress.import_file
     print(f"\n{Fore.RED}There are blank lines where there shouldn't be any in {Progress.import_file}.{Fore.RESET}")
-    print("Do you the program to fix this?")    
+    print("Do you want the program to fix this?")    
     while True:
         ans = input("Type yes or no > ")
         if ans=="yes":
@@ -520,10 +534,10 @@ def random_blank_lines():
         print("Invalid response.")
 
     # user wants blank lines to be fixed
-    with safe_open(Progress.import_file, "r") as f:
+    with safe_open(Progress.import_fpath, "r") as f:
         raw_contents = f.read()
 
-    with safe_open(Progress.import_file, "w") as f:
+    with safe_open(Progress.import_fpath, "w") as f:
         old_len = len(raw_contents)
         updated_contents = re.sub("\n+\n\n", "\n\n", raw_contents.strip("\n"))
         # updated_contents = re.sub("(- .+?)\n\n+(- .+?)[\n|$]", "\\1\n\\2")

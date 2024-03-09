@@ -131,7 +131,7 @@ def init_answer(ans_text, fraction, properties, to_html=True):
     output = text_inside("answer", ans_text, to_html)
     if properties:
         if "fraction" in properties.keys():
-            fraction = properties[fraction] # overwrite fraction default
+            fraction = properties["fraction"] # overwrite fraction default
         output = add_properties(output, properties)
     
     output.set("fraction", str(fraction))
@@ -159,6 +159,8 @@ def add_properties(root, props):
     if not props or not root:
         return root
     for pname, pval in props.items():
+        if pname=="fraction":
+            continue # 'set' in init_answer()
         if "feedback" in pname: # TODO verify heuristic
             root.append(text_inside(pname, pval, to_html=False))
         else:
