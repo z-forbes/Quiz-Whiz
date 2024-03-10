@@ -266,7 +266,7 @@ def main(args):
             s= "" if Progress.warn_count==1 else "s"
             with_warnings = f" with {Progress.warn_count} warning{s}"
             if args.quiet:
-                with_warnings+=". Rerun without --quiet for details"
+                with_warnings+=". Rerun without --quiet (-q) for details"
         return f"{Fore.GREEN}Finished{with_warnings}.{Fore.RESET}"
 
     quizzes = parse(args.input)
