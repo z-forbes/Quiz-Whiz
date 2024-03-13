@@ -96,8 +96,8 @@ These require numbers, not dashes, as bullets.
 ```
 # The [] is the powerhouse of the [].
 
-- mitochondria
-- cell
+1. mitochondria
+2. cell
 ```
 
 ### Complete Skeleton
