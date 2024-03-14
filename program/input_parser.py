@@ -55,6 +55,7 @@ def parse_question(q_lines):
     desc_arr = split_q[0] # [desc_line1, desc_line2, ...] or []
 
     answers = shrink_answers(split_q[1])
+    feedback = None
     try:
         if answers[-1][0:2] in FBACK_BULLETS:
             feedback = answers[-1]
@@ -66,7 +67,8 @@ def parse_question(q_lines):
     q_class = find_q_class(answers)
     parsed_answers = q_class.parse_answers(answers)
 
-    desc_arr.append(parse_feedback(feedback))
+    if feedback:
+        desc_arr.append(parse_feedback(feedback))
 
     q = q_class(answers=parsed_answers, question=get_line_content(question))
     # warn about FIB mistake
