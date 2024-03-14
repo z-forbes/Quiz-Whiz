@@ -11,6 +11,11 @@ from tabulate import tabulate
 from colorama import Fore, init
 init()
 
+###############
+## CONSTANTS ##
+####h##h#######
+FBACK_BULLETS = {"++":"correctfeedback", "~~":"partiallycorrectfeedback", "--":"incorrectfeedback"}
+COMMENT = ":"
 
 #############
 ## STRINGS ##
@@ -184,19 +189,20 @@ def get_props(s):
     props = re.findall(props_pattern, s)
     if len(props)==0 or props[0].strip()=="":
         return None
-    
-    props = props[-1].replace("\n", "")
-    props_arr = remove_blanks(props.split(";"))
+
     output = {}
-    for p in props_arr:
-        n_v = [s.strip() for s in p.split(":")]
-        if len(n_v)!=2:
-            error(f"Property '{p}' is invalid.")
-        if n_v[0] in output:
-            if output[n_v[0]]!=n_v[1]:
-                error(f"Property '{n_v[0]}' declared as both '{output[n_v[0]]}' and '{n_v[1]}'.")
-        else:
-            output[n_v[0]]=n_v[1]
+    for p_group in props:
+        print(p_group)
+        p_group = remove_blanks(p_group.replace("\n", "").split(";")) # [name1:val1, name2:val2, name3:val3]
+        for p in p_group:
+            n_v = [s.strip() for s in p.split(":")] # [name1, val1]
+            if len(n_v)!=2:
+                error(f"Property '{p}' is invalid.")
+            if n_v[0] in output: # name already in output
+                if output[n_v[0]]!=n_v[1]: # if current value for this name doesn't match provided
+                    error(f"Property '{n_v[0]}' declared as both '{output[n_v[0]]}' and '{n_v[1]}'.")
+            else:
+                output[n_v[0]]=n_v[1] # set output[name] to value
     return output
 
 # removes properties from a string
@@ -411,10 +417,6 @@ def safe_open(fpath, m, encoding=None):
 def change_ftype(fpath, newtype):
     return os.path.splitext(fpath)[0]+"."+newtype.replace(".", "")
 
-# returns the comment marker (global variable)
-def comment():
-    return ":"
-
 # moves files to the shared vm folder for testing
 def to_vm(from_dir, dice=True):
     import shutil
@@ -462,7 +464,7 @@ def ensure_pandoc_installed():
 # called when there isn't a space after # or - or X. when there should be
 # asks user if they want program to fix this
 # fixes if neccessary, ends termination regardless
-def not_enough_spaces(line):
+def     not_enough_spaces(line):
     ## INFORM USER OF MISTAKE, ASK WHAT THEY WANT TO DO ##
     bullet = ""
     if line[0] in ["#", "-"]:
@@ -547,7 +549,7 @@ def random_blank_lines():
 
     if len_diff==0:
         print(f"Could not remove any newlines. {Fore.BLUE}Check for empty lines in answers of Q{Progress.current_q}.{Fore.RESET}")
-        print(f"To keep the blank line, add a space to show in output, or include {comment()} to hide in output.")
+        print(f"To keep the blank line, add a space to show in output, or include {COMMENT} to hide in output.")
         exit()
     else:
         s = "" if len_diff==1 else "s"

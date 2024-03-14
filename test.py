@@ -27,6 +27,22 @@ def count_lines():
 # subprocess.run('pandoc --version', check=True, shell=True)
 # subprocess.run('freespace', check=True)
 
-s = "\n\ntest \n \n"
-a = "\n"
-print(f"-{s.strip(a)}-")
+# parses feedback specified with utils.FEEDBACK_BULLETS
+# input: ++ good job\n-- try again
+# output: <<correctfeedback:good job; incorrectfeedback: try again>>
+def parse_feedback(feedback):
+    output = ""
+    for fb in feedback.split("\n"):
+        try:
+            bullet = fb[0:2]
+            if not bullet in FBACK_BULLETS:
+                error(f"Feedback is poorly formatted: '{fb}'\nEach feedback item cannot be across multiple lines.")
+            content = fb[2:].strip() # space not required between bullet and content
+        except IndexError:
+            error(f"Feedback is too short: {fb}.\nnote Each feedback item cannot be across multiple lines.")
+        
+        output += f"{FBACK_BULLETS[bullet]}:{content};"
+    return f"<<{output}>>"
+
+
+print(parse_feedback("++ good job\n-- try again"))
