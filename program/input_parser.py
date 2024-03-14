@@ -167,7 +167,7 @@ def parse_feedback(feedback):
                 error(f"Feedback is poorly formatted: '{fb}'\nEach feedback item cannot be across multiple lines.")
             content = fb[2:].strip() # space not required between bullet and content
         except IndexError:
-            error(f"Feedback is too short: {fb}.\nnote Each feedback item cannot be across multiple lines.")
+            error(f"Feedback is too short: {fb}.\nNote each feedback item cannot be across multiple lines.")
         
         output += f"{FBACK_BULLETS[bullet]}:{content};"
     return f"<<{output}>>"
