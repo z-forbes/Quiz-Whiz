@@ -5,13 +5,13 @@ Run ``python3 --version``. If you get an "comand not found" error, [install Pyth
 
 Run ``pip --version``. If you get an "comand not found" error, [install Pip](https://pypi.org/project/pip/) and ensure it's on Path.
 
-## 2. [Download this repo](https://github.com/lewisforbes/ug5-project/archive/refs/heads/main.zip) and unzip the files.
+## 2. [Download this repo](https://github.com/lewisforbes/Quiz-Whiz/archive/refs/heads/main.zip) and unzip the files.
 
 ## 3. Install dependencies
 Open the unzipped folder in the terminal ([windows instructions](https://www.wikihow.com/Open-a-Folder-in-Cmd)). 
 
 Run ``dir``. 
-- If you see ``ug5-project-main``, run ``cd ug5-project-main && dir``. Go to next bullet.
+- If you see ``Quiz-Whiz-main``, run ``cd Quiz-Whiz-main && dir``. Go to next bullet.
 - If you see ``main.py`` (among other things), proceed.
 
 Run ``python3 main.py``. 
