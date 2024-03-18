@@ -70,9 +70,17 @@ def parse_question(q_lines):
     # warn about FIB mistake
     if q.type!=Question.QType.CLOZE and Question.Cloze.BLANK_MARKER in q.question:
         warning(f"{Question.QType.CLOZE.value} blank marker '{Question.Cloze.BLANK_MARKER}' found in {q.type.value} question. Is this a mistake?")
-    
+
     # description
     if len(desc_arr)>=1:
+        # check if user may have accidentally put answers in description
+        for line in desc_arr:
+            if len(line)<2:
+                continue # just in case
+            if line[0]=="-" or re.match("[0-9]+\.", line[0:2]): # TODO add bullets as global variables
+                warning("Potential answers found in question description.\nCheck question types in parse table below matche expectations.") # TODO mention in report as result of user study
+                break # only show warning once per question
+
         desc = ""
         # format multiline description
         for l in desc_arr:
