@@ -9,6 +9,7 @@ from shutil import rmtree
 import sys
 from tabulate import tabulate
 from colorama import Fore, init
+from difflib import SequenceMatcher
 init()
 
 ###############
@@ -266,6 +267,22 @@ def get_logo():
         t = "- Quiz Whiz -"
         return f"{'-'*len(t)}\n{t}\n{'-'*len(t)}\n"
 
+# https://stackoverflow.com/questions/17388213/find-the-similarity-metric-between-two-strings
+# returns the filename in comps which original is most similar to. if every similarity is below threshold, None is returned.
+def most_similar(original, comps, threshold=0.6):  # 0.6 follows their heuristic in the documentation
+    # input verification
+    if comps==[]: return None
+    
+    # remove extension. happens within big list comp below to preserve original filename for output
+    original = original.split(".")[:-1][0] if "." in original else original
+    
+    # do comparisons
+    ratios = [(SequenceMatcher(None, original, c.split(".")[:-1][0] if "." in c else c).ratio(), c) for c in comps] # [(ratio, comp_file)]
+    
+    # return max if above threshold
+    m = max(ratios, key=lambda r: r[0])
+    return m[1] if m[0]>=threshold else None
+
 ############
 ## ARRAYS ##
 ############
@@ -404,7 +421,15 @@ def del_tmp_dir():
 # open() with error checking
 def safe_open(fpath, m, encoding=None):
     if m=="r" and not os.path.exists(fpath):
-        error(f"Provided input filepath ({fpath}) does not exist.")
+        extra = ""
+        if not "." in os.path.basename(fpath):
+            extra += "\nNo file extension specified."
+
+        cur_dur = os.getcwd() if os.path.dirname(fpath)=='' else os.path.dirname(fpath)
+        if os.path.exists(cur_dur) and most_similar(fpath, os.listdir(cur_dur)): 
+                extra+=f"\nDid you mean '{os.path.join(os.path.dirname(fpath), most_similar(fpath, os.listdir(cur_dur)))}'?"
+
+        error(f"Provided input filepath ({fpath}) does not exist.{extra}")
     try:
         if encoding:
             return open(fpath, m, encoding=encoding)
