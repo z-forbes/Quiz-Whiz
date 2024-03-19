@@ -1,5 +1,4 @@
 # Which ocean is the warmest?
-
 - ^Atlantic
 - Pacific
 - Arctic
