@@ -14,19 +14,15 @@ try:
 except ModuleNotFoundError:
     from sys import exit
     from os import system
+    from program.utils import get_user_input
+
     packages = ["tabulate", "pypandoc", "colorama"]
-    yes = ["(y)es", "y", "yes"]
-    no = ["(n)o", "n", "no"]
-    while True:
-        print("Missing required package(s).")
-        user_in = input(f"Install following with pip: {str(packages)[1:-1]}?\n[{yes[0]}/{no[0]}] > ")
-        if user_in.lower() in yes:
-            break
-        if user_in.lower() in no:
-            print("Exiting.")
-            exit()
-        print("Invalid input.\n")
-    print("Installing packages...")
+    msg = f"Missing required package(s).\nInstall following with Pip: {str(packages)[1:-1]}?"
+    if not get_user_input(msg, ["(y)es", "y", "yes"], ["(n)o", "n", "no"]):
+        print("Exiting.")
+        exit()
+
+    # user has opted to install packages
     for p in packages:
         system(f"pip install {p} -q")
     print("Complete.\n")

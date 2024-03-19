@@ -2,21 +2,29 @@
 # from markdown import markdown # TODO remove. talk about in report.
 import re
 import base64
-import pypandoc
 import os
 import subprocess
 from shutil import rmtree
 import sys
-from tabulate import tabulate
-from colorama import Fore, init
 from difflib import SequenceMatcher
-init()
+# to allow `from program.utils import get_user_input` in main.py:
+try:
+    from colorama import Fore, init
+    init()
+    import pypandoc
+    from tabulate import tabulate
+except ModuleNotFoundError:
+    pass
+
 
 ###############
 ## CONSTANTS ##
 ####h##h#######
 FBACK_BULLETS = {"++":"correctfeedback", "~~":"partiallycorrectfeedback", "--":"incorrectfeedback"}
 COMMENT = ":"
+BULLET = "-"
+NUMBER_PAT = "[0-9]. " # check this
+
 
 #############
 ## STRINGS ##
@@ -383,6 +391,33 @@ def my_print(x="", **kwargs):
         return
     
     print(x, **kwargs)
+
+# prints msg and then gets user input. returns True if their input is in yes and False if it's in no
+# match_case means matching is case sensitive
+# ensure this matches function at top of main !!
+def get_user_input(msg, yes, no, match_case=False):
+    def _lower(s): 
+        if match_case:
+            return s 
+        else:
+            return s.lower()
+        
+    # deal with string input
+    if type(yes)==str:
+        yes = [yes]
+    if type(no)==str:
+        no = [no]
+
+    yes = [_lower(s) for s in yes]
+    no = [_lower(n) for n in no]
+
+    while True:
+        user_in = _lower(input(f"{msg}\nEnter {yes[0]} or {no[0]} > "))
+        if user_in in yes:
+            return True
+        if user_in in no:
+            return False
+        print("\nInvalid input.\n")
 
 
 ###########
