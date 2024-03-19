@@ -1,27 +1,31 @@
 This program facilitates the creation of quiz questions for Moodle and Learn Ultra.
 
-![overview diagram](docs/overview.png)
+<img src='docs/overview.png' width='70%'>
 
 # Installation
+Users new to command line programs are recommended to follow the [complete installation instructions](docs/installation.md).
+
+Advances users can follow this summary:
 1. Ensure [Python3](https://www.python.org/) and [Pip](https://pypi.org/project/pip/) are installed.
 2. [Download this repo](https://github.com/lewisforbes/Quiz-Whiz/archive/refs/heads/main.zip) and unzip the files.
 3. Run `python3 main.py` to install dependancies.
 4. If you see `All installation requirements met.` the program is ready to be used!
 
-### [Detailed installation instructions here](docs/installation.md)
+# Usage
+Users new to command line programs are recommended to complete the short [example usage walkthrough](docs/run_through.md).
 
-# Full Usage
+## Full Usage
 - [Question formatting](docs/basic_formatting.md)
 - [Advanced formatting (including properties)](docs/advanced_formatting.md)
-- [Available settings](docs/complete_usage.md)
+- [All `--settings`](docs/complete_usage.md)
 
-# Basic Usage
-
+# Just browsing?
+For those simply curious of the program's capabilities, here's an over
 At its simplist, the program is run through the command line as follows:
 
-`python3 main.py path/to/input.md --VLE`
+`python3 main.py InputFilepath --OutputType`
 
-Where `--VLE` is either `--learn` or `--moodle`, and `path/to/input.md` is the filepath to an input file of the correct format.
+Where `--OutputType` is either `--learn` or `--moodle`, and `InputFilepath` is the filepath to an input file of the correct format.
 
 An example input file might look something like:
 
