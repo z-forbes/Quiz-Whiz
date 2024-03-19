@@ -8,7 +8,7 @@ In your file explorer, open the file [`example_input.md`](example_input.md) with
 <img src='example_input.png' width='50%'>
 
 ## 2. Decide on parameters
-For this example, we'll pretent we're creating a file to be imported into Learn. As explained in the [complete usage instructions](complete_usage.md), this requires the `--learn` flag to be added. All other settings are uneccessary for this example.
+For this example, we'll pretend we're creating a file to be imported into Learn. As explained in the [complete usage instructions](complete_usage.md), this requires the `--learn` flag to be added. All other settings are uneccessary for this example.
 
 ## 3. Run the command 
 After [opening the program in the terminal](https://www.wikihow.com/Open-a-Folder-in-Cmd), run `python3 main.py docs/example_input.md --learn`.
