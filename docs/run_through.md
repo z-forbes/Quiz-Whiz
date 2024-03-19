@@ -17,7 +17,7 @@ This should yield the following output:
 
 <img src='images/example_program_output1.png' width='60%'>
 
-## 4. Examine output
+## 4. Examine output & fix mistakes
 Despite running with no errors, the program gave a warning because it detected an potential mistake. This mistake occured becasuse there is no newline between the question and answers in the first question of the example. To fix this and remove the warning, open the example input file and change the first question to:
 
 ```
