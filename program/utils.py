@@ -20,11 +20,16 @@ except ModuleNotFoundError:
 ###############
 ## CONSTANTS ##
 ####h##h#######
-FBACK_BULLETS = {"++":"correctfeedback", "~~":"partiallycorrectfeedback", "--":"incorrectfeedback"}
 COMMENT = ":"
-BULLET = "-"
-NUMBER_PAT = "[0-9]. " # check this
 
+Q_START = "#"
+
+BULLET = "-"
+NUM_PAT = "[0-9]+\." # regex pattern of bullet in cloze
+PRETTY_NUM_PAT = "X." # used when printing errors
+
+PROPS_PATTERN = "<<((?:\n|.)*?)>>"
+FBACK_BULLETS = {"++":"correctfeedback", "~~":"partiallycorrectfeedback", "--":"incorrectfeedback"}
 
 #############
 ## STRINGS ##
@@ -47,7 +52,7 @@ def remove_tags(raw_html):
 def get_line_content(s):
     try:
         content = s.split(" ")
-        assert re.match("[0-9]+\.", content[0]) or content[0] in ["-", "#"]
+        assert re.match(NUM_PAT, content[0]) or content[0] in [BULLET, Q_START]
     except:
         not_enough_spaces(s) # ends termination
 
@@ -194,8 +199,7 @@ def sub_range(old_str, sub_str, start, end):
 # returns the properties from a raw question/answer string
 # format: << name1:val1; name2:val2 >>
 def get_props(s):
-    props_pattern = "<<((?:\n|.)*?)>>"
-    props = re.findall(props_pattern, s)
+    props = re.findall(PROPS_PATTERN, s)
     if len(props)==0 or props[0].strip()=="":
         return None
 
@@ -218,12 +222,10 @@ def get_props(s):
 def remove_props(s):
     if s==None:
         return None
-    props_pattern = "<<((?:\n|.)*?)>>"
-    return re.sub(props_pattern, "", s)
+    return re.sub(PROPS_PATTERN, "", s)
 
 # returns true iff string possibly contains markdown formatting, images or code
-def has_formatting(s):
-    return ("*" in s) or ("_" in s) or ("[" in s) or ("`" in s) or ("$" in s)
+def has_formatting(s): return ("*" in s) or ("_" in s) or ("[" in s) or ("`" in s) or ("$" in s)
 
 # makes table summarising parsed questions
 def make_parse_table(quizzes):
@@ -395,7 +397,7 @@ def my_print(x="", **kwargs):
 # prints msg and then gets user input. returns True if their input is in yes and False if it's in no
 # match_case means matching is case sensitive
 # ensure this matches function at top of main !!
-def get_user_input(msg, yes, no, match_case=False):
+def get_user_input(msg, yes=["(y)es", "y", "yes"], no=["(n)o", "n", "no"], match_case=False):
     def _lower(s): 
         if match_case:
             return s 
@@ -509,14 +511,16 @@ def ensure_pandoc_installed():
         if check(): return
         
     # no pandoc found
-    do_download = "download pandoc"
-    user_in = input(f"No Pandoc installation found. Enter '{do_download}' to install Pandoc in program directory.\n> ")
-    if user_in in [do_download, f"'{do_download}'"]:
+    if get_user_input("No Pandoc installation found. Install Pandoc in program directory?"):
+        # install pandoc
         print("Downloading and installing Pandoc. This may quite a few minutes.")
         pypandoc.download_pandoc(targetfolder=os.path.join(os.getcwd(), "program/pandoc"), delete_installer=True) # abs path required on linux
         os.environ["PATH"] = env_value
-        if not check(): raise Exception("Something went wrong installing Pandoc.")
+        if not check(): 
+            Fore.RED = "" # no colour in program yet since user can't control it
+            error(f"Something went wrong installing Pandoc.")
     else:
+        # exit
         print("\nPandoc required. Download from URL below and ensure 'pandoc' added to PATH.")
         print("https://pandoc.org/installing.html")
         exit()
@@ -524,27 +528,20 @@ def ensure_pandoc_installed():
 # called when there isn't a space after # or - or X. when there should be
 # asks user if they want program to fix this
 # fixes if neccessary, ends termination regardless
-def     not_enough_spaces(line):
+def not_enough_spaces(line):
     ## INFORM USER OF MISTAKE, ASK WHAT THEY WANT TO DO ##
     bullet = ""
-    if line[0] in ["#", "-"]:
+    if line[0] in [{Q_START}, BULLET]:
         bullet = line[0]
-    elif re.match("[0-9]+\.", line):
+    elif re.match(NUM_PAT, line):
         bullet = line.split(".")[0]+"."
     else:
         Exception("This shouldn't be reached. Line: "+str(line))
-    print(f"{Fore.RED}\nSpace missing after '{bullet}' in line '{line}'. There may be more similar errors.{Fore.RESET}")
-    assert Progress.import_file
-    print(f"Do you want to add spaces where required in {Progress.import_file}?")    
-    while True:
-        ans = input("Type yes or no > ")
-        if ans=="yes":
-            print() # terminal newline
-            break
-        if ans=="no":
+    
+    msg = f"{Fore.RED}Space missing after '{bullet}' in line '{line}'.\nThere may be more similar errors.{Fore.RESET}\nDo you want to add spaces where required in {Progress.import_file}?"
+    if not get_user_input(msg):
             print("Ending termination.")
             exit()
-        print("Invalid response.")
     
     ## USER ASKED FOR PROGRAM TO FIX FILE ##
     # get file contents
@@ -553,13 +550,13 @@ def     not_enough_spaces(line):
     
     total_changes = 0
     # first line edge case
-    if raw_contents[0]=="#" and raw_contents[1]!=" ":
+    if raw_contents[0]==Q_START and raw_contents[1]!=" ":
         total_changes+=1
-        print("Changing '#' to '# ' at start of file.")
-        raw_contents = "# " + raw_contents[1:] # add space after first #
+        print(f"Changing '{Q_START}' to '{Q_START} ' at start of file.")
+        raw_contents = f"{Q_START} " + raw_contents[1:] # add space after first #
     
     # standard replacements
-    for b in ["(#)", "(-)", "([0-9]+\.)"]:
+    for b in [f"({Q_START})", f"({BULLET})", f"({NUM_PAT})"]:
         pattern = "\n" + b + "([^ ])" # newline precedes bullet, space does not
         match_count = len(re.findall(pattern, raw_contents))
         s = "" if match_count==1 else "s"
@@ -572,9 +569,12 @@ def     not_enough_spaces(line):
     # write to file
     with safe_open(Progress.import_fpath, "w") as f:
         f.write(raw_contents)
-
-    s = "" if total_changes==1 else "s"
-    print(f"{Fore.GREEN}Made {total_changes} update{s} to {Progress.import_file}. Try rerunning program.")
+    
+    if total_changes==0:
+        print("Could not add any spaces. Double check the syntax used.")
+    else:
+        s = "" if total_changes==1 else "s"
+        print(f"{Fore.GREEN}Made {total_changes} update{s} to {Progress.import_file}. Try rerunning program.")
     exit()
 
 
@@ -583,17 +583,10 @@ def     not_enough_spaces(line):
 # fixes if neccessary, ends termination regardless
 def random_blank_lines():
     assert Progress.import_file
-    print(f"\n{Fore.RED}There are blank lines where there shouldn't be any in {Progress.import_file}.{Fore.RESET}")
-    print("Do you want the program to fix this?")    
-    while True:
-        ans = input("Type yes or no > ")
-        if ans=="yes":
-            print() # terminal newline
-            break
-        if ans=="no":
-            print("Ending termination.")
-            exit()
-        print("Invalid response.")
+    msg = f"\n{Fore.RED}There are blank lines where there shouldn't be any in {Progress.import_file}.{Fore.RESET}\nDo you want the program to fix this?"
+    if not get_user_input(msg):
+        print("Ending termination.")
+        exit()
 
     # user wants blank lines to be fixed
     with safe_open(Progress.import_fpath, "r") as f:

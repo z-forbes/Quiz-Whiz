@@ -1,20 +1,39 @@
-from difflib import SequenceMatcher
-
-def most_similar(original, comps, threshold=0.7):
-    # input verification
-    if comps==[]:
-        return None
+# checks every answer starts with bullet or every answer starts with list index (X.) 
+# answers: raw, shrunk answers
+# throws error/not_enough_spaces() if bad, does nothing if good
+def verify_answers(answers):
+    msg = 'Answer poorly formatted: "{}"'
     
-    # remove extensions
-    original = original.split(".")[:-1][0] if "." in original else original
-    
-    # do comparisons
-    ratios = [(SequenceMatcher(None, original, c.split(".")[:-1][0] if "." in c else c).ratio(), c) for c in comps] # [(ratio, comp_file)]
-    print(ratios)
-    m = max(ratios, key=lambda r: r[0])
-    return m[1] if m[0]>=threshold else None
+    # check bullet/space
+    good = True
+    for a in answers:
+        # check answer starts with - or X.
+        if not (re.match(NUM_PAT, a) or re.match(f"\{BULLET}", a)):
+            error(msg.format(a) + f"\nAnswer must start with '{BULLET}' or '{PRETTY_NUM_PAT} '")
+            
+        # check there's a space after bullet
+        if not (re.match(NUM_PAT+" ", a) or re.match(f"\{BULLET} ", a)):
+            not_enough_spaces(a) # ends termination
+        
+        if a.split(" ")[0]!=BULLET:
+            good = False
+            break
+    if good: return # every answer is well-formatted bullet
 
+    # check number format/space
+    for a_i, a in enumerate(answers):
+        # check answer starts with - or X.
+        if not (re.match(NUM_PAT, a) or re.match(f"\{BULLET}", a)):
+            error(msg.format(a) + f"\nAnswer must start with '{BULLET}' or '{PRETTY_NUM_PAT} '")
+            
+        # check there's a space after bullet
+        if not (re.match(NUM_PAT+" ", a) or re.match(f"\{BULLET} ", a)):
+            not_enough_spaces(a) # ends termination
 
-o = "appel.txt"
-cs = ["papell.txt", "orange", "banana.txt"] 
-print(most_similar(o, cs))
+        bullet = a.split(" ")[0]
+        if bullet!=f"{a_i+1}.": # NUM_PATTERN should probs be used
+            # format invalid - find out how and inform
+            if bullet==BULLET:
+                error(f"A mix of bullet types has been used. Use all {BULLET} or {PRETTY_NUM_PAT}")
+            else:
+                error(msg.format(a)+f"\nNumbers must be sequential and starting from 1 - was expecting '{a_i+1}.' here.")  

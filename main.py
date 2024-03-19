@@ -17,8 +17,7 @@ except ModuleNotFoundError:
     from program.utils import get_user_input
 
     packages = ["tabulate", "pypandoc", "colorama"]
-    msg = f"Missing required package(s).\nInstall following with Pip: {str(packages)[1:-1]}?"
-    if not get_user_input(msg, ["(y)es", "y", "yes"], ["(n)o", "n", "no"]):
+    if not get_user_input(f"Missing required package(s).\nInstall following with Pip: {str(packages)[1:-1]}?"):
         print("Exiting.")
         exit()
 
@@ -151,7 +150,7 @@ def main(args):
                     f = safe_open(fpath, 'r')
                     qnum_present = False
                     for line in f:
-                        if line[0]=="#":
+                        if line[0]==Q_START:
                             q_i+=1
                             if not qnum_present:
                                 new_lines.append(qnum.format(q_i))

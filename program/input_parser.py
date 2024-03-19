@@ -47,8 +47,8 @@ def parse_question(q_lines):
     NEWLINE = ">>>"
     Progress.parse_update()
     question = q_lines[0].replace(NEWLINE, "\n")
-    if question[0]!="#":
-        error(f"Input file must begin with '#' (for a question) or '{COMMENT}' (for a comment).") # called on first question only
+    if question[0]!=Q_START:
+        error(f"Input file must begin with '{Q_START}' (for a question) or '{COMMENT}' (for a comment).") # called on first question only
     
     q_lines = [l.replace(NEWLINE, "\n") for l in q_lines[1:]]
     split_q = split_on_blank(q_lines, space_is_blank=False)
@@ -77,7 +77,7 @@ def parse_question(q_lines):
         for line in desc_arr:
             if len(line)<2:
                 continue # just in case
-            if line[0]=="-" or re.match("[0-9]+\.", line[0:2]): # TODO add bullets as global variables
+            if line[0]==BULLET or re.match(NUM_PAT, line[0:2]): # TODO add bullets as global variables
                 warning("Potential answers found in question description.\nCheck question types in parse table below matche expectations.") # TODO mention in report as result of user study
                 break # only show warning once per question
 
@@ -105,7 +105,7 @@ def shrink_answers(answers):
         if a=="":
             random_blank_lines() # ends termination
             # error(f"Blank line found in answers/description. Add a space to include in output or '{COMMENT}' to hide in output.\nInclude --add_numbers flag to find erroneous question, check start/end of file for extra newlines.")
-        if a[0]=="-" or type(force_type(a[0]))==int: # starts with - or int
+        if a[0]==BULLET or type(force_type(a[0]))==int: # starts with - or int
             if current != "":
                 current = current[:-1] # remove trailing newline
                 output.append(current)
@@ -141,25 +141,38 @@ def find_q_class(answers):
 
 # checks every answer starts with bullet or every answer starts with list index (X.) 
 # answers: raw, shrunk answers
-# throws error if bad, does nothing if good
+# throws error/not_enough_spaces() if bad, does nothing if good
 def verify_answers(answers):
-    msg = 'Incorrect answer format...\n"{}"'
-    num_pat = "[0-9]+\."
-    patterns = ["-", num_pat]
+    msg = 'Answer poorly formatted: "{}"'
+    
+    # check rough format of bullets is correct
+    for a in answers:
+        # check answer starts with - or X.
+        if not (re.match(NUM_PAT, a) or re.match(f"\{BULLET}", a)):
+            error(msg.format(a) + f"\nAnswer must start with '{BULLET}' or '{PRETTY_NUM_PAT} '")
+            
+        # check there's a space after bullet
+        if not (re.match(NUM_PAT+" ", a) or re.match(f"\{BULLET} ", a)):
+            not_enough_spaces(a) # ends termination
+
+    # check if MC bullet
+    good = True
+    for a in answers:       
+        if a.split(" ")[0]!=BULLET:
+            good = False
+            break
+    if good: return # every answer is well-formatted bullet
+
+    # check number format/ordering
     for a_i, a in enumerate(answers):
-        if not " " in a:
-            # no space in answer
-            not_enough_spaces(a) # ends termination   
         bullet = a.split(" ")[0]
-        for p in patterns[:]:
-            if not re.fullmatch(p, bullet):
-                patterns.remove(p)
-            if patterns==[]:
-                # answer doesn't start with number or bullet
-                not_enough_spaces(a) # ends termination
-            if patterns==[num_pat] and bullet.split(".")[0]!=str(a_i+1):
-                # answer starts with number but in the wrong order
-                error(msg.format(a)+"\n(Numbers not sequential and starting from 1.)")
+        if bullet!=f"{a_i+1}.": # NUM_PATTERN should probs be used
+            # format invalid - find out how and inform
+            if bullet==BULLET:
+                error(f"A mix of bullet types has been used. Use all {BULLET} or {PRETTY_NUM_PAT}")
+            else:
+                error(msg.format(a)+f"\nNumbers must be sequential and starting from 1 - was expecting '{a_i+1}.' here.")        
+    return # every answer is well-formatted/ordered number
 
 # parses feedback specified with utils.FEEDBACK_BULLETS
 # input: ++ good job\n-- try again
