@@ -8,7 +8,7 @@ In your file explorer, open the file [`example_input.md`](example_input.md) with
 <img src='example_input.png' width='50%'>
 
 ## 2. Decide on parameters
-For this example, we'll pretend we're creating a file to be imported into Learn. As explained in the [complete usage instructions](complete_usage.md), this requires the `--learn` flag to be added. All other settings are uneccessary for this example.
+For this example, we'll pretend we're creating a file to be imported into Learn. As explained in the [complete usage instructions](complete_usage.md), this requires the `--learn` flag to be added. All other settings are uneccessary here.
 
 ## 3. Run the command 
 After [opening the program in the terminal](https://www.wikihow.com/Open-a-Folder-in-Cmd), run `python3 main.py docs/example_input.md --learn`.
@@ -35,6 +35,6 @@ After fixing the mistake, run `python3 main.py docs/example_input.md --learn` ag
 <img src='images/example_program_output2.png' width='60%'>
 
 ## 6. Access the output
-The file created by the program can be found in the `output` folder, and it's called `LEARN_example_input.txt`. It can be imported into Learn using these [upload isntructions](https://help.blackboard.com/Learn/Instructor/Ultra/Tests_Pools_Surveys/Reuse_Questions/Upload_Questions). The output should look like [this file](LEARN_example_input.txt).
+The file created by the program can be found in the `output` folder, and it's called `LEARN_example_input.txt`. It can be imported into Learn using these [upload instructions](https://help.blackboard.com/Learn/Instructor/Ultra/Tests_Pools_Surveys/Reuse_Questions/Upload_Questions). The output should look like [this file](LEARN_example_input.txt).
 
 To change where the output is saved, use the `--output` flag. For example, including `--output to_upload` will save the output to the `to_upload` directory.
