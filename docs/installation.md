@@ -10,14 +10,16 @@ Run ``pip --version``. If you get an "comand not found" error, [install Pip](htt
 ## 3. Install dependencies
 Open the unzipped folder in the terminal ([windows instructions](https://www.wikihow.com/Open-a-Folder-in-Cmd)). 
 
-Run ``dir``. 
-- If you see ``Quiz-Whiz-main``, run ``cd Quiz-Whiz-main && dir``. Go to next bullet.
-- If you see ``main.py`` (among other things), proceed.
-
 Run ``python3 main.py``. 
+If you get a ``No such file or directory`` error, you do not have the correct folder open in the terminal.
 
-Follow instructions to install required dependencies, which include Pip packages and [Pandoc](https://pandoc.org/).[^1]
-[^1]: Installing Pandoc this way installs it for use only in this program, not system wide. It is fully uninstalled by deleting the folder containing the program's code.
+Follow instructions to install required dependencies:
+
+- If the required Pip packages are not installed, the program will prompt you to install them. Type `yes` to proceed.
+- If Pandoc[^1] is not installed, the program will ask you to install it. Type `yes` to proceed.
+
+[^1]: Installing [Pandoc](https://pandoc.org/) this way installs it for use only in this program, not system wide. It is fully uninstalled by deleting the folder containing the program's code.
+
 
 ## 4. Check installation was succesful.
 The program is installed when the following message occurs after runnning `python3 main.py`:
