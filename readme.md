@@ -1,4 +1,4 @@
-This program facilitates the creation of quiz questions for Moodle and Learn Ultra.
+### This program facilitates the creation of quiz questions for Moodle and Learn Ultra.
 
 <img src='docs/overview.png' width='70%'>
 
