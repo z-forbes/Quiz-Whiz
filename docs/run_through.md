@@ -35,6 +35,6 @@ After fixing the mistake, run `python3 main.py docs/example_input.md --learn` ag
 <img src='images/example_program_output2.png' width='50%'>
 
 ## 6. Access the output
-The file created by the program can be found in the `output` folder, and it's called `LEARN_example_input.txt`. It can be imported into Learn using these [upload isntructions](https://help.blackboard.com/Learn/Instructor/Ultra/Tests_Pools_Surveys/Reuse_Questions/Upload_Questions). 
+The file created by the program can be found in the `output` folder, and it's called `LEARN_example_input.txt`. It can be imported into Learn using these [upload isntructions](https://help.blackboard.com/Learn/Instructor/Ultra/Tests_Pools_Surveys/Reuse_Questions/Upload_Questions). The output should look like [this file](LEARN_example_input.txt).
 
 To change where the output is saved, use the `--output` flag. For example, including `--output to_upload` will save the output to the `to_upload` directory.
