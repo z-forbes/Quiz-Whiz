@@ -155,6 +155,10 @@ def verify_answers(answers):
         if not (re.match(NUM_PAT+" ", a) or re.match(f"\{BULLET} ", a)):
             not_enough_spaces(a) # ends termination
 
+        # check if there's any content in answer
+        if re.fullmatch(NUM_PAT+" ", a) or re.fullmatch(f"\{BULLET} ", a):
+            error(msg.format(a) + f"\nNo content in answer.")
+
     # check if MC bullet
     good = True
     for a in answers:       

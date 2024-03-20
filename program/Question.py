@@ -10,7 +10,7 @@ class QType(Enum):
     MC     = "MC"       # Basic()
     TF     = "TF"       # Basic()
     ESSAY  = "Essay"    # Basic()
-    CLOZE  = "Cloze"    # Cloze()
+    CLOZE  = "FIB"      # Cloze()
     MATCH  = "Match"    # Match()
     NUM    = "Numeric"  # Num()
 
@@ -95,7 +95,6 @@ class Question(ABC):
 # CONCRETE SUBCLASSES #
 #######################
 class Basic(Question):
-    CORRECT = "^"
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         if "type" in kwargs.keys():
@@ -153,10 +152,10 @@ class Basic(Question):
 
             props = get_props(raw_answer)
             body = remove_props(raw_answer)
-            
-            if body[0]==Basic.CORRECT:
+                        
+            if body[0]==CORRECT:
                 correct = True
-                body = body[len(Basic.CORRECT):] # removes correct marker 
+                body = body[len(CORRECT):] # removes correct marker 
             else:
                 correct = False
 
@@ -171,7 +170,7 @@ class Basic(Question):
         return [parse_answer(l) for l in lines]
 
 class Cloze(Question):
-    BLANK_MARKER = "[]"
+    BLANK_MARKER = "[]" # TODO move to utils and refractor
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

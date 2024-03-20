@@ -23,6 +23,7 @@ except ModuleNotFoundError:
 COMMENT = ":"
 
 Q_START = "#"
+CORRECT = "^"
 
 BULLET = "-"
 NUM_PAT = "[0-9]+\." # regex pattern of bullet in cloze
@@ -538,6 +539,7 @@ def not_enough_spaces(line):
     else:
         Exception("This shouldn't be reached. Line: "+str(line))
     
+    print()
     msg = f"{Fore.RED}Space missing after '{bullet}' in line '{line}'.\nThere may be more similar errors.{Fore.RESET}\nDo you want to add spaces where required in {Progress.import_file}?"
     if not get_user_input(msg):
             print("Ending termination.")
@@ -564,7 +566,7 @@ def not_enough_spaces(line):
             total_changes+=match_count
             raw_contents = re.sub(pattern, f"\n\\1 \\2", raw_contents)
             pretty_b = b.replace('(', '').replace(')', '').replace('[0-9]+\\', 'X')
-            if not Progress.quiet: print(f"Fixed {match_count} incorrect use{s} of '{pretty_b}'.")
+            print(f"Fixed {match_count} incorrect use{s} of '{pretty_b}'.")
 
     # write to file
     with safe_open(Progress.import_fpath, "w") as f:
@@ -574,7 +576,7 @@ def not_enough_spaces(line):
         print("Could not add any spaces. Double check the syntax used.")
     else:
         s = "" if total_changes==1 else "s"
-        print(f"{Fore.GREEN}Made {total_changes} update{s} to {Progress.import_file}. Try rerunning program.")
+        print(f"{Fore.GREEN}Made {total_changes} update{s} to {Progress.import_file}. Try rerunning program.\n")
     exit()
 
 
