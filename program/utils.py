@@ -492,6 +492,7 @@ def to_vm(from_dir, dice=True):
 
 # checks if Pandoc is installed, if not asks user if they want to install it. ends termination if Pandoc not installed.
 def ensure_pandoc_installed():
+    import pypandoc # need on windows
     def check():
         try:
             subprocess.run('pandoc --version', check=True, capture_output=True, shell=True)

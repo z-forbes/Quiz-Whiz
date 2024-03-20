@@ -18,9 +18,19 @@ except ModuleNotFoundError:
 
     packages = ["tabulate", "pypandoc", "colorama"]
     if not get_user_input(f"Missing required package(s).\nInstall following with Pip: {str(packages)[1:-1]}?"):
-        print("Exiting.")
+        # find which packages must be installed
+        missing = []
+        for p in packages:
+            try:
+                exec(f"import {p}")
+            except ModuleNotFoundError:
+                missing.append(p)
+        
+        s = "" if len(missing)==1 else "s"
+        print(f"\nMissing following package{s}: {str(missing)[1:-1]}. Exiting...")
         exit()
 
+    print(f"Installing {len(packages)} packages...", end=" ", flush=True)
     # user has opted to install packages
     for p in packages:
         system(f"pip install {p} -q")
