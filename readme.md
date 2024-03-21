@@ -12,12 +12,9 @@ Advanced users can follow this summary:
 4. If you see `All installation requirements met.` the program is ready to be used!
 
 # Usage
-Users new to command line programs are recommended to complete the short [example usage walkthrough](docs/run_through.md).
+The [example usage walkthrough](https://github.com/lewisforbes/Quiz-Whiz/wiki/Walkthrough) is the best way to learn how to use Quiz Whiz.
 
-## Full Usage
-- [Question formatting](docs/basic_formatting.md)
-- [Advanced formatting (including properties)](docs/advanced_formatting.md)
-- [All `--settings`](docs/complete_usage.md)
+Full documentation is in [the wiki](https://github.com/lewisforbes/Quiz-Whiz/wiki).
 
 # Just browsing?
 For those simply curious of the program's capabilities, here's an over
