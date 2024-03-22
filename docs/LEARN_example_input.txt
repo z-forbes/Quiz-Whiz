@@ -1,6 +1,0 @@
-MC	<p>Which ocean is the warmest?</p>	<p>Atlantic</p>	correct	<p>Pacific</p>	incorrect	<p>Arctic</p>	incorrect
-MA	<p>Choose all of the examples or types of carbohydrates</p>	<p>Galactose</p>	correct	<p>Fructose</p>	correct	<p>Melanin</p>	incorrect	<p>Sucrose</p>	correct
-TF	<p>Blaise Pascal was a 20th century sociologist who argued for the importance of identifying scientific laws that govern human behavior.</p> <figure> <img src="https://iep.utm.edu/wp-content/media/pascal_blaise.jpg" alt="Portrait of Blaise Pascal" /> <figcaption aria-hidden="true">Portrait of Blaise Pascal</figcaption> </figure> 	false
-ESS	<p>Give a few examples where you can help preserve marine ecosystems. </p>	<p>One way in which you can help is...</p>
-MAT	<p>Match the following animals to their native continent</p>	<p>Bullfrog</p>	<p>North America</p>	<p>Panda</p>	<p>Asia</p>	<p>Llama</p>	<p>South America</p>
-NUM	<p>Approximately, how many species of birds are there?</p>	10000	1000
