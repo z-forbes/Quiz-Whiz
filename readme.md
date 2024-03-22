@@ -1,5 +1,5 @@
 This software under active development, it's only public so I could make a wiki.
-After downloading repo, either run `cleanup.bat` or delete everything apart from `main.py`, `readme.md`, `program`, and `assets`.
+After downloading repo, either run `cleanup.bat` or delete everything apart from `main.py`, `readme.md`, `LICENSE`, `program`, and `assets`.
 
 *******
 
