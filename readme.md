@@ -5,7 +5,7 @@ After downloading repo, either run `cleanup.bat` or delete everything apart from
 
 ### This program facilitates the creation of quiz questions for Moodle and Learn Ultra.
 
-<img src='assets/images/overview.png' width='80%'>
+<img src='assets/images/overview.png' width='90%'>
 
 # Installation
 Users new to command line programs are recommended to follow the [complete installation instructions](https://github.com/lewisforbes/Quiz-Whiz/wiki/Detailed-Installation).
