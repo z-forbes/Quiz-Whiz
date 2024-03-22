@@ -98,10 +98,11 @@ def mk_FIB(q):
 
 # used for questions with multiple blanks
 def mk_FIB_PLUS(q):
-    if len(q.answers)>26:
-        error("Too many answers in fill in blanks question, Learn accepts a max of 26.") # TODO can you get more than 26?
+    if len(q.answers)>100:
+        error("Too many answers in fill in blanks question, Learn accepts a max of 100\n(https://help.blackboard.com/Learn/Instructor/Ultra/Tests_Pools_Surveys/Reuse_Questions/Upload_Questions).")
 
-    ALPH = "abcdefghijklmnopqrstuvwxyz"
+    
+
     BM = program.Question.Cloze.BLANK_MARKER
     new_q = mk_qtext(q)
     answers = []
@@ -109,8 +110,9 @@ def mk_FIB_PLUS(q):
         BM_i = new_q.find(BM)
         pre_BM = new_q[0:BM_i]
         post_BM = new_q[BM_i+len(BM):]
-        new_q = pre_BM + f"[{ALPH[i]}]" + post_BM
-        answers += [ALPH[i], q.answers[i].replace("\n", " "), None] # None adds extra tab
+
+        new_q = pre_BM + f"[{i}]" + post_BM
+        answers += [str(i), q.answers[i].replace("\n", " "), None] # None adds extra tab
 
     return arr_to_line(["FIB_PLUS", new_q] + answers)
 

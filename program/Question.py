@@ -215,14 +215,14 @@ class Num(Question):
         super().__init__(**kwargs)
         self.type = QType.NUM
 
-    # self.answers is of form ["x [y]"]. returns int y
+    # self.answers is of form ["x [y]"]. returns int y or "" if no tolerance. # TODO could return "" but
     def get_tolerance(self):
         if not self.answers:
             return None
         try:
-            return force_type(re.findall("\[[0-9]+\]", self.answers[0])[0][1:-1])
+            return force_type(re.findall("\[[0-9]*\]", self.answers[0])[0][1:-1])
         except:
-            error("Num answers poorly formatted")
+            error("Num answers poorly formatted (cannot get tolerance).")
 
     # self.answers is of form ["x [y]"]. returns int x
     def get_answer(self):
@@ -231,13 +231,11 @@ class Num(Question):
         try:
             return force_type(self.answers[0].split(" ")[0])
         except:
-            error("Num answers poorly formatted")
+            error("Num answers poorly formatted (cannot get answer).")
 
     # static method
     def parse_answers(lines):
-        if not Num.is_num(lines):
-            error("Num answers poorly formatted")
-
+        assert Num.is_num(lines)
         return [get_line_content(lines[0])] # len(lines)=1
     
     # static method
@@ -245,4 +243,4 @@ class Num(Question):
         if len(ans_lines)!=1:
             return False
         
-        return re.match("[0-9]+ \[[0-9]+\]", get_line_content(ans_lines[0])) # ans line of form "x [y]" or "- x [y]"
+        return re.match("[0-9]+ \[[0-9]*\]", get_line_content(ans_lines[0])) # ans line of form "x [y]" or "- x [y]"
