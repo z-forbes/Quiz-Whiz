@@ -7,7 +7,7 @@ Users new to command line programs are recommended to follow the [complete insta
 
 Advanced users can follow this summary:
 1. Ensure [Python3](https://www.python.org/) and [Pip](https://pypi.org/project/pip/) are installed.
-2. [Download this repo](https://github.com/lewisforbes/Quiz-Whiz/archive/refs/heads/main.zip) and unzip the files.
+2. `git clone https://github.com/lewisforbes/Quiz-Whiz`
 3. Run `python3 main.py` to install dependancies.
 4. If you see `All installation requirements met.` the program is ready to be used!
 
