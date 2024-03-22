@@ -3,7 +3,7 @@
 <img src='assets/images/overview.png' width='80%'>
 
 # Installation
-Users new to command line programs are recommended to follow the [complete installation instructions](docs/installation.md).
+Users new to command line programs are recommended to follow the [complete installation instructions](https://github.com/lewisforbes/Quiz-Whiz/wiki/Detailed-Installation).
 
 Advanced users can follow this summary:
 1. Ensure [Python3](https://www.python.org/) and [Pip](https://pypi.org/project/pip/) are installed.
