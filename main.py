@@ -34,6 +34,12 @@ except ModuleNotFoundError:
     # user has opted to install packages
     for p in packages:
         system(f"pip install {p} -q")
+
+    try:
+        init_nonstd_modules()
+    except ModuleNotFoundError:
+        print("Error: Unable to install packages with Pip. Check internet connection.")
+        exit()
     print("Complete.\n")
 
 from program.utils import ensure_pandoc_installed

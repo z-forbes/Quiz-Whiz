@@ -7,6 +7,7 @@ import subprocess
 from shutil import rmtree
 import sys
 from difflib import SequenceMatcher
+from urllib.error import URLError
 # to allow `from program.utils import get_user_input` in main.py:
 try:
     from colorama import Fore, init
@@ -342,7 +343,10 @@ def get_intersection(arr1, arr2):
 
 # prints error and terminates program
 # progress always shown apart from when error is unexpected.
-def error(msg, show_progress=True):
+def error(msg, show_progress=True, nc=False):
+    if nc:
+        Fore.RED = ""
+        Fore.RESET = ""
     newline = "\n> "
     progress = Progress.current_action
     if not show_progress or progress=="":
@@ -493,6 +497,11 @@ def to_vm(from_dir, dice=True):
 # checks if Pandoc is installed, if not asks user if they want to install it. ends termination if Pandoc not installed.
 def ensure_pandoc_installed():
     import pypandoc # need on windows
+    def del_current_installer():
+        installer_path = [f for f in os.listdir(".") if re.fullmatch("pandoc-[0-9.]+-(?:linux|windows)-[0-9a-zA-Z_]+(?:\.tar\.gz|\.msi)", os.path.basename(f))]
+        if len(installer_path)==1: # don't want to delete other installer
+            os.remove(installer_path[0])
+
     def check():
         try:
             subprocess.run('pandoc --version', check=True, capture_output=True, shell=True)
@@ -513,19 +522,33 @@ def ensure_pandoc_installed():
         if check(): return
         
     # no pandoc found
-    if get_user_input("No Pandoc installation found. Install Pandoc in program directory?"):
-        # install pandoc
-        print("Downloading and installing Pandoc. This may quite a few minutes.")
-        pypandoc.download_pandoc(targetfolder=os.path.join(os.getcwd(), "program/pandoc"), delete_installer=True) # abs path required on linux
-        os.environ["PATH"] = env_value
-        if not check(): 
-            Fore.RED = "" # no colour in program yet since user can't control it
-            error(f"Something went wrong installing Pandoc.")
-    else:
-        # exit
+    if not get_user_input("No Pandoc installation found. Install Pandoc in program directory?"):
         print("\nPandoc required. Download from URL below and ensure 'pandoc' added to PATH.")
         print("https://pandoc.org/installing.html")
         exit()
+
+    # install pandoc
+    print("Downloading and installing Pandoc. This may quite a few minutes.")
+    try:
+        del_current_installer() # in case of prev failed attempt
+        err = None
+        pypandoc.download_pandoc(targetfolder=os.path.join(os.getcwd(), "program/pandoc"), delete_installer=True) # abs path required on linux
+        os.environ["PATH"] = env_value
+
+    except subprocess.CalledProcessError:
+        del_current_installer()
+        err = "Download failed, likely due to poor internet connection."
+    except URLError:
+        err = "Download failed, are you connected to the internet?"
+    except: # else
+        err = "An unknown error occured when downloading Pandoc."
+    if err:
+        error(err + "\nTry again, or download from https://pandoc.org/installing.html", nc=True)
+    
+    # double check all is working
+    if not check(): 
+        error(f"Something went wrong installing Pandoc.\nThe program thinks it was installed but it cannot be accessed.", nc=True)
+
 
 # called when there isn't a space after # or - or X. when there should be
 # asks user if they want program to fix this
