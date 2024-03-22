@@ -1,6 +1,6 @@
 ### This program facilitates the creation of quiz questions for Moodle and Learn Ultra.
 
-<img src='docs/overview.png' width='80%'>
+<img src='assets/images/overview.png' width='80%'>
 
 # Installation
 Users new to command line programs are recommended to follow the [complete installation instructions](docs/installation.md).
@@ -40,5 +40,5 @@ An example input file might look something like:
 
 Which creates the following questions on Learn:
 
-![Example questions on Learn](docs/learn_example_qs.png)
+![Example questions on Learn](assets/images/learn_example_qs.png)
 
