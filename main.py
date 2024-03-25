@@ -1,5 +1,16 @@
 # Gets arguments from user, runs program, prints progress/summary.
 
+## Ensure user has run from terminal. Assume they have on linux.
+import os
+from sys import exit
+
+if os.name == 'nt' and not 'SESSIONNAME' in os.environ:
+    # running from windows gui
+    print("Error: program must be ran from the command line.")
+    print("See https://github.com/lewisforbes/Quiz-Whiz/wiki/Detailed-Installation for instructions if unsure how.")
+    input("Press enter to exit...\n")
+    exit()
+
 #####################
 ## MODULES/IMPORTS ##
 #####################
@@ -12,7 +23,6 @@ def init_nonstd_modules():
 try:
     init_nonstd_modules()
 except ModuleNotFoundError:
-    from sys import exit
     from os import system
     from program.utils import get_user_input
 
@@ -51,7 +61,8 @@ if len(sys.argv)==1:
     print("-"*len(msg))
     print(msg)
     print("-"*len(msg))
-    print("Run `python3 main.py -h` for usage information.\n")
+    print("Run `python3 main.py -h` for usage information.")
+    print("Run `python3 main.py assets/example_input.md --learn` for example usage.\n")
     sys.exit()
 
 
@@ -237,11 +248,13 @@ def main(args):
             my_print(f"\nExporting {quiz.input_file}...")
             bname = path.basename(quiz.input_file)
             if args.learn:
-                learn(quiz, path.join(output_dir, f"LEARN_{change_ftype(bname, 'txt')}"))
-                my_print("Learn file created.\n")
+                outpath = path.join(output_dir, f"LEARN_{change_ftype(bname, 'txt')}")
+                learn(quiz, outpath)
+                my_print(f"Learn file created: '{outpath}'\n")
             if args.moodle:
-                moodle(quiz, path.join(output_dir, f"MOODLE_{change_ftype(bname, 'xml')}"))
-                my_print("Moodle file created.\n")
+                outpath = path.join(output_dir, f"MOODLE_{change_ftype(bname, 'xml')}")
+                moodle(quiz, outpath)
+                my_print(f"Moodle file created. '{outpath}'\n")
             if args.ext:
                 mk_tmp_dir()
                 tmp_correct = path.join(TMP_DIR(), "for_file_convert.md")

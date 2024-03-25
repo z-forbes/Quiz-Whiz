@@ -556,12 +556,13 @@ def ensure_pandoc_installed():
 def not_enough_spaces(line):
     ## INFORM USER OF MISTAKE, ASK WHAT THEY WANT TO DO ##
     bullet = ""
-    if line[0] in [{Q_START}, BULLET]:
+    if line[0] in [Q_START, BULLET]:
         bullet = line[0]
     elif re.match(NUM_PAT, line):
+        print("here")
         bullet = line.split(".")[0]+"."
     else:
-        Exception("This shouldn't be reached. Line: "+str(line))
+        raise Exception(f"This shouldn't be reached. Line: '{line}'")
     
     print()
     msg = f"{Fore.RED}Space missing after '{bullet}' in line '{line}'.\nThere may be more similar errors.{Fore.RESET}\nDo you want to add spaces where required in {Progress.import_file}?"
