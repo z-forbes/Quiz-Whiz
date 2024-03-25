@@ -1,6 +1,6 @@
 # Gets arguments from user, runs program, prints progress/summary.
 
-## Ensure user has run from terminal. Assume they have on linux.
+## Ensure user has run from terminal. Assume they have ion linux.
 import os
 from sys import exit
 
@@ -119,6 +119,9 @@ def get_user_args():
 
     parser.add_argument('--quiet', '-q', action='store_true',
                         help='suppresses all non-error outputs')
+    
+    parser.add_argument('--basic', '-b', action='store_true',
+                        help="outputs basic formatting")
 
     # question numbers
     nums = parser.add_mutually_exclusive_group()
@@ -144,6 +147,7 @@ def get_user_args():
         error("Cannot write output within /program directory.")
 
     ## PROGRAM CONFIG ##
+    Progress.basic = args.basic
     Progress.quiet = args.quiet
     if args.no_colour:
         Fore.BLACK           = ""
@@ -276,7 +280,7 @@ def main(args):
                         else:
                             error("Unexpected pandoc error occured.\n" + e.replace("\nTry pandoc --help for more information.", ""))
                 del_tmp_dir()
-            if len(quizzes)>1:
+            if len(quizzes)>1 and not Progress.basic:
                 my_print("- "*30)
 
         # TODO delete

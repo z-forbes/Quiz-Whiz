@@ -265,8 +265,27 @@ def make_parse_table(quizzes):
                 continue
             to_write[key] += ["-",sum(to_write[key])]
 
-    
-    return tabulate(to_write, tablefmt='rounded_outline', headers="keys")
+    if Progress.basic:
+        output = "\n"
+        if len(quizzes)==1:
+            for k, v in to_write.items():
+                output += f"{k}: {v[0]}\n"
+        else:
+            for i, fname in enumerate(to_write[FILE]):
+                if fname=="-":
+                    continue
+                if fname=="Total":
+                    output += "Total Imported\n"
+                else:
+                    output += f"{FILE}: {fname}\n"
+                for k, v in to_write.items():
+                    if k==FILE:
+                        continue
+                    output += f"{k}: {v[i]}\n"
+                output += "\n"
+        return output.strip()
+    else:
+        return tabulate(to_write, tablefmt='rounded_outline', headers="keys")
 
 # returns the contents of logo.txt
 def get_logo():
@@ -371,6 +390,7 @@ class Progress:
     
     warn_count = 0
     quiet=False
+    basic=False
 
     def parse_update():
         Progress.current_q+=1
@@ -390,8 +410,11 @@ def warning(msg, show_progress=True):
     progress = Progress.current_action
     if not show_progress:
         progress = ""
-    msg = msg.replace("\n", "\n"+" "*len(progress.strip()+"() ")+"\t"+" "*len("Warning: ")) # adds whitespace
-    my_print(f"{Fore.BLUE}({progress.strip()}) \tWarning: {msg}\n{Fore.RESET}")
+    if Progress.basic:
+        my_print(f"\n{Fore.BLUE}Warning {progress.strip()}\n{msg}{Fore.RESET}\n")
+    else:
+        msg = msg.replace("\n", "\n"+" "*len(progress.strip()+"() ")+"\t"+" "*len("Warning: ")) # adds whitespace
+        my_print(f"{Fore.BLUE}({progress.strip()}) \tWarning: {msg}\n{Fore.RESET}")
 
 def my_print(x="", **kwargs):
     if Progress.quiet:
