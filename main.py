@@ -7,8 +7,12 @@ from sys import exit
 if os.name == 'nt' and not 'SESSIONNAME' in os.environ:
     # running from windows gui
     print("Error: program must be ran from the command line.")
-    print("See https://github.com/lewisforbes/Quiz-Whiz/wiki/Detailed-Installation for instructions if unsure how.")
-    input("Press enter to exit...\n")
+    print("\nTo do this:")
+    print("1. Press Win + R")
+    print("2. Type cmd. Press Enter")
+    print(f"3. Type cd {os.path.dirname(os.path.abspath(__file__))}. Press Enter")
+    print("4. Type python3 main.py. Press Enter.")
+    input("\nPress enter to exit...\n")
     exit()
 
 #####################
