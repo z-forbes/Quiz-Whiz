@@ -27,7 +27,7 @@ def init_nonstd_modules():
 try:
     init_nonstd_modules()
 except ModuleNotFoundError:
-    from os import system
+    import subprocess
     from program.utils import get_user_input
 
     packages = ["tabulate", "pypandoc", "colorama"]
@@ -44,10 +44,29 @@ except ModuleNotFoundError:
         print(f"\nMissing following package{s}: {str(missing)[1:-1]}. Exiting...")
         exit()
 
-    print(f"Installing {len(packages)} packages...", end=" ", flush=True)
+    print("Installing packages...", end=" ", flush=True)
     # user has opted to install packages
+    # check if pip(3) is installed
+    for p in ["pip", "pip3"]:
+        try:
+            pip = p
+            subprocess.check_output(f"{pip} --version", shell=True, stderr=subprocess.DEVNULL)
+            break
+        except:
+            pip = None
+    if not pip:
+        print("Must have Pip installed and on PATH. Download from: https://pip.pypa.io/en/stable/installation/.\nExiting...")
+        exit()
+
     for p in packages:
-        system(f"pip install {p} -q")
+        cmd = f"{pip} install {p} -q"
+        try:
+            subprocess.check_output(cmd, shell=True, stderr=subprocess.DEVNULL) # runs pip install <package> 
+        except:
+            print(f"Error installing {p} with {pip}:\n>>> ", end="")
+            subprocess.run(cmd, shell=True) # will print error to terminal
+            print("\nExiting...")
+            exit()
 
     try:
         init_nonstd_modules()
