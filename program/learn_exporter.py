@@ -2,7 +2,6 @@
 import program.Question
 from program.utils import *
 # could make a copy of quiz and convert everything to html
-# TODO can't import MC/MA questions with only one answer
 
 
 ##########
@@ -41,7 +40,7 @@ def MC_exporter(q):
     if len(q.get_correct_as())==1:
         line.append("MC")
     else:
-        line.append("MA") # TODO MA if 0 are correct??
+        line.append("MA")
 
     line.append(mk_qtext(q)) 
     for a in q.answers:

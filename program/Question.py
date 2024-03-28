@@ -215,7 +215,7 @@ class Num(Question):
         super().__init__(**kwargs)
         self.type = QType.NUM
 
-    # self.answers is of form ["x [y]"]. returns int y or "" if no tolerance. # TODO could return "" but
+    # self.answers is of form ["x [y]"]. returns int y or "" if no tolerance.
     def get_tolerance(self):
         if not self.answers:
             return None

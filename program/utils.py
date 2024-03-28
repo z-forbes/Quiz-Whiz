@@ -161,18 +161,18 @@ def md_to_html(md_str):
                 html = html.replace(src, "src=\"{}\"".format(img_to_b64(im_path)))
         # remove random tags - figcaption shows in plaintext on learn
         html = re.sub("</?figure>", "", html) # remove <figure> tag
-        html = re.sub("<figcaption(.*?)<\/figcaption>", "", html) # remove <figcaption> tag and contents
+        html = re.sub("<figcaption(.*?)</figcaption>", "", html) # remove <figcaption> tag and contents
         return html
 
     ## CHOOSE HOW TO CONVERT INITIAL MD ##
     if has_formatting(md_str):
         md_str = format_not_code(md_str)
         try:
-            # call Pandoc directly (saves time) # TODO test on linux
+            # call Pandoc directly (saves time)
             html = subprocess.check_output("pandoc -f markdown -t html -", input=md_str, 
                                            shell=True, text=True, stderr=subprocess.DEVNULL, encoding='utf-8')
         except subprocess.CalledProcessError: # pandoc command failed
-            warning("Calling Pandoc directly failed.") # TODO remove
+            warning("Calling Pandoc directly failed.") # TODO remove, this is useless to user.
             html = pypandoc.convert_text(md_str, to='html', format='md')
 
         # assert html.count("\r")==html.count("\r\n")
@@ -629,7 +629,8 @@ def not_enough_spaces(line):
 # fixes if neccessary, ends termination regardless
 def random_blank_lines():
     assert Progress.import_file
-    msg = f"\n{Fore.RED}There are blank lines where there shouldn't be any in {Progress.import_file}.{Fore.RESET}\nDo you want the program to fix this?"
+    msg = f"{Fore.RED}There are blank lines where there shouldn't be any in {Progress.import_file}.{Fore.RESET}\nDo you want the program to fix this?"
+    print()
     if not get_user_input(msg):
         print("Ending termination.")
         exit()

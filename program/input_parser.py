@@ -77,8 +77,8 @@ def parse_question(q_lines):
         for line in desc_arr:
             if len(line)<2:
                 continue # just in case
-            if line[0]==BULLET or re.match(NUM_PAT, line[0:2]): # TODO add bullets as global variables
-                warning("Potential answers found in question description.\nCheck question types in parse table below match expectations.") # TODO mention in report as result of user study
+            if line[0]==BULLET or re.match(NUM_PAT, line[0:2]):
+                warning("Potential answers found in question description.\nCheck question types in parse table below match expectations.")
                 break # only show warning once per question
 
         desc = ""

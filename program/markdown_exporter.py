@@ -2,7 +2,6 @@
 import program.Question
 from program.utils import *
 from random import shuffle
-# TODO can't import MC/MA questions with only one answer
 
 
 ##########
