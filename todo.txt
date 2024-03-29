@@ -1,0 +1,1 @@
+"did you mean" when opening local image.
