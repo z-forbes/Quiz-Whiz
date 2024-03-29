@@ -1,6 +1,7 @@
 # Creates file to import to Moodle from Quiz object
 import xml.etree.ElementTree as ET
 import program.Question
+from program.Question import QType as QT
 from program.utils import *
 
 ##########
@@ -14,6 +15,13 @@ def export(quiz, fpath):
     Progress.reset()
     for question in quiz.questions:
         Progress.export_update("Moodle")
+        # verifying properties
+        verify_props(question.properties, MOODLE_Q_PROPS)
+        if question.type in [QT.MC, QT.TF]:
+            for a in question.answers:
+                verify_props(a.properties, MOODLE_A_PROPS)
+
+        # doing export
         export_f = get_exporter(question.type)
         question_root = export_f(question)
         question_root = add_properties(question_root, question.properties)

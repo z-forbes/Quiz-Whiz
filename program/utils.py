@@ -8,6 +8,7 @@ from shutil import rmtree
 import sys
 from difflib import SequenceMatcher
 from urllib.error import URLError
+import threading
 # to allow `from program.utils import get_user_input` in main.py:
 try:
     from colorama import Fore, init
@@ -32,6 +33,10 @@ PRETTY_NUM_PAT = "X." # used when printing errors
 
 PROPS_PATTERN = "<<((?:\n|.)*?)>>"
 FBACK_BULLETS = {"++":"correctfeedback", "~~":"partiallycorrectfeedback", "--":"incorrectfeedback"}
+
+# https://docs.moodle.org/403/en/Moodle_XML_format # TODO verify values as well
+MOODLE_Q_PROPS = ["penalty", "generalfeedback", "defaultgrade", "hidden"]
+MOODLE_A_PROPS = ["fraction", "correctfeedback", "partiallycorrectfeedback", "incorrectfeedback", "single", "shuffleanswers", "answernumbering"] 
 
 #############
 ## STRINGS ##
@@ -222,6 +227,16 @@ def remove_props(s):
     if s==None:
         return None
     return re.sub(PROPS_PATTERN, "", s)
+
+# shows a warning if k in props doesn't match a value in allowed
+def verify_props(props, allowed):
+    if props==None:
+        return
+    for p in props.keys():
+        if not p in allowed:
+            m_s = most_similar(p, allowed)
+            end = f" Did you mean '{m_s}'?" if m_s else ""
+            warning(f"Property '{p}' may be invalid.{end}")
 
 # returns true iff string possibly contains markdown formatting, images or code
 def has_formatting(s): return ("*" in s) or ("_" in s) or ("[" in s) or ("`" in s) or ("$" in s)
