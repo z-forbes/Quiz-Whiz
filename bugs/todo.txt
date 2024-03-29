@@ -1,0 +1,3 @@
+"did you mean" when opening local image.
+
+resize image in program: https://stackoverflow.com/questions/61574724/how-to-resize-base64-encoded-image-in-python
