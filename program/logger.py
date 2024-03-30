@@ -28,6 +28,7 @@ class Logger(object):
             cls.output += f"\n\n## {h}"
 
     def add_content(cls, c):
+        c = c.replace("\\", "/")
         if c!="\n":
             c = c.replace("\n", "\\\n")
         cls.output += f"\n{c}"
