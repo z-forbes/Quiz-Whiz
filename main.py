@@ -279,7 +279,7 @@ def main(args):
         my_print() # terminal newline
 
         # export quizzes
-        for quiz in quizzes:
+        for i, quiz in enumerate(quizzes):
             my_print(f"\nExporting {quiz.input_file}...")
             bname = path.basename(quiz.input_file)
             if args.learn:
@@ -311,7 +311,7 @@ def main(args):
                         else:
                             error("Unexpected pandoc error occured.\n" + e.replace("\nTry pandoc --help for more information.", ""))
                 del_tmp_dir()
-            if len(quizzes)>1 and not Progress.basic:
+            if len(quizzes)>1 and not Progress.basic and i!=len(quizzes)-1 :
                 my_print("- "*30)
 
         # TODO delete
