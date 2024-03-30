@@ -8,7 +8,10 @@ from shutil import rmtree
 import sys
 from difflib import SequenceMatcher
 from urllib.error import URLError
-import threading
+from platform import system
+from program.logger import Logger
+
+
 # to allow `from program.utils import get_user_input` in main.py:
 try:
     from colorama import Fore, init
@@ -243,6 +246,7 @@ def has_formatting(s): return ("*" in s) or ("_" in s) or ("[" in s) or ("`" in 
 
 # makes table summarising parsed questions
 def make_parse_table(quizzes):
+    if Logger.logging: Logger(heading="Parse Table")
     FILE = "File"
     TOTAL = "Total Qs"
     to_write = {FILE:[], TOTAL:[]}
@@ -295,8 +299,10 @@ def make_parse_table(quizzes):
                         continue
                     output += f"{k}: {v[i]}\n"
                 output += "\n"
-        return output.strip()
+        if Logger.logging: Logger(content=output.strip())
+        return output.rstrip()
     else:
+        if Logger.logging: Logger(content=tabulate(to_write, tablefmt='github', headers="keys"))
         return tabulate(to_write, tablefmt='rounded_outline', headers="keys")
 
 # returns the contents of logo.txt
@@ -389,8 +395,10 @@ def error(msg, show_progress=True, nc=False):
     if Progress.import_file:
         import_file = f" in '{Progress.import_file}'"
     
-    print(f"\n{Fore.RED}Error{progress}{import_file}: {newline}{msg}{Fore.RESET}")
+    final = f"\n{Fore.RED}Error{progress}{import_file}: {newline}{msg}{Fore.RESET}"
+    print(final)
     del_tmp_dir()
+    if Logger.logging: Logger(heading="Error Message", content=final).export()
     sys.exit()
 
 # keeps track of progress/status for more descriptive errors
@@ -428,11 +436,11 @@ def warning(msg, show_progress=True):
         msg = msg.replace("\n", "\n"+" "*len(progress.strip()+"() ")+"\t"+" "*len("Warning: ")) # adds whitespace
         my_print(f"{Fore.BLUE}({progress.strip()}) \tWarning: {msg}\n{Fore.RESET}")
 
-def my_print(x="", **kwargs):
+def my_print(x="", end="\n", flush=False, log=True):
     if Progress.quiet:
         return
-    
-    print(x, **kwargs)
+    if log and Logger.logging: Logger(content=f"{x}{end}")
+    print(x, end=end, flush=flush)
 
 # prints msg and then gets user input. returns True if their input is in yes and False if it's in no
 # match_case means matching is case sensitive
@@ -582,7 +590,13 @@ def ensure_pandoc_installed():
     
     # double check all is working
     if not check(): 
-        error(f"Something went wrong installing Pandoc.\nThe program thinks it was installed but it cannot be accessed.", nc=True)
+        if system()=="Darwin": # Darwin is Mac
+            end = "Automatic installation often fails on Mac - download directly from https://pandoc.org/installing.html."
+        else:
+            end = "The program thinks it was installed but it cannot be accessed." 
+        from colorama import Fore, init # TODO fix all these imports
+        init()
+        error(f"Something went wrong installing Pandoc.\n"+end, nc=True)
 
 
 # called when there isn't a space after # or - or X. when there should be
@@ -599,8 +613,9 @@ def not_enough_spaces(line):
         raise Exception(f"This shouldn't be reached. Line: '{line}'")
     
     print()
-    msg = f"{Fore.RED}Space missing after '{bullet}' in line '{line}'.\nThere may be more similar errors.{Fore.RESET}\nDo you want to add spaces where required in {Progress.import_file}?"
-    if not get_user_input(msg):
+    msg = f"{Fore.RED}Space missing after '{bullet}' in line '{line}'.\nThere may be more similar errors.{Fore.RESET}"
+    if Logger.logging: Logger(heading="Error Message", content=msg+"\nReturn to terminal for help fixing this.").export()
+    if not get_user_input(msg+f"\nDo you want to add spaces where required in {Progress.import_file}?"):
             print("Ending termination.")
             exit()
     
@@ -648,6 +663,7 @@ def random_blank_lines():
     print()
     if not get_user_input(msg):
         print("Ending termination.")
+        if Logger.logging: Logger().export
         exit()
 
     # user wants blank lines to be fixed

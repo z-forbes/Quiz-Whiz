@@ -101,7 +101,7 @@ from program.learn_exporter import export as learn
 from program.moodle_exporter import export as moodle
 from program.markdown_exporter import export as markdown
 from program.markdown_exporter import mk_no_correct
-
+from program.logger import Logger
 
 from tabulate import tabulate
 
@@ -145,6 +145,9 @@ def get_user_args():
     
     parser.add_argument('--basic', '-b', action='store_true',
                         help="outputs basic formatting")
+    
+    parser.add_argument('--log_to_file', '-ltf', action='store_true',
+                        help=f"creates files {Logger.RECENT} and {Logger.RECENT} with headings.")
 
     # question numbers
     nums = parser.add_mutually_exclusive_group()
@@ -159,19 +162,6 @@ def get_user_args():
 
     args = parser.parse_args()
 
-    ## MANUAL ARGUMENT VALIDATION ##
-    # ensure output format is specified
-    if not (args.learn or args.moodle or args.ext):
-        print(Fore.YELLOW)
-        parser.error('No output format specified - include --moodle and/or --learn and/or --file')
-
-    # output dirname validation
-    if args.path and (os.path.abspath("program") in os.path.abspath(args.path)):
-        error("Cannot write output within /program directory.")
-
-    ## PROGRAM CONFIG ##
-    Progress.basic = args.basic
-    Progress.quiet = args.quiet
     if args.no_colour:
         Fore.BLACK           = ""
         Fore.RED             = ""
@@ -182,6 +172,22 @@ def get_user_args():
         Fore.CYAN            = ""
         Fore.WHITE           = ""
         Fore.RESET           = ""
+
+    if args.log_to_file:
+        Logger() # create logger
+
+    ## MANUAL ARGUMENT VALIDATION ##
+    # ensure output format is specified
+    if not (args.learn or args.moodle or args.ext):
+        error('No output format specified. Include --moodle and/or --learn and/or --file')
+
+    # output dirname validation
+    if args.path and (os.path.abspath("program") in os.path.abspath(args.path)):
+        error("Cannot write output within /program directory.")
+
+    ## PROGRAM CONFIG ##
+    Progress.basic = args.basic
+    Progress.quiet = args.quiet
 
     return args
 
@@ -238,6 +244,7 @@ def main(args):
     
         quizzes = []
         s = "" if len(inputs)==1 else "s"
+        if Logger.logging: Logger(heading="Parsing")
         my_print(f"Parsing {len(inputs)} input file{s} provided...")
         for i in inputs:
             Progress.import_file = path.basename(i)
@@ -251,11 +258,12 @@ def main(args):
             q.input_file = path.basename(inputs[i])
         
         # display parse summary
-        my_print(make_parse_table(quizzes), end="")
+        my_print(make_parse_table(quizzes), end="", log=False) # added to log within make_parse_table
         return quizzes
 
     # creates specified output files for each Quiz, returns message with warning summary
     def output(quizzes, args):
+        if Logger.logging: Logger(heading="Creating and Exporting Output")
         # sort out output dir
         if args.path:
             output_dir = args.path
@@ -322,12 +330,22 @@ def main(args):
 
     quizzes = parse(args.input)
     finished_msg = output(quizzes, args)
-
+    
+    if Logger.logging: Logger(heading="Final Message", content=finished_msg).export()
     print(finished_msg)
 
 #################################
 ## MAIN EXCECUTION STARTS HERE ##
 #################################
+# for when the user presses CTRL Z or C
+def user_end_ter():
+    print(f"\n{Fore.RED}Ending termination.{Fore.RESET}")
+    from time import sleep
+    if Logger.logging: Logger(heading="Error Message", content="User killed termination.").export()
+    exit()
+
+
+
 args = get_user_args()
 
 # this is here so it can be called after files are fixed in utils.
@@ -338,6 +356,10 @@ def go():
             main(args)
         except SystemExit:
             pass # known error already displayed
+        except KeyboardInterrupt:
+            user_end_ter()
+        except EOFError:
+            user_end_ter()
         except:
             error("An unexpected error occured. Rerun with --debug flag for details.", show_progress=False)
 
@@ -349,6 +371,12 @@ def go():
             success = True
         except SystemExit:
             success = True # known error occured
+        except KeyboardInterrupt:
+            user_end_ter()
+            exit()
+        except EOFError:
+            user_end_ter()
+            exit()
         except:
             # print Utils.Progress details
             if Progress.current_action=="":
@@ -357,6 +385,7 @@ def go():
                 my_print(f"{Fore.YELLOW}Error occured when{Progress.current_action}.{Fore.RESET}\n")
         if not success:
             Progress.quiet = True # don't reshow program output
+            Logger.logging = False
             main(args) # show error in full
 
 go()
