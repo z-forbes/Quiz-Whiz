@@ -1,6 +1,6 @@
 # Gets arguments from user, runs program, prints progress/summary.
 
-## Ensure user has run from terminal. Assume they have ion linux.
+## Ensure user has run from terminal. Assume they have on linux.
 import os
 from sys import exit
 

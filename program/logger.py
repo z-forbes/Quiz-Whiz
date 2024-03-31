@@ -29,6 +29,8 @@ class Logger(object):
 
     def add_content(cls, c):
         c = c.replace("\\", "/")
+        c = re.sub("(([^\s']+?\/)+[^\s]+?\.[^\s]+[^\s'\.])", "[\\1](\\1)", c) # make link from fpath
+
         if c!="\n":
             c = c.replace("\n", "\\\n")
         cls.output += f"\n{c}"
@@ -45,7 +47,9 @@ class Logger(object):
             with open(cls.FULL, "r", encoding='utf-8') as f:
                 old = f.read()
         with open(cls.FULL, "w", encoding='utf-8') as f:
-            f.write(f"<h1>Timestamp: {datetime.now()}</h1>\n\n"+html + old)
+            now = datetime.now()
+            date = f"{now.hour:02d}:{now.minute:02d}:{now.second:02d} - {now.day}/{now.month}/{str(now.year)[-2:]}"
+            f.write(f"<h1>Timestamp: {date}</h1>\n\n"+html + old)
         print(f"Log files {cls.FULL} and {cls.RECENT} updated.")
 
 

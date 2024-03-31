@@ -302,7 +302,8 @@ def make_parse_table(quizzes):
         if Logger.logging: Logger(content=output.strip())
         return output.rstrip()
     else:
-        if Logger.logging: Logger(content=tabulate(to_write, tablefmt='github', headers="keys"))
+        table = re.sub("\n\|(\s-\s+\|)+", "", tabulate(to_write, tablefmt='github', headers="keys"))
+        if Logger.logging: Logger(content=table)
         return tabulate(to_write, tablefmt='rounded_outline', headers="keys")
 
 # returns the contents of logo.txt
@@ -445,12 +446,8 @@ def my_print(x="", end="\n", flush=False, log=True):
 # prints msg and then gets user input. returns True if their input is in yes and False if it's in no
 # match_case means matching is case sensitive
 # ensure this matches function at top of main !!
-def get_user_input(msg, yes=["(y)es", "y", "yes"], no=["(n)o", "n", "no"], match_case=False):
-    def _lower(s): 
-        if match_case:
-            return s 
-        else:
-            return s.lower()
+def get_user_input(msg, yes=["yes", "y"], no=["no", "n"], match_case=False):
+    def _lower(s): return s if match_case else s.lower()
         
     # deal with string input
     if type(yes)==str:
@@ -650,7 +647,7 @@ def not_enough_spaces(line):
         print("Could not add any spaces. Double check the syntax used.")
     else:
         s = "" if total_changes==1 else "s"
-        print(f"{Fore.GREEN}Made {total_changes} update{s} to {Progress.import_file}. Try rerunning program.\n")
+        print(f"{Fore.GREEN}Made {total_changes} update{s} to {Progress.import_file}. Try rerunning program.")
     exit()
 
 
@@ -685,6 +682,6 @@ def random_blank_lines():
     else:
         s = "" if len_diff==1 else "s"
         print(f"{Fore.GREEN}Removed {len_diff} newline{s}{Fore.RESET}, but some may have been missed.")
-        print("Try rerunning program.\n")
+        print("Try rerunning program.")
         exit()
 
