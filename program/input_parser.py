@@ -101,19 +101,22 @@ def shrink_answers(answers):
         return answers
     output = []
     current = ""
-    for a in answers:
+    for i, a in enumerate(answers):
         if a=="":
             random_blank_lines() # ends termination
-            # error(f"Blank line found in answers/description. Add a space to include in output or '{COMMENT}' to hide in output.\nInclude --add_numbers flag to find erroneous question, check start/end of file for extra newlines.")
-        if a[0]==BULLET or type(force_type(a[0]))==int: # starts with - or int
+            ## EXIT ##
+        is_fb = len(a)>=2 and a[0:2] in FBACK_BULLETS # len(a)>=2 for error prevention
+        if not is_fb and (a[0]==BULLET or type(force_type(a[0]))==int): # starts with - or int
             if current != "":
-                current = current[:-1] # remove trailing newline
-                output.append(current)
+                output.append(current[:-1]) # remove trailing newline
                 current = ""
+        if is_fb:
+            output.append(current[:-1])
+            output.append(str(answers[i:])[2:-2].replace("', '", "\n"))
+            return output
         current += a + "\n"
 
-    current = current[:-1]
-    output.append(current)
+    output.append(current[:-1])
     return output
 
 # finds the Question class (not QType) from its answers    
@@ -183,11 +186,13 @@ def verify_answers(answers):
 # output: <<correctfeedback:good job; incorrectfeedback: try again>>
 def parse_feedback(feedback):
     output = ""
-    for fb in feedback.split("\n"):
+    for i, fb in enumerate(feedback.split("\n")):
         try:
             bullet = fb[0:2]
             if not bullet in FBACK_BULLETS:
-                error(f"Feedback is poorly formatted: '{fb}'\nEach feedback item cannot be across multiple lines.")
+                fbs = feedback.split("\n")
+                fst = f"Feedback is poorly formatted: "
+                error(f"{fst}{fbs[i-1]}\n{' '*len(fst)}{fbs[i]}\nEach feedback item cannot be across multiple lines.")
             content = fb[2:].strip() # space not required between bullet and content
         except IndexError:
             error(f"Feedback is too short: {fb}.\nNote each feedback item cannot be across multiple lines.")

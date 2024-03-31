@@ -35,11 +35,11 @@ NUM_PAT = "[0-9]+\." # regex pattern of bullet in cloze
 PRETTY_NUM_PAT = "X." # used when printing errors
 
 PROPS_PATTERN = "<<((?:\n|.)*?)>>"
-FBACK_BULLETS = {"++":"correctfeedback", "~~":"partiallycorrectfeedback", "--":"incorrectfeedback"}
+FBACK_BULLETS = {"--":"incorrectfeedback", "++":"correctfeedback", "~~":"partiallycorrectfeedback"}
 
 # https://docs.moodle.org/403/en/Moodle_XML_format # TODO verify values as well
-MOODLE_Q_PROPS = ["penalty", "generalfeedback", "defaultgrade", "hidden"]
-MOODLE_A_PROPS = ["fraction", "correctfeedback", "partiallycorrectfeedback", "incorrectfeedback", "single", "shuffleanswers", "answernumbering"] 
+MOODLE_Q_PROPS = list(FBACK_BULLETS.values())+["single", "shuffleanswers", "answernumbering"]
+MOODLE_A_PROPS = ["fraction","feedback"] 
 
 #############
 ## STRINGS ##
