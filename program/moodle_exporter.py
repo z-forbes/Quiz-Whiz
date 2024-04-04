@@ -89,7 +89,7 @@ def MATCH_exporter(q):
 
 def CLOZE_exporter(q):
     if len(q.answers)==1:
-        warning("Moodle required at least two choices in cloze questions. Skipping question.")
+        warning("Moodle requires at least two choices in cloze questions. Skipping question.")
         return None
     # makes the question text (there's probs a better way to do this)
     def mk_questiontext(q):
