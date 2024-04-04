@@ -1,8 +1,0 @@
-# The sky is purple.
-
-- False
-
-# Match the country to its capital.
- 
-- Thimphu///Bhutan
-- Ottawa///Canada
