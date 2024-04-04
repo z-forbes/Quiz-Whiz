@@ -1,5 +1,4 @@
 # Utils used accross program
-# from markdown import markdown # TODO remove. talk about in report.
 import re
 import base64
 import os
@@ -180,7 +179,7 @@ def md_to_html(md_str):
             html = subprocess.check_output("pandoc -f markdown -t html -", input=md_str, 
                                            shell=True, text=True, stderr=subprocess.DEVNULL, encoding='utf-8')
         except subprocess.CalledProcessError: # pandoc command failed
-            warning("Calling Pandoc directly failed.") # TODO remove, this is useless to user.
+            # warning("Calling Pandoc directly failed.") # useless to user but useful for programmer
             html = pypandoc.convert_text(md_str, to='html', format='md')
 
         # assert html.count("\r")==html.count("\r\n")
@@ -308,14 +307,15 @@ def make_parse_table(quizzes):
 
 # returns the contents of logo.txt
 def get_logo():
-    try:
-        f = open("program/logo.txt", "r")
-        output = f.read()
-        f.close()
-        return output
-    except:
-        t = "- Quiz Whiz -"
-        return f"{'-'*len(t)}\n{t}\n{'-'*len(t)}\n"
+    return "QUIZ WHIZ" # for screen readers
+    # try:
+    #     f = open("program/logo.txt", "r")
+    #     output = f.read()
+    #     f.close()
+    #     return output
+    # except:
+    #     t = "- Quiz Whiz -"
+    #     return f"{'-'*len(t)}\n{t}\n{'-'*len(t)}\n"
 
 # https://stackoverflow.com/questions/17388213/find-the-similarity-metric-between-two-strings
 # returns the filename in comps which original is most similar to. if every similarity is below threshold, None is returned.

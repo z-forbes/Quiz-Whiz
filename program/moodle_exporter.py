@@ -169,7 +169,7 @@ def add_properties(root, props):
     for pname, pval in props.items():
         if pname=="fraction":
             continue # 'set' in init_answer()
-        if "feedback" in pname: # TODO verify heuristic
+        if "feedback" in pname: # feedback gets text, implied by docs
             root.append(text_inside(pname, pval, to_html=False))
         else:
             root.append(e_with_txt(pname, pval))
