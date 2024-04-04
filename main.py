@@ -313,10 +313,10 @@ def main(args):
             if len(quizzes)>1 and not Progress.basic and i!=len(quizzes)-1 :
                 my_print("- "*30)
 
-        # TODO delete
-        if args.export:
-            to_vm(output_dir)
-        # end delete
+        # # TODO delete
+        # if args.export:
+        #     to_vm(output_dir)
+        # # end delete
         
         # make "finished" message
         with_warnings = " with no warnings"
