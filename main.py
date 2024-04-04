@@ -111,7 +111,7 @@ from tabulate import tabulate
 # gets user's input, validates all arguments, returns args
 def get_user_args():
     ## MAKE PARSER ##
-    parser = argparse.ArgumentParser(description=f'{get_logo()}\n\nDocumentation: https://github.com/lewisforbes/ug5-project/blob/main/readme.md', # TODO update docs url
+    parser = argparse.ArgumentParser(description=f'{get_logo()}\n\nDocumentation: https://github.com/lewisforbes/Quiz-Whiz/wiki',
                                     epilog="Note: at least one of --moodle, --learn and --file required.", formatter_class=argparse.RawDescriptionHelpFormatter)
 
     # required
@@ -157,8 +157,7 @@ def get_user_args():
     nums.add_argument('--remove_nums', '-rn', action='store_true',
                         help='undos action of --add_nums')
 
-    # TODO delete
-    parser.add_argument('--export', '-e', action='store_true', help="moves results to shared vm folder")
+    # parser.add_argument('--export', '-e', action='store_true', help="moves results to shared vm folder")
 
     args = parser.parse_args()
 
