@@ -8,8 +8,13 @@ if os.path.basename(os.getcwd())=="program":
     input("This file should be ran from the base directory.\nPress enter to exit.")
     exit()
 
+if os.path.exists("tmp_for_test"):
+    input("Delete `tmp_for_test` directory.\nPress enter to exit.")
+    exit()
+
+
 def check_warnings(f, w, vle="l"):
-    B = f"python3 main.py -{vle} -q -o test_inputs/warnings/tmp_outputs test_inputs/warnings/"
+    B = f"python3 main.py -{vle} -q -o tmp_for_test program/tests/warnings/"
     w = w if w>0 else "no"
     if not f"Finished with {w} warning" in str(subprocess.run(B+f, capture_output=True).stdout):
         subprocess.run(f"{B}{f}".replace("-q", ""))
@@ -33,4 +38,4 @@ check_warnings("MC1A.md", 0, vle="f html")
 
 
 
-rmtree("test_inputs/warnings/tmp_outputs")
+rmtree("tmp_for_test")
