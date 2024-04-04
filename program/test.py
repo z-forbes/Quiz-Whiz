@@ -1,5 +1,12 @@
+# `python3 program/test.py` to check warnings work as expected
 import subprocess
 from shutil import rmtree
+import os
+from sys import exit
+
+if os.path.basename(os.getcwd())=="program":
+    input("This file should be ran from the base directory.\nPress enter to exit.")
+    exit()
 
 def check_warnings(f, w, vle="l"):
     B = f"python3 main.py -{vle} -q -o test_inputs/warnings/tmp_outputs test_inputs/warnings/"

@@ -61,7 +61,7 @@ class Question(ABC):
                     error("The following properties are being set twice in the same question: " + str(dupe_keys)[1:-1])
                 self.properties.update(new_props) # dictionary merge
 
-        self.question = remove_props(self.question) # TODO can this be done within loop? (is source reference or value)
+        self.question = remove_props(self.question)
         self.description = remove_props(self.description)
         if self.properties == {}:
             self.properties = None
@@ -170,7 +170,7 @@ class Basic(Question):
         return [parse_answer(l) for l in lines]
 
 class Cloze(Question):
-    BLANK_MARKER = "[]" # TODO move to utils and refractor
+    BLANK_MARKER = "[]" # TODO move to top of utils and refractor
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
