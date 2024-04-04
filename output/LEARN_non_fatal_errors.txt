@@ -1,1 +1,0 @@
-FIB_PLUS	<p>Bicycles have [a] wheels, trycycles have [b] wheels.</p> 	a	**two**		b	**three**	
