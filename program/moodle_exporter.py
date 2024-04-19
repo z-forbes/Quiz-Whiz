@@ -68,9 +68,9 @@ def TF_exporter(q):
 
 def NUM_exporter(q):
     q_root = init_question(q, "numerical")
-    q_root.append(init_answer(q.get_answer(), 100, None, to_html=False)) # only one answer so frac=100
-
-    q_root = add_properties(q_root, {"tolerance":q.get_tolerance()}) if q.get_tolerance()!="" else q_root
+    ans = init_answer(q.get_answer(), 100, None, to_html=False) # only one answer so frac=100
+    ans = add_properties(ans, {"tolerance":q.get_tolerance()}) if q.get_tolerance()!="" else ans # add tolerance to answer
+    q_root.append(ans) 
     return q_root
 
 def ESSAY_exporter(q):
