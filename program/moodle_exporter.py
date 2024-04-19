@@ -176,7 +176,6 @@ def add_properties(root, props):
     return root
 
 
-
 ###########
 ## UTILS ##
 ###########
