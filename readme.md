@@ -17,7 +17,7 @@ The [example usage walkthrough](https://github.com/lewisforbes/Quiz-Whiz/wiki/Wa
 Full documentation is in [the wiki](https://github.com/lewisforbes/Quiz-Whiz/wiki).
 
 # Just browsing?
-For those simply curious of the program's capabilities, here's an over
+For those simply curious of the program's capabilities, here's an overview.
 At its simplist, the program is run through the command line as follows:
 
 `python3 main.py InputFilepath --OutputType`
