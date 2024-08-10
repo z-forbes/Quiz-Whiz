@@ -1,4 +1,5 @@
 ### This program facilitates the creation of quiz questions for Moodle and Learn Ultra.
+It accompanies my [2024 dissertation](https://drive.google.com/file/d/1B3-ldxnwUfDzB_Ken34NgD3khB7nmDiM/view?usp=sharing).
 
 <img src='assets/images/overview.png' width='90%'>
 
