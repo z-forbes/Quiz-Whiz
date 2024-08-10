@@ -1,5 +1,4 @@
 # Which ocean is the warmest?
-
 - ^Atlantic
 - Pacific
 - Arctic
@@ -11,7 +10,7 @@
 - Melanin
 - ^Sucrose
 
-# Blaise Pascal was a 20th century sociologist who argued for the importance of identifying scientific laws that govern human behavior.
+# Blaise Pascal was a 20th century sociologist who argued for the importance of identifying scientific laws that govern human behaviour.
 ![Portrait of Blaise Pascal](https://iep.utm.edu/wp-content/media/pascal_blaise.jpg)
 
 - False
